@@ -10,6 +10,6 @@ export const mainSlice = createSlice({
     }
 })
 
-export const {DEFAULT} = mainSlice.actions; 
+export const { DEFAULT } = mainSlice.actions; 
 
 export default mainSlice.reducer;
