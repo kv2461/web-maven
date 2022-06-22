@@ -15,6 +15,7 @@ import { LOGOUT } from '../src/reducers/auth'
 import Auth from './components/Auth/Auth';
 import Interface from './components/Interface/Interface';
 import BookmarkFolder from './components/BookmarkFolder/BookmarkFolder';
+import Friends from './components/Friends/Friends';
 
 import { theme } from './Theme';
 
@@ -35,6 +36,7 @@ const Popup = () => {
     const [url, setUrl] = useState('')
     const [rerender, setRerender] = useState(false);
     const [collapseBookmarks, setCollapseBookmarks] = useState(false);
+    const [collapseFriends, setCollapseFriends] = useState(false);
     const dispatch = useDispatch();
     
     const logout = () => {
@@ -74,10 +76,14 @@ const Popup = () => {
         <div>
             {!user && <Auth />}
             {user && <Button sx={{color:'secondary.main'}}onClick={logout}>Logout</Button>}
-                {url !== '' && (<Interface />)}
-            <Button onClick={()=>setCollapseBookmarks(!collapseBookmarks)}> {collapseBookmarks ? 'Hide Bookmark Folders' : 'Show Bookmark Folders'}</Button>
+                {url !== '' && (<Interface url={url}/>)}
+            <Button onClick={()=>setCollapseBookmarks(!collapseBookmarks)}> {collapseBookmarks ? 'Hide Folders' : 'Folders'}</Button>
             <Collapse in={collapseBookmarks} timeout='auto' unmountOnExit>
                 <BookmarkFolder />
+            </Collapse>
+            <Button onClick={()=>setCollapseFriends(!collapseFriends)}> {collapseFriends ? 'Hide Friends' : 'Friends'}</Button>
+            <Collapse in={collapseFriends} timeout='auto' unmountOnExit>
+                <Friends />
             </Collapse>
         </div>
     )
