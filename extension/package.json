@@ -19,8 +19,15 @@
   },
   "homepage": "https://github.com/kv2461/web-maven#readme",
   "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@mui/material": "^5.8.5",
+    "@mui/styles": "^5.8.4",
+    "@reduxjs/toolkit": "^1.8.2",
+    "axios": "^0.27.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",

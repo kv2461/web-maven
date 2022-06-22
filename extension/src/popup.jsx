@@ -1,11 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import  mainSlice  from './reducers/main';
+
+import { useDispatch } from 'react-redux';
 
 import StickyNote from './components/StickyNote';
+import {GetInfoByUsername} from './actions/main';
 
+const store = configureStore({
+    reducer: {
+        mainSlice:mainSlice,
+    },
+    middleware: (getDefaultMiddleware) => 
+    getDefaultMiddleware({
+        serializableCheck: false,
+    }),
+});
 
 const Popup = () => {
     const [url, setUrl] = useState('')
+    const dispatch = useDispatch();
 
     const getCurrentTab = async () => {
         let queryOptions = {active: true, lastFocusedWindow: true};
@@ -29,6 +45,10 @@ const Popup = () => {
             })
 
     },[])
+
+    useEffect(()=> {
+        dispatch(GetInfoByUsername('kv2461'));
+    },[url])
     
 
     return(
@@ -43,5 +63,7 @@ const Popup = () => {
 
 const root = ReactDOM.createRoot(document.getElementById('react-target'));
 root.render(
-    <Popup />
+    <Provider store={store}>
+        <Popup />
+    </Provider>
 )

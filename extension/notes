@@ -1,0 +1,22 @@
+{
+    "name": "Web Maven",
+    "description" : "In the works",
+    "version": "1.0",
+    "manifest_version": 3,
+    "background": {
+        "scripts": ["./background.js"]
+    },
+    "permissions": [
+        "tabs",
+        "<all_urls>"
+    ],
+    "content_scripts": [
+        {
+            "matches":["*://*/*"],
+            "js":["inject.js"]
+        }
+    ],
+    "action": {
+        "default_popup":"popup.html"
+    }
+} //manifest.json

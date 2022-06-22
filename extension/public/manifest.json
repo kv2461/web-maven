@@ -3,18 +3,9 @@
     "description" : "In the works",
     "version": "1.0",
     "manifest_version": 3,
-    "background": {
-        "scripts": ["./background.js"]
-    },
     "permissions": [
         "tabs",
         "<all_urls>"
-    ],
-    "content_scripts": [
-        {
-            "matches":["http://*","https://*"],
-            "js":["inject.js"]
-        }
     ],
     "action": {
         "default_popup":"popup.html"
