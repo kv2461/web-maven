@@ -11,9 +11,15 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'), //defining the path of our build ..which will be dist folder?
         filename:'[name].js', //any file we define in the entry section will be copied with the exact name but it will be js instead of jsx
     },
+    resolve: {
+        alias: {
+            components: path.resolve(__dirname, 'src/components'),
+        },
+        extensions: ['.js'],
+    },
     module: {
         rules: [{ 
-            test: /\.(jsx|jsx)$/, //loader will be executed with js and jsx file extensions 
+            test: /\.(js|jsx)$/, //loader will be executed with js and jsx file extensions 
             exclude: /node_modules/,
             use: {
                 loader: 'babel-loader', //tool that we use to understand react code and transpile it into plain js that our webpack builder can understand
