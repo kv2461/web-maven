@@ -76,9 +76,9 @@ const Popup = () => {
         <div>
             {!user && <Auth />}
             {user && <Button sx={{color:'secondary.main'}}onClick={logout}>Logout</Button>}
-                {url !== '' && (<Interface url={url}/>)}
+                
             {user && 
-            (<>
+            (<> {url !== '' && (<Interface url={url}/>)}
                 <Button onClick={()=>setCollapseBookmarks(!collapseBookmarks)}> {collapseBookmarks ? 'Hide Folders' : 'Folders'}</Button>
                 <Collapse in={collapseBookmarks} timeout='auto' unmountOnExit>
                     <BookmarkFolder />
