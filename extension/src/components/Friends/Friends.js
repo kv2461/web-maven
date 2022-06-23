@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
-import { TextField, InputAdornment, IconButton, Typography, Box, Button } from '@mui/material';
-import { Search, AddOutlined, DoNotDisturbAlt } from '@mui/icons-material';
+import { TextField, InputAdornment, IconButton, Typography, Box, Button, Collapse } from '@mui/material';
+import { Search, AddOutlined, DoNotDisturbAlt, Cancel } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { SearchByUsername, SendFriendRequest, GetFriendStatus, CancelFriendRequest, } from '../../actions/main';
+import { CLEAR } from '../../reducers/main';
 
 import Sent from './Sent';
 
@@ -14,6 +15,8 @@ const Friends = () => {
   const { searchedFriend, searchedFriendError, sendFriendReqError, sent, inventory, loading } = useSelector((state)=>state.mainSlice);
   const isSelf = Boolean(searchedFriend._id === user.result._id);
   const sentAlready = Boolean(sent.filter(friendStatus => friendStatus.recipient === searchedFriend._id).length > 0);
+
+  const [collapseSent, setCollapseSent] = useState(false);
 
   const searchByUsername = (usernameQuery) => {
     setRerender(!rerender);
@@ -30,6 +33,11 @@ const Friends = () => {
     dispatch(CancelFriendRequest(friend));
   }
 
+  const clear = () => {
+    dispatch(CLEAR());
+    setUsernameQuery('');
+  }
+
   useEffect(()=> {
     dispatch(GetFriendStatus())
   },[rerender, loading])
@@ -43,6 +51,9 @@ const Friends = () => {
           <InputAdornment position='end'>
             <IconButton onClick={()=>searchByUsername(usernameQuery)} edge='end'>
               <Search />
+            </IconButton>
+            <IconButton onClick={()=>clear()} edge='end'>
+              <Cancel />
             </IconButton>
           </InputAdornment>
         )}}
@@ -63,7 +74,14 @@ const Friends = () => {
       </Box>)}
       { searchedFriendError && (<Typography sx={{color:'secondary.main'}}>{searchedFriendError}</Typography>)}
       
-      {sent?.length>0 && (sent.map((friendReq) => (<Sent key={friendReq._id} friendReq={friendReq}/>)))}
+      {sent?.length>0 && 
+        (<>
+        <Button onClick={()=>setCollapseSent(!collapseSent)}> {collapseSent ? 'Hide Sent' : 'Sent'}</Button>
+        <Collapse in={collapseSent} timeout='auto' unmountOnExit>
+                  {sent.map((friendReq) => (<Sent key={friendReq._id} friendReq={friendReq}/>))}
+        </Collapse>
+        </>)
+      }
     </>
   )
 }

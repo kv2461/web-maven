@@ -21,10 +21,13 @@ export const mainSlice = createSlice({
         },
         LOADING_OFF: (state,action) => {
             return {...state, loading:false};
+        },
+        CLEAR: (state,action) => {
+            return {...state, searchedFriend:{}, searchedFriendError:'', sendFriendReqError:''}
         }
     }
 })
 
-export const { SEARCH_FRIEND, SEARCH_FRIEND_ERROR, SEND_FRIENDREQ_ERROR, FRIEND_STATUS, LOADING_OFF, LOADING_ON } = mainSlice.actions; 
+export const { SEARCH_FRIEND, SEARCH_FRIEND_ERROR, SEND_FRIENDREQ_ERROR, FRIEND_STATUS, LOADING_OFF, LOADING_ON, CLEAR} = mainSlice.actions; 
 
 export default mainSlice.reducer;
