@@ -77,14 +77,18 @@ const Popup = () => {
             {!user && <Auth />}
             {user && <Button sx={{color:'secondary.main'}}onClick={logout}>Logout</Button>}
                 {url !== '' && (<Interface url={url}/>)}
-            <Button onClick={()=>setCollapseBookmarks(!collapseBookmarks)}> {collapseBookmarks ? 'Hide Folders' : 'Folders'}</Button>
-            <Collapse in={collapseBookmarks} timeout='auto' unmountOnExit>
-                <BookmarkFolder />
-            </Collapse>
-            <Button onClick={()=>setCollapseFriends(!collapseFriends)}> {collapseFriends ? 'Hide Friends' : 'Friends'}</Button>
-            <Collapse in={collapseFriends} timeout='auto' unmountOnExit>
-                <Friends />
-            </Collapse>
+            {user && 
+            (<>
+                <Button onClick={()=>setCollapseBookmarks(!collapseBookmarks)}> {collapseBookmarks ? 'Hide Folders' : 'Folders'}</Button>
+                <Collapse in={collapseBookmarks} timeout='auto' unmountOnExit>
+                    <BookmarkFolder />
+                </Collapse>
+                <Button onClick={()=>setCollapseFriends(!collapseFriends)}> {collapseFriends ? 'Hide Friends' : 'Friends'}</Button>
+                <Collapse in={collapseFriends} timeout='auto' unmountOnExit>
+                    <Friends />
+                </Collapse>
+            </>)
+            }
         </div>
     )
 }
