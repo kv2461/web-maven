@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import {GetFriends} from '../../actions/main'
 
 
 //this component should house the added friends section, will have smaller components inside this as well for individual friends
 
-const AddedFriends = () => {
+const AddedFriends = ({friends}) => {
     const dispatch = useDispatch();
-    const {friends, loading} = useSelector((state)=>state.mainSlice);
+    const {loading} = useSelector((state)=>state.mainSlice);
 
     useEffect(()=> {
         dispatch(GetFriends());
@@ -15,7 +15,12 @@ const AddedFriends = () => {
         console.log(friends)
     },[])
   return (
-    <div>AddedFriends</div>
+    <>
+        <Button onClick={()=>setCollapseFriendRequests(!collapseFriendRequests)}> {collapseFriendRequests ? 'Hide Friend Requests' : 'Friend Requests'}</Button>
+        <Collapse in={collapseFriendRequests} timeout='auto' unmountOnExit>
+                  {inventory.map((friendReq) => (<Recieved key={friendReq._id} friendReq={friendReq}/>))}
+        </Collapse>
+   </>
   )
 }
 

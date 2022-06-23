@@ -14,7 +14,7 @@ const Friends = () => {
   const dispatch = useDispatch();
   const [rerender, setRerender] = useState(false);
   const [usernameQuery, setUsernameQuery] = useState('');
-  const { searchedFriend, searchedFriendError, sendFriendReqError, sent, inventory, loading } = useSelector((state)=>state.mainSlice);
+  const { searchedFriend, searchedFriendError, sendFriendReqError, sent, inventory, loading, friends } = useSelector((state)=>state.mainSlice);
   const isSelf = Boolean(searchedFriend._id === user.result._id);
   const sentAlready = Boolean(sent.filter(friendStatus => friendStatus.recipient === searchedFriend._id).length > 0);
 
@@ -96,7 +96,7 @@ const Friends = () => {
         </>)
       }
 
-      <AddedFriends />
+      {friends?.length > 0 && (<AddedFriends friends={friends}/>)} 
     </>
   )
 }
