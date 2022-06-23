@@ -1,4 +1,4 @@
-import { SEARCH_FRIEND, SEARCH_FRIEND_ERROR, SEND_FRIENDREQ_ERROR, FRIEND_STATUS,LOADING_OFF,LOADING_ON } from '../reducers/main'; 
+import { SEARCH_FRIEND, SEARCH_FRIEND_ERROR, SEND_FRIENDREQ_ERROR, FRIEND_STATUS,LOADING_OFF,LOADING_ON, ADDED_FRIENDS } from '../reducers/main'; 
 
 import * as api from '../api';
 
@@ -51,6 +51,16 @@ export const GetFriendStatus = () => async (dispatch) => {
     }
 } 
 
+export const GetFriends = () => async (dispatch) => {
+    try {
+        const { data } = await api.getFriends();
+
+        dispatch(ADDED_FRIENDS(data));
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const CancelFriendRequest = (friend) => async (dispatch) => {
     try {
         dispatch(LOADING_ON());
@@ -85,3 +95,4 @@ export const AcceptFriendRequest = (friend) => async (dispatch) => {
         console.log(error)
     }
 }
+

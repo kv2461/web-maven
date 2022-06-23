@@ -23,6 +23,8 @@ export const searchById = (id) => API.get(`/friends/searchById/${id}`)
 
 export const getFriendStatus = () => API.get('/friends/status');
 
+export const getFriends = () => API.get('/friends/friends');
+
 export const sendFriendRequest = (friend) => API.post('/friends/request', friend);
 
 export const cancelFriendRequest = (friend) => API.patch('/friends/cancel', friend);

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const mainSlice = createSlice({
     name:'state',
-    initialState:{state:{}, searchedFriend:{}, searchedFriendError:'', sendFriendReqError:'', sent:[], inventory:[], loading:false},
+    initialState:{state:{}, searchedFriend:{}, searchedFriendError:'', sendFriendReqError:'', sent:[], inventory:[], loading:false, friends:[]},
     reducers: {
         SEARCH_FRIEND: (state, action) => {
             return {...state, searchedFriend:action.payload, searchedFriendError:'', sendFriendReqError:''}
@@ -23,11 +23,14 @@ export const mainSlice = createSlice({
             return {...state, loading:false};
         },
         CLEAR: (state,action) => {
-            return {...state, searchedFriend:{}, searchedFriendError:'', sendFriendReqError:''}
+            return {...state, searchedFriend:{}, searchedFriendError:'', sendFriendReqError:''};
+        },
+        ADDED_FRIENDS: (state,action) => {
+            return {...state, friends:action.payload};
         }
     }
 })
 
-export const { SEARCH_FRIEND, SEARCH_FRIEND_ERROR, SEND_FRIENDREQ_ERROR, FRIEND_STATUS, LOADING_OFF, LOADING_ON, CLEAR} = mainSlice.actions; 
+export const { SEARCH_FRIEND, SEARCH_FRIEND_ERROR, SEND_FRIENDREQ_ERROR, FRIEND_STATUS, LOADING_OFF, LOADING_ON, CLEAR, ADDED_FRIENDS} = mainSlice.actions; 
 
 export default mainSlice.reducer;

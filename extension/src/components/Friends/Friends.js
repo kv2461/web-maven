@@ -2,9 +2,10 @@ import React, {useState, useEffect} from 'react'
 import { TextField, InputAdornment, IconButton, Typography, Box, Button, Collapse } from '@mui/material';
 import { Search, AddOutlined, DoNotDisturbAlt, Cancel } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { SearchByUsername, SendFriendRequest, GetFriendStatus, CancelFriendRequest, } from '../../actions/main';
+import { SearchByUsername, SendFriendRequest, GetFriendStatus, CancelFriendRequest, GetFriends } from '../../actions/main';
 import { CLEAR } from '../../reducers/main';
 
+import AddedFriends from './AddedFriends';
 import Sent from './Sent';
 import Recieved from './Recieved';
 
@@ -41,7 +42,8 @@ const Friends = () => {
   }
 
   useEffect(()=> {
-    dispatch(GetFriendStatus())
+    dispatch(GetFriendStatus());
+    dispatch(GetFriends());
   },[rerender, loading])
 
 
@@ -93,6 +95,8 @@ const Friends = () => {
         </Collapse>
         </>)
       }
+
+      <AddedFriends />
     </>
   )
 }

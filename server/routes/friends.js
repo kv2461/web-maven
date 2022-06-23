@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { searchByUsername, sendFriendRequest, getFriendStatus, cancelFriendRequest, denyFriendRequest, searchById, acceptFriendRequest } from '../controllers/friends.js';
+import { searchByUsername, sendFriendRequest, getFriendStatus, getFriends, cancelFriendRequest, denyFriendRequest, searchById, acceptFriendRequest } from '../controllers/friends.js';
 
 import auth from '../middleware/auth.js';
 
@@ -13,6 +13,8 @@ router.get('/searchById/:id', auth, searchById)
 router.post('/request', auth, sendFriendRequest);
 
 router.get('/status', auth, getFriendStatus);
+
+router.get('/friends', auth, getFriends);
 
 router.patch('/cancel', auth, cancelFriendRequest);
 

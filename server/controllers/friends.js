@@ -62,6 +62,17 @@ export const getFriendStatus = async (req,res) => {
     }
 }
 
+export const getFriends = async (req,res) => {
+    try {
+        const userAccount = await User.findById(req.userId);
+        const {friends} = userAccount
+
+        res.status(201).json(friends);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
+
 export const cancelFriendRequest = async (req,res) => {
     const {_id} = req.body;
     try {
