@@ -11,8 +11,18 @@ API.interceptors.request.use((req)=> {
 })
 
 
-export const searchByUsername = (username) => API.get(`/friends/search/${username}`)
+
 
 export const signIn = (formData) => API.post('/user/signin',formData);
 
 export const signUp = (formData) => API.post('/user/signup',formData);
+
+export const searchByUsername = (username) => API.get(`/friends/search/${username}`)
+
+export const searchById = (id) => API.get(`/friends/searchById/${id}`)
+
+export const getFriendStatus = () => API.get('/friends/status');
+
+export const sendFriendRequest = (friend) => API.post('/friends/request', friend);
+
+export const cancelFriendRequest = (friend) => API.patch('/friends/cancel', friend);

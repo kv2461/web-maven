@@ -30,6 +30,8 @@ export const signup = async (req,res) => {
 
     try {
         const existingUser = await User.findOne({ email });
+        console.log(email);
+        console.log(existingUser);
 
         if (existingUser) return res.status(400).json({message: 'User already exists'});
 
@@ -43,6 +45,7 @@ export const signup = async (req,res) => {
 
         res.status(200).json({result, token})
     } catch(error) {
+        console.log(error);
         res.status(500).json({ message: 'Something went wrong'})
     }
 }
