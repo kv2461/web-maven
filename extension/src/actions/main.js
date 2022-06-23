@@ -73,3 +73,15 @@ export const DenyFriendRequest = (friend) => async (dispatch) => {
         console.log(error);
     }
 }
+
+export const AcceptFriendRequest = (friend) => async (dispatch) => {
+    try {
+        dispatch(LOADING_ON());
+        const { data } = await api.acceptFriendRequest(friend);
+
+        console.log(data);
+        dispatch(LOADING_OFF());
+    } catch (error) {
+        console.log(error)
+    }
+}

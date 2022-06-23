@@ -91,3 +91,34 @@ export const denyFriendRequest = async (req, res) => {
         res.status(404).json({message:error.message});
     }
 }
+
+export const acceptFriendRequest = async (req, res) => {
+    const {_id} = req.body;
+    try {
+        const userAccount = await User.findById(req.userId);
+        const friendAccount = await User.findById(_id);
+        const index = userAccount.friends.findIndex((id)=>id===String(_id));
+
+        if ( index=== -1 ) {
+            userAccount.friends.push(_id);
+            friendAccount.friends.push(req.userId); 
+            const existingRequest = await FriendRequest.findOne({requester:_id, recipient:req.userId})
+            existingRequest.status = 'completed';
+
+            const updatedUserAccount = await User.findByIdAndUpdate(req.userId, userAccount, {new:true});
+            const updatedFriendAccount = await User.findByIdAndUpdate(_id, friendAccount, {new:true});
+            const updatedFriendRequest = await FriendRequest.findByIdAndUpdate(existingRequest._id, existingRequest, {new:true});
+
+            const data = {updatedUserAccount, updatedFriendAccount, updatedFriendRequest}
+
+            res.status(201).json(data);
+        } else {
+            res.status(400).json({message:'Request already accepted'});
+        }
+        
+
+       
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    } 
+}
