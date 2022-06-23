@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 
 import userRoutes from './routes/users.js';
+import friendsRoutes from './routes/friends.js';
 
 
 const app = express();
@@ -16,6 +17,8 @@ app.use(bodyParser.json({limit:'30mb',extended:true}))
 app.use(bodyParser.urlencoded({limit:'30mb',extended:true}))
 
 app.use('/user', userRoutes);
+app.use('/friends', friendsRoutes);
+
 
 const PORT = process.env.PORT || 4001;
 

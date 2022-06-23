@@ -2,14 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const mainSlice = createSlice({
     name:'state',
-    initialState:{state:{}},
+    initialState:{state:{}, searchedFriend:{}, searchedFriendError:''},
     reducers: {
-        DEFAULT: (state, action) => {
-            return {...state, data:action.payload}
+        SEARCH_FRIEND: (state, action) => {
+            return {...state, searchedFriend:action.payload, searchedFriendError:''}
+        },
+        SEARCH_FRIEND_ERROR: (state, action) => {
+            return {...state, searchedFriend:{}, searchedFriendError:action.payload}
         }
     }
 })
 
-export const { DEFAULT } = mainSlice.actions; 
+export const { SEARCH_FRIEND, SEARCH_FRIEND_ERROR } = mainSlice.actions; 
 
 export default mainSlice.reducer;
