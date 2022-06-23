@@ -16,7 +16,6 @@ export const SearchByUsername = (username) => async (dispatch) => {
 }
 
 export const SearchById = (id) => async (dispatch) => {
-    console.log(id);
     try {
         dispatch(LOADING_ON());
         const { data } = await api.searchById(id);
@@ -61,5 +60,16 @@ export const CancelFriendRequest = (friend) => async (dispatch) => {
     } catch (error) {
         console.log(error);
         dispatch(SEND_FRIENDREQ_ERROR(error.response.data.message));
+    }
+}
+
+export const DenyFriendRequest = (friend) => async (dispatch) => {
+    try {
+        dispatch(LOADING_ON());
+        const { data } = await api.denyFriendRequest(friend);
+
+        dispatch(LOADING_OFF());
+    } catch (error) {
+        console.log(error);
     }
 }

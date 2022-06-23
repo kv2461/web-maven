@@ -6,6 +6,7 @@ import { SearchByUsername, SendFriendRequest, GetFriendStatus, CancelFriendReque
 import { CLEAR } from '../../reducers/main';
 
 import Sent from './Sent';
+import Recieved from './Recieved';
 
 const Friends = () => {
   const user = JSON.parse(localStorage.getItem('web-maven-profile'))
@@ -17,6 +18,7 @@ const Friends = () => {
   const sentAlready = Boolean(sent.filter(friendStatus => friendStatus.recipient === searchedFriend._id).length > 0);
 
   const [collapseSent, setCollapseSent] = useState(false);
+  const [collapseFriendRequests, setCollapseFriendRequests] = useState(false);
 
   const searchByUsername = (usernameQuery) => {
     setRerender(!rerender);
@@ -79,6 +81,15 @@ const Friends = () => {
         <Button onClick={()=>setCollapseSent(!collapseSent)}> {collapseSent ? 'Hide Sent' : 'Sent'}</Button>
         <Collapse in={collapseSent} timeout='auto' unmountOnExit>
                   {sent.map((friendReq) => (<Sent key={friendReq._id} friendReq={friendReq}/>))}
+        </Collapse>
+        </>)
+      }
+
+      {inventory?.length>0 && 
+        (<>
+        <Button onClick={()=>setCollapseFriendRequests(!collapseFriendRequests)}> {collapseFriendRequests ? 'Hide Friend Requests' : 'Friend Requests'}</Button>
+        <Collapse in={collapseFriendRequests} timeout='auto' unmountOnExit>
+                  {inventory.map((friendReq) => (<Recieved key={friendReq._id} friendReq={friendReq}/>))}
         </Collapse>
         </>)
       }

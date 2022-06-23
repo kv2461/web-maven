@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { searchByUsername, sendFriendRequest, getFriendStatus, cancelFriendRequest, searchById } from '../controllers/friends.js';
+import { searchByUsername, sendFriendRequest, getFriendStatus, cancelFriendRequest, denyFriendRequest, searchById } from '../controllers/friends.js';
 
 import auth from '../middleware/auth.js';
 
@@ -15,5 +15,7 @@ router.post('/request', auth, sendFriendRequest);
 router.get('/status', auth, getFriendStatus);
 
 router.patch('/cancel', auth, cancelFriendRequest);
+
+router.patch('/deny', auth, denyFriendRequest);
 
 export default router;

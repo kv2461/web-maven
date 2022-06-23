@@ -4,7 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { Button, Collapse } from '@mui/material';
+import { Button, Collapse, Typography } from '@mui/material';
 
 import  mainSlice  from './reducers/main';
 import authSlice from './reducers/auth';
@@ -75,7 +75,10 @@ const Popup = () => {
     return(
         <div>
             {!user && <Auth />}
-            {user && <Button sx={{color:'secondary.main'}}onClick={logout}>Logout</Button>}
+            {user && <>
+            <Typography>{user.result.username} logged in</Typography>
+            <Button sx={{color:'secondary.main'}}onClick={logout}>Logout</Button>
+            </>}
                 
             {user && 
             (<> {url !== '' && (<Interface url={url}/>)}

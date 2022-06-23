@@ -76,3 +76,18 @@ export const cancelFriendRequest = async (req,res) => {
         res.status(404).json({message:error.message});
     }
 }
+
+export const denyFriendRequest = async (req, res) => {
+    const {_id} = req.body;
+    try {
+        const existingRequest = await FriendRequest.findOne({requester:_id, recipient:req.userId})
+
+        if (!existingRequest) return res.status(400).json({message:'Request already denied'});
+
+        await FriendRequest.deleteOne({requester:_id, recipient:req.userId});
+
+        res.status(201).json(req.body);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
