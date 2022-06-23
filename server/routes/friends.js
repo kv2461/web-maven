@@ -6,6 +6,6 @@ import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/search/:username', auth , searchByUsername);
+router.get('/search/:username', auth, searchByUsername);
 
 export default router;
