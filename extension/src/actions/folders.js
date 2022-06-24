@@ -1,4 +1,5 @@
 import { GET_FOLDERS } from '../reducers/folders'; 
+import { LOADING_OFF, LOADING_ON } from '../reducers/main';
 
 import * as api from '../api';
 
@@ -55,6 +56,19 @@ export const GetFolders = () => async (dispatch) => {
         const { data } = await api.getFolders();
 
         dispatch(GET_FOLDERS(data));
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const SearchFolderById = (stringId) => async (dispatch) => {
+    try {
+        const id = stringId.replace(/^"(.+(?="$))"$/, '$1');
+        dispatch(LOADING_ON());
+        const { data } = await api.searchFolderById(id);
+        
+        dispatch(LOADING_OFF());
+        return data;
     } catch (error) {
         console.log(error);
     }

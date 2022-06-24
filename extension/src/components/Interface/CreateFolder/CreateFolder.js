@@ -8,7 +8,7 @@ const CreateFolder = ({showAdd}) => {
     const dispatch = useDispatch();
     const { friendArray } = useSelector((state)=>state.mainSlice)
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
-    const initialFolderState = { title:'', creator:user.result._id, editors:[], viewers:[], mainFolder:true, availableToFriends:false };
+    const initialFolderState = { title:'', creator:user.result._id, editors:[], viewers:[], mainFolder:true, availableToFriends:false};
     const [newFolder, setNewFolder] = useState(initialFolderState);
     const [showCreate, setShowCreate] = useState(false);
     const [editors, setEditors] = useState([]);
@@ -40,12 +40,12 @@ const CreateFolder = ({showAdd}) => {
 
   return (
     <>
-    <Button onClick={()=>setShowCreate(!showCreate)}>Create Folder</Button>
+    <Button onClick={()=>setShowCreate(!showCreate)}>{!showCreate ? 'Create Folder' : 'Cancel'}</Button>
         {showAdd && showCreate && (<div>
                 <TextField 
                   required
                   label="Folder Name"
-                  value={newFolder.folderName}
+                  value={newFolder.title}
                   onChange={(e)=>setNewFolder({...newFolder,title:e.target.value})}
                   type='text'
                 />
@@ -62,12 +62,12 @@ const CreateFolder = ({showAdd}) => {
                   renderInput={(params) => <TextField {...params} label="Invite Editors" placeholder="Invite Editors"/>}
                  />
 
-                <FormControlLabel control={<Switch value={newFolder.availableToFriends} onChange={handleViewable}/>} label="All Friends Can View" />
+                <FormControlLabel control={<Switch value={newFolder.availableToFriends} onChange={handleViewable}/>} label={newFolder.availableToFriends ? 'Available to all friends' : 'Private viewers optional'} />
 
-                {newFolder.availableToFriends && (<Autocomplete
+                {!newFolder.availableToFriends && (<Autocomplete
                   multiple
                   disablePortal
-                  id="invite-editors"
+                  id="invite-viewers"
                   options={friendArray}
                   value={viewers}
                   onChange={(event,value)=>setViewers(value)}
@@ -77,7 +77,7 @@ const CreateFolder = ({showAdd}) => {
                 />)}
                 
 
-                <Button sx={{color:'secondary.main'}} onClick={createNewFolder}>Create</Button>
+                <Button sx={{color:'secondary.main'}} onClick={createNewFolder} disabled={Boolean(newFolder.title.trim() === '')}>Create</Button>
         </div>)}
     </>
   )

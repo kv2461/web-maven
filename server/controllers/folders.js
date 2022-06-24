@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import User from '../models/user.js';
 import BookmarkFolder from '../models/bookmarkfolder.js';
 import BookmarkFolderRequest from '../models/bookmarkfolderrequest.js';
-import { response } from 'express';
 
 export const createNewFolder = async (req,res) => {
 
@@ -14,7 +13,7 @@ export const createNewFolder = async (req,res) => {
 
         const {_id} = await newBookmarkFolder.save();
 
-        existingUser.bookmarkfolders.push(JSON.stringify(_id))
+        existingUser.bookmarkfolders.push(_id)
 
         await User.findByIdAndUpdate(req.userId, existingUser, {new:true});
 
@@ -86,6 +85,17 @@ export const getFolders = async (req,res) => {
         const data = {bookmarkfolders, sentFolders, recievedFolders};
 
         res.status(201).json(data);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
+
+export const searchFolderById = async (req,res) => {
+    const {id} = req.params;
+    try {
+        const data = await BookmarkFolder.findById(id);
+
+        res.status(200).json(data);
     } catch (error) {
         res.status(404).json({message:error.message});
     }

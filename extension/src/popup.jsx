@@ -19,7 +19,7 @@ import { CLEAR } from '../src/reducers/main'
 
 import Auth from './components/Auth/Auth';
 import Interface from './components/Interface/Interface';
-import BookmarkFolder from './components/BookmarkFolder/BookmarkFolder';
+import BookmarkFolderMain from './components/BookmarkFolder/BookmarkFolderMain';
 import Friends from './components/Friends/Friends';
 
 import { theme } from './Theme';
@@ -92,7 +92,7 @@ const Popup = () => {
             (<> {url !== '' && (<Interface url={url}/>)}
                 <Button onClick={()=>setCollapseBookmarks(!collapseBookmarks)}> {collapseBookmarks ? 'Hide Folders' : 'Folders'}</Button>
                 <Collapse in={collapseBookmarks} timeout='auto' unmountOnExit>
-                    <BookmarkFolder />
+                    <BookmarkFolderMain />
                 </Collapse>
                 <Button onClick={()=>setCollapseFriends(!collapseFriends)}> {collapseFriends ? 'Hide Social' : 'Social'}</Button>
                 <Collapse in={collapseFriends} timeout='auto' unmountOnExit>
