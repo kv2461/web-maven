@@ -2,15 +2,22 @@ import React, { useState, useEffect, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, Autocomplete, Switch, FormControlLabel } from '@mui/material';
 
+import { CreateNewFolder } from '../../../actions/folders';
+
 const CreateFolder = ({showAdd}) => {
     const dispatch = useDispatch();
     const { friendArray } = useSelector((state)=>state.mainSlice)
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
-    const initialFolderState = { title:'', creator:user.result._id, users:[], mainFolder:true, availableToFriends:false };
+    const initialFolderState = { title:'', creator:user.result._id, editors:[], viewers:[], mainFolder:true, availableToFriends:false };
     const [newFolder, setNewFolder] = useState(initialFolderState);
     const [showCreate, setShowCreate] = useState(false);
     const [editors, setEditors] = useState([]);
     const [viewers, setViewers] = useState([]);
+
+    const createNewFolder = () => {
+      dispatch(CreateNewFolder(newFolder, editors, viewers));
+      setShowCreate(false);
+    }
 
     const handleViewable = () => {
       setNewFolder({...newFolder, availableToFriends:!newFolder.availableToFriends})
@@ -70,7 +77,7 @@ const CreateFolder = ({showAdd}) => {
                 />)}
                 
 
-                <Button sx={{color:'secondary.main'}} onClick={()=>{}}>Create</Button>
+                <Button sx={{color:'secondary.main'}} onClick={createNewFolder}>Create</Button>
         </div>)}
     </>
   )

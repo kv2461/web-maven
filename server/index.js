@@ -6,6 +6,7 @@ import cors from 'cors';
 
 import userRoutes from './routes/users.js';
 import friendsRoutes from './routes/friends.js';
+import folderRoutes from './routes/folders.js';
 
 
 const app = express();
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({limit:'30mb',extended:true}))
 
 app.use('/user', userRoutes);
 app.use('/friends', friendsRoutes);
+app.use('/folders', folderRoutes);
 
 
 const PORT = process.env.PORT || 4001;

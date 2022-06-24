@@ -7,9 +7,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Button, Collapse, Typography } from '@mui/material';
 
 import { GetFriends } from './actions/main';
+import { GetFolders } from './actions/folders'
 
-import  mainSlice  from './reducers/main';
+import mainSlice  from './reducers/main';
 import authSlice from './reducers/auth';
+import folderSlice from './reducers/folders';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGOUT } from '../src/reducers/auth'
@@ -25,7 +27,8 @@ import { theme } from './Theme';
 const store = configureStore({
     reducer: {
         mainSlice:mainSlice,
-        authSlice:authSlice
+        authSlice:authSlice,
+        folderSlice:folderSlice
     },
     middleware: (getDefaultMiddleware) => 
     getDefaultMiddleware({
@@ -68,6 +71,7 @@ const Popup = () => {
                 setUrl(url)
             })
         dispatch(GetFriends());
+        dispatch(GetFolders());
     },[])
 
     useEffect(()=> {

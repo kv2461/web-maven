@@ -17,6 +17,8 @@ export const signIn = (formData) => API.post('/user/signin',formData);
 
 export const signUp = (formData) => API.post('/user/signup',formData);
 
+
+
 export const searchByUsername = (username) => API.get(`/friends/search/${username}`)
 
 export const searchById = (id) => API.get(`/friends/searchById/${id}`)
@@ -34,3 +36,13 @@ export const denyFriendRequest = (friend) => API.patch('/friends/deny', friend);
 export const acceptFriendRequest = (friend) => API.patch('/friends/accept', friend);
 
 export const removeFriend = (friend) => API.patch('/friends/remove', friend);
+
+
+
+export const createNewFolder = (folder) => API.post('/folders/createNew', folder);
+
+export const sendEditorRequest = (friend,bookmarkFolderId) => API.post('/folders/sendEditorReq', {friend,bookmarkFolderId});
+
+export const sendViewerRequest = (friend,bookmarkFolderId) => API.post('/folders/sendViewerReq', {friend,bookmarkFolderId});
+
+export const getFolders = () => API.get('/folders/get');

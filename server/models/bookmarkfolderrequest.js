@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const bookmarkFolderSchema = new mongoose.Schema({
+const bookmarkFolderRequestSchema = new mongoose.Schema({
     requester: {
         type: String,
         required: true,
@@ -23,6 +23,6 @@ const bookmarkFolderSchema = new mongoose.Schema({
     }
 })
 
-const BookmarkFolder = mongoose.model('BookmarkFolder', bookmarkFolderSchema);
+const BookmarkFolderRequest = mongoose.model('BookmarkFolderRequest', bookmarkFolderRequestSchema);
 
-export default BookmarkFolder;
+export default BookmarkFolderRequest;

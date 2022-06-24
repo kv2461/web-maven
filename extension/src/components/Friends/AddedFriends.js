@@ -15,7 +15,6 @@ const AddedFriends = ({friends}) => {
     useEffect(()=> {
         dispatch(GetFriends());
 
-        console.log(friends)
     },[])
 
 
