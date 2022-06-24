@@ -32,3 +32,5 @@ export const cancelFriendRequest = (friend) => API.patch('/friends/cancel', frie
 export const denyFriendRequest = (friend) => API.patch('/friends/deny', friend);
 
 export const acceptFriendRequest = (friend) => API.patch('/friends/accept', friend);
+
+export const removeFriend = (friend) => API.patch('/friends/remove', friend);

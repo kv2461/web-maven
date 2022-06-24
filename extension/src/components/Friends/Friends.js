@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { TextField, InputAdornment, IconButton, Typography, Box, Button, Collapse } from '@mui/material';
-import { Search, AddOutlined, DoNotDisturbAlt, Cancel } from '@mui/icons-material';
+import { Search, AddOutlined, DoNotDisturbAlt, Cancel, PersonRemove } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { SearchByUsername, SendFriendRequest, GetFriendStatus, CancelFriendRequest, GetFriends } from '../../actions/main';
+import { SearchByUsername, SendFriendRequest, GetFriendStatus, CancelFriendRequest, GetFriends, RemoveFriend } from '../../actions/main';
 import { CLEAR } from '../../reducers/main';
 
 import AddedFriends from './AddedFriends';
@@ -17,6 +17,8 @@ const Friends = () => {
   const { searchedFriend, searchedFriendError, sendFriendReqError, sent, inventory, loading, friends } = useSelector((state)=>state.mainSlice);
   const isSelf = Boolean(searchedFriend._id === user.result._id);
   const sentAlready = Boolean(sent.filter(friendStatus => friendStatus.recipient === searchedFriend._id).length > 0);
+  const uncompleted = inventory.filter((request)=>request.status !== 'completed');
+  const friendAlready = Boolean(friends.findIndex((friend) =>friend === searchedFriend._id) !== -1);
 
   const [collapseSent, setCollapseSent] = useState(false);
   const [collapseFriendRequests, setCollapseFriendRequests] = useState(false);
@@ -34,6 +36,11 @@ const Friends = () => {
   const cancelFriendRequest = (friend) => {
     setRerender(!rerender);
     dispatch(CancelFriendRequest(friend));
+  }
+
+  const removeFriend = (friend) => {
+    setRerender(!rerender);
+    dispatch(RemoveFriend(friend));
   }
 
   const clear = () => {
@@ -70,13 +77,21 @@ const Friends = () => {
             <DoNotDisturbAlt />
           </IconButton>)
         )}
-        {!isSelf && !sentAlready && 
+        
+        {!isSelf && !sentAlready && !friendAlready &&
         (<IconButton onClick={()=>sendFriendRequest(searchedFriend)} edge='end'>
               <AddOutlined />
               { sendFriendReqError && (<Typography sx={{color:'secondary.main'}}>{sendFriendReqError}</Typography>)}
-        </IconButton>)}             
+        </IconButton>)}
+
+        {!isSelf && !sentAlready && friendAlready &&
+        (<IconButton onClick={()=>removeFriend(searchedFriend)} edge='end'>
+              <PersonRemove />
+              { sendFriendReqError && (<Typography sx={{color:'secondary.main'}}>{sendFriendReqError}</Typography>)}
+        </IconButton>)}              
       </Box>)}
       { searchedFriendError && (<Typography sx={{color:'secondary.main'}}>{searchedFriendError}</Typography>)}
+      
       
       {sent?.length>0 && 
         (<>
@@ -87,11 +102,11 @@ const Friends = () => {
         </>)
       }
 
-      {inventory?.length>0 && 
+      {uncompleted?.length>0 && 
         (<>
         <Button onClick={()=>setCollapseFriendRequests(!collapseFriendRequests)}> {collapseFriendRequests ? 'Hide Friend Requests' : 'Friend Requests'}</Button>
         <Collapse in={collapseFriendRequests} timeout='auto' unmountOnExit>
-                  {inventory.map((friendReq) => (<Recieved key={friendReq._id} friendReq={friendReq}/>))}
+                  {uncompleted.map((friendReq) => (<Recieved key={friendReq._id} friendReq={friendReq}/>))}
         </Collapse>
         </>)
       }

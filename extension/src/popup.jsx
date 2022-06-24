@@ -6,11 +6,14 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { Button, Collapse, Typography } from '@mui/material';
 
+import { GetFriends } from './actions/main';
+
 import  mainSlice  from './reducers/main';
 import authSlice from './reducers/auth';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGOUT } from '../src/reducers/auth'
+import { CLEAR } from '../src/reducers/main'
 
 import Auth from './components/Auth/Auth';
 import Interface from './components/Interface/Interface';
@@ -41,6 +44,7 @@ const Popup = () => {
     
     const logout = () => {
         dispatch(LOGOUT());
+        dispatch(CLEAR());
     }
 
     const getCurrentTab = async () => {
@@ -63,7 +67,7 @@ const Popup = () => {
                 const {url} = response
                 setUrl(url)
             })
-
+        dispatch(GetFriends());
     },[])
 
     useEffect(()=> {
@@ -86,7 +90,7 @@ const Popup = () => {
                 <Collapse in={collapseBookmarks} timeout='auto' unmountOnExit>
                     <BookmarkFolder />
                 </Collapse>
-                <Button onClick={()=>setCollapseFriends(!collapseFriends)}> {collapseFriends ? 'Hide Friends' : 'Friends'}</Button>
+                <Button onClick={()=>setCollapseFriends(!collapseFriends)}> {collapseFriends ? 'Hide Social' : 'Social'}</Button>
                 <Collapse in={collapseFriends} timeout='auto' unmountOnExit>
                     <Friends />
                 </Collapse>

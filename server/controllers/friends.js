@@ -133,3 +133,38 @@ export const acceptFriendRequest = async (req, res) => {
         res.status(404).json({message:error.message});
     } 
 }
+
+
+export const removeFriend = async (req, res) => {
+    const {_id} = req.body;
+    try {
+        const userAccount = await User.findById(req.userId);
+        const friendAccount = await User.findById(_id);
+        const index = userAccount.friends.findIndex((id)=>id===String(_id));
+
+        if ( index !== -1 ) {
+            userAccount.friends = userAccount.friends.filter((id) => id !== String(_id));
+            friendAccount.friends = friendAccount.friends.filter((id) => id !== String(req.userId));
+
+            const findFriendRequest = await FriendRequest.find({requester:_id, recipient:req.userId}).count()
+
+            if (findFriendRequest === 1) {
+                await FriendRequest.deleteOne({requester:_id, recipient:req.userId});
+            } else {
+                await FriendRequest.deleteOne({requester:req.user_id, recipient:_id});
+            }
+
+            const updatedUserAccount = await User.findByIdAndUpdate(req.userId, userAccount, {new:true});
+            const updatedFriendAccount = await User.findByIdAndUpdate(_id, friendAccount, {new:true});
+
+            const data = {updatedUserAccount, updatedFriendAccount,}
+
+            res.status(201).json(data);
+        } else {
+            res.status(400).json({message:'Friend already removed'});
+        }
+       
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    } 
+}
