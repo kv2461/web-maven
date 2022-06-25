@@ -5,6 +5,7 @@ import * as api from '../api';
 
 export const CreateNewFolder = (folder,editors,viewers) => async (dispatch) => {
     try {
+        dispatch(LOADING_ON);
         const { data } = await api.createNewFolder(folder);
 
         const bookmarkfolderId = await data._id
@@ -27,6 +28,8 @@ export const CreateNewFolder = (folder,editors,viewers) => async (dispatch) => {
         }
 
     dispatch(GetFolders());
+    
+    dispatch(LOADING_OFF)
 
     } catch (error) {
         console.log(error);
