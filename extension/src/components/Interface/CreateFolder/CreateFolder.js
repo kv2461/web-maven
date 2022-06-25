@@ -1,6 +1,6 @@
 import React, { useState, useEffect, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Autocomplete, Switch, FormControlLabel } from '@mui/material';
+import { TextField, Button, Autocomplete, Switch, FormControlLabel, Typography } from '@mui/material';
 
 import { CreateNewFolder } from '../../../actions/folders';
 
@@ -12,6 +12,7 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
     const [newFolder, setNewFolder] = useState(initialFolderState);
     const [editors, setEditors] = useState([]);
     const [viewers, setViewers] = useState([]);
+    const [created, setCreated] = useState(false);
 
 
     useEffect(()=> {
@@ -23,10 +24,13 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
 
     const createNewFolder = () => {
       dispatch(CreateNewFolder(newFolder, editors, viewers));
-      setShowCreateFolder(false);
-      if (!mainFolder) {
-        setNewFolder({ title:'', creator:user.result._id, mainFolder:mainFolder, subFolders:[], parentFolders:[...folderInfo?.parentFolders,folderInfo?._id], parentFolder:folderInfo._id });
+
       }
+      setViewers([])
+      setEditors([])
+      setNewFolder(initialFolderState);
+      setCreated(true);
+
     }
 
     const handleViewable = () => {
@@ -39,17 +43,7 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
       }
     },[newFolder.availableToFriends])
 
-    // useEffect(()=>{
-    //   if (!showCreateFolder) {
-    //     setViewers([])
-    //     setEditors([])
-    //     if (mainFolder) {
-    //       setNewFolder(initialFolderState);
-    //     } else {
-    //       setNewFolder(initialSubFolderState);
-    //     }
-    //   }
-    // },[showCreateFolder])
+
 
 
   return (
@@ -59,7 +53,7 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
               required
               label="Folder Name"
               value={newFolder.title}
-              onChange={(e)=>setNewFolder({...newFolder,title:e.target.value})}
+              onChange={(e)=>{setNewFolder({...newFolder,title:e.target.value});}}
               type='text'
             />
 
@@ -107,6 +101,7 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
                 
 
                 <Button sx={{color:'secondary.main'}} onClick={createNewFolder} disabled={Boolean(newFolder.title.trim() === '')}>Create</Button>
+                {created && (<Typography sx={{color:'secondary.main'}}>Created</Typography>)}
 
 
         </div>)}
