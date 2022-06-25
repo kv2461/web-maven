@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, List, Container } from '@mui/material';
-import { StyledList } from './styles';
 import {GetFolders} from '../../actions/folders';
 
 import BookmarkFolder from './BookmarkFolder';
@@ -12,7 +11,6 @@ const BookmarkFolderMain = () => {
   const [showRequests, setShowRequests] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showFolders, setShowFolders] = useState(false);
-  const [selected, setSelected] = useState('');
 
   useEffect(()=> {
     dispatch(GetFolders())
@@ -25,9 +23,9 @@ const BookmarkFolderMain = () => {
       <Button>Requests</Button>
       <Button>Favorites</Button>
       <Button onClick={()=>setShowFolders(!showFolders)}>Folders</Button>
-      <StyledList subheader={<li />}>
-        {showFolders && folders && folders.map((folder,index) => (<BookmarkFolder key={index} folder={folder} level={1} selected={selected} setSelected={setSelected}/>))}
-      </StyledList>
+      <List sx={{m:0,p:0}}>
+        {showFolders && folders && folders.map((folder,index) => (<BookmarkFolder key={index} folder={folder} level={1}/>))}
+      </List>
     </Container>
   )
 }

@@ -4,28 +4,24 @@ import { TextField, Button, Autocomplete, Switch, FormControlLabel } from '@mui/
 
 import { CreateNewFolder } from '../../../actions/folders';
 
-const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreateFolder }) => {
+const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder, setShowAdd }) => {
     const dispatch = useDispatch();
     const { friendArray } = useSelector((state)=>state.mainSlice)
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
-    const initialFolderState = { title:'', creator:user.result._id, editors:[], viewers:[], mainFolder:mainFolder, availableToFriends:false};
+    let initialFolderState = { title:'', creator:user.result._id, editors:[], viewers:[], mainFolder:mainFolder, availableToFriends:false};
     const [newFolder, setNewFolder] = useState(initialFolderState);
     const [editors, setEditors] = useState([]);
     const [viewers, setViewers] = useState([]);
 
-
-    useEffect(()=> {
-      if (!mainFolder) {
-        
-        setNewFolder({ title:'', creator:user.result._id, mainFolder:mainFolder, subFolders:[], parentFolders:[...folderInfo?.parentFolders,folderInfo?._id], parentFolder:folderInfo._id });
-      }
-    },[])
+    if (mainFolder === false) {
+      initialFolderState = { title:'', creator:user.result._id, mainFolder:mainFolder, subFolders:[], parentFolders:[...folderInfo.parentFolders,folderInfo._id], parentFolder:folderInfo._id };
+    }
 
     const createNewFolder = () => {
       dispatch(CreateNewFolder(newFolder, editors, viewers));
-      setShowCreateFolder(false);
+      setShowAdd(false);
       if (!mainFolder) {
-        setNewFolder({ title:'', creator:user.result._id, mainFolder:mainFolder, subFolders:[], parentFolders:[...folderInfo?.parentFolders,folderInfo?._id], parentFolder:folderInfo._id });
+        setShowAddSubFolder(false);
       }
     }
 
@@ -39,22 +35,18 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
       }
     },[newFolder.availableToFriends])
 
-    // useEffect(()=>{
-    //   if (!showCreateFolder) {
-    //     setViewers([])
-    //     setEditors([])
-    //     if (mainFolder) {
-    //       setNewFolder(initialFolderState);
-    //     } else {
-    //       setNewFolder(initialSubFolderState);
-    //     }
-    //   }
-    // },[showCreateFolder])
+    useEffect(()=>{
+      if (!showAdd) {
+        setViewers([])
+        setEditors([])
+        setNewFolder(initialFolderState);
+      }
+    },[showAdd])
 
 
   return (
     <>
-        {!mainFolder && showCreateFolder && (<div> 
+        {!mainFolder && showAdd && (<div>
             <TextField 
               required
               label="Folder Name"
@@ -66,7 +58,7 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
             <Button sx={{color:'secondary.main'}} onClick={createNewFolder} disabled={Boolean(newFolder.title.trim() === '')}>Create</Button>
           </div>)}
 
-        {showCreateFolder && mainFolder && (<div>
+        {showAdd && (<div>
                 <TextField 
                   required
                   label="Folder Name"
