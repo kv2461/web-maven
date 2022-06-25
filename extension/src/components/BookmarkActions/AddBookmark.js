@@ -6,7 +6,7 @@ import { StyledList } from './styles';
 import BookmarkFolder from '../BookmarkFolder/BookmarkFolder';
 import CreateFolder from '../Interface/CreateFolder/CreateFolder';
 
-import { AddBookmark, SearchFolderById, GetFolders } from '../../actions/folders';
+import { AddBookmark, SearchFolderById, } from '../../actions/folders';
 
 const Bookmark = ({showBookmark, url, tab, setSelected, selected}) => {
     const dispatch = useDispatch();
@@ -21,7 +21,6 @@ const Bookmark = ({showBookmark, url, tab, setSelected, selected}) => {
     const addBookmark = () => {
         if (selected && newBookmark) {
         dispatch(AddBookmark(selected, newBookmark)) 
-        dispatch(GetFolders());      
         setSelected('');
         setNewBookmark(initialBookmarkState); 
         } else {
@@ -77,7 +76,7 @@ const Bookmark = ({showBookmark, url, tab, setSelected, selected}) => {
     
                 {showBookmark && selected && (<Button onClick={()=>setShowAddSubFolder(!showAddSubFolder)}>{!showAddSubFolder ? 'New Subfolder' : 'Cancel'}</Button>)}
                 </div>
-                {showBookmark && selected && showAddSubFolder && (<CreateFolder showAdd={showAddSubFolder} setShowAddSubFolder={setShowAddSubFolder} mainFolder={false} folderInfo={folderInfo}/>)}
+                {showBookmark && selected && showAddSubFolder && (<CreateFolder showCreateFolder={showAddSubFolder} setShowCreateFolder={setShowAddSubFolder} mainFolder={false} folderInfo={folderInfo}/>)}
                 
         </div>)}
     </>

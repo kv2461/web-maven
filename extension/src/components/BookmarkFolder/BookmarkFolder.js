@@ -7,7 +7,7 @@ import BookmarkItem from '../BookmarkActions/BookmarkItem';
 
 import { SearchFolderById } from '../../actions/folders';
 
-const BookmarkFolder = ({folder, parent, selected, setSelected, level}) => {
+const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
     const dispatch = useDispatch();
     const [collapseFolder, setCollapseFolder] = useState(false);
     const [folderInfo, setFolderInfo] = useState({});
@@ -28,17 +28,25 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level}) => {
   
         getInfo()
 
-      },[folder,selected])
+      },[folder,selected,collapseFolder])
 
     const selectFolder = () => {
-        if (UI === 'bookmark') {
             setFolderId(folder);
             setSelected(folder);
-        } else {
-            setCollapseFolder(!collapseFolder)
-            //selecting them might be the way to delete them in the future if the UI is folder edit
-        }
+            console.log(selected);
+        // if (UI === 'bookmark') {
+            
+        // } else {
+        //     setCollapseFolder(!collapseFolder)
+        //     //selecting them might be the way to delete them in the future if the UI is folder edit
+        // }
     }
+
+    useEffect(()=> {
+        if (selected!==folderId) {
+            setCollapseFolder(false);
+        }
+    },[selected, folderId])
 
 
   return (

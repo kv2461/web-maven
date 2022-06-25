@@ -17,7 +17,7 @@ const Interface = ({ url, tab, }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));    
     const dispatch = useDispatch();
     const { friends } = useSelector((state)=>state.mainSlice)
-    const [showAdd, setShowAdd] = useState(false);
+    const [showCreateFolder, setShowCreateFolder] = useState(false);
     const [showBookmark, setShowBookmark] = useState(false);
     const [collapseBookmarks, setCollapseBookmarks] = useState(false);
     const [collapseFriends, setCollapseFriends] = useState(false);
@@ -34,7 +34,7 @@ const Interface = ({ url, tab, }) => {
 
 
     const bookmark = () => {
-      setShowAdd(false);
+      setShowCreateFolder(false);
       setShowBookmark(!showBookmark)
       setCollapseBookmarks(false);
       setCollapseFriends(false);
@@ -42,7 +42,7 @@ const Interface = ({ url, tab, }) => {
 
     const add = () => {
       setShowBookmark(false);
-      setShowAdd(!showAdd);
+      setShowCreateFolder(!showCreateFolder);
       setCollapseBookmarks(false);
       setCollapseFriends(false);
     }
@@ -50,7 +50,7 @@ const Interface = ({ url, tab, }) => {
     useEffect(() => {
       if (collapseBookmarks || collapseFriends) {
         setShowBookmark(false);
-        setShowAdd(false);
+        setShowCreateFolder(false);
       }
     
 
@@ -67,7 +67,7 @@ const Interface = ({ url, tab, }) => {
             <IconButton onClick={()=>{setCollapseFriends(!collapseFriends);setCollapseBookmarks(false)}}><Group sx={{color:'#95E1D3', fontSize:'3rem'}}/></IconButton>        
         </div>
         <div style={{display:'flex',flexDirection:'column',}}>
-            {showAdd && (<CreateFolder showAdd={showAdd} mainFolder={true}/> )}
+            {showCreateFolder && (<CreateFolder setShowCreateFolder={setShowCreateFolder} showCreateFolder={showCreateFolder} mainFolder={true}/> )}
             {/* {showBookmark && (<BookmarkActions showBookmark={showBookmark} url={url} tab={tab}/>)
             } */}
             <Collapse in={collapseBookmarks} timeout='auto' unmountOnExit>

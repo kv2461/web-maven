@@ -18,7 +18,6 @@ const BookmarkActions = ({showBookmark, url, tab}) => {
 
   return (
     <>
-    
             <AddBookmark showBookmark={showBookmark} url={url} tab={tab} folders={folders} setSelected={setSelected} selected={selected}/>
             <Button>Edit Bookmark</Button>
     </>
