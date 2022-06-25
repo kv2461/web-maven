@@ -48,3 +48,5 @@ export const sendViewerRequest = (friend,bookmarkFolderId) => API.post('/folders
 export const getFolders = () => API.get('/folders/get');
 
 export const searchFolderById = (id) => API.get(`/folders/searchById/${id}`);
+
+export const addBookmark = (folderId, bookmark) => API.patch('/folders/addBookmark', {folderId, bookmark});

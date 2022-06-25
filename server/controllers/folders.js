@@ -10,14 +10,25 @@ export const createNewFolder = async (req,res) => {
         const newBookmarkFolder = new BookmarkFolder(req.body)
 
         const existingUser = await User.findById(req.userId);
-
+        
         const {_id} = await newBookmarkFolder.save();
 
-        existingUser.bookmarkfolders.push(_id)
+        if (newBookmarkFolder.mainFolder) {
+            existingUser.bookmarkfolders.push(_id);
+            await User.findByIdAndUpdate(req.userId, existingUser, {new:true});
+        } else {
+            const existingParentFolder = await BookmarkFolder.findById(newBookmarkFolder.parentFolder); 
 
-        await User.findByIdAndUpdate(req.userId, existingUser, {new:true});
+            existingParentFolder.subFolders.push(_id);
+
+            const updatedFolder = await BookmarkFolder.findByIdAndUpdate(newBookmarkFolder.parentFolder,existingParentFolder, {new:true})
+        }
 
         res.status(201).json(newBookmarkFolder);
+
+        
+
+        
     } catch(error) {
         res.status(404).json({message:error.message})
     }
@@ -96,6 +107,25 @@ export const searchFolderById = async (req,res) => {
         const data = await BookmarkFolder.findById(id);
 
         res.status(200).json(data);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
+
+export const addBookmark = async (req,res) => {
+    const {folderId, bookmark} = req.body;
+    console.log(folderId);
+    console.log(bookmark);
+
+    try {
+        
+        const existingFolder = await BookmarkFolder.findById(folderId);
+
+        existingFolder.bookmarks.push(bookmark);
+
+        const updatedFolder = await BookmarkFolder.findByIdAndUpdate(folderId, existingFolder, {new:true});
+
+        res.status(201).json(updatedFolder);
     } catch (error) {
         res.status(404).json({message:error.message});
     }

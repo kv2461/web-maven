@@ -1,11 +1,11 @@
-import React,{ useState } from 'react';
+import React,{ useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 
 import Actions from './Actions/Actions';
 import BookmarkActions from '../BookmarkActions/BookmarkActions';
 
 
-const Interface = ({url}) => {
+const Interface = ({ url, tab, setCollapseBookmarks, setCollapseFriends, collapseBookmarks, collapseFriends }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
     const [showAdd, setShowAdd] = useState(false);
     const [showBookmark, setShowBookmark] = useState(false);
@@ -13,12 +13,26 @@ const Interface = ({url}) => {
     const bookmark = () => {
       setShowAdd(false);
       setShowBookmark(!showBookmark)
+      setCollapseBookmarks(false);
+      setCollapseFriends(false);
     }
 
     const add = () => {
       setShowBookmark(false);
       setShowAdd(!showAdd);
+      setCollapseBookmarks(false);
+      setCollapseFriends(false);
     }
+
+    useEffect(() => {
+      if (collapseBookmarks || collapseFriends) {
+        setShowBookmark(false);
+        setShowAdd(false);
+      }
+    
+
+    }, [collapseBookmarks,collapseFriends])
+    
 
 
   return (
@@ -30,7 +44,7 @@ const Interface = ({url}) => {
         <div>
             {showAdd && (<Actions showAdd={showAdd} />
             )}
-            {showBookmark && (<BookmarkActions />)
+            {showBookmark && (<BookmarkActions showBookmark={showBookmark} url={url} tab={tab}/>)
             }
         </div>
     </>

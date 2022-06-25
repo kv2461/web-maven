@@ -1,28 +1,25 @@
-import React, {useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {Button} from '@mui/material';
+import { Button } from '@mui/material';
+import { GetFolders } from '../../actions/folders';
 
-import Bookmark from './Bookmark';
+import AddBookmark from './AddBookmark';
 
-const BookmarkActions = () => {
+const BookmarkActions = ({showBookmark, url, tab}) => {
     const dispatch = useDispatch();
     const { folders } = useSelector((state)=>state.folderSlice);
+    const [selected, setSelected] = useState('');
     
-    // useEffect(() => {
-    //   for (let i=0; i<friends.length; i++) {
-    //     dispatch(SearchById(friends[i],'friends'))
-    //   } this was from similar actions page, saving the folder infos searched by id might be a good idea also here so  that bookmarking can build subfolders per recursive load since
-    //they only have access to the id of first folder they have rights to, but have right  to save over any  subfolders lower than  theirs
-
-    // }, [])
+    useEffect(()=> {
+      dispatch(GetFolders())
+    },[])
     
 
 
   return (
     <>
-            <Bookmark />
-            <Button>Edit Folder</Button>
-            <Button>Add Bookmark</Button>
+            <AddBookmark showBookmark={showBookmark} url={url} tab={tab} folders={folders} setSelected={setSelected} selected={selected}/>
+            <Button>Edit Bookmark</Button>
     </>
   )
 }

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {Button} from '@mui/material';
 import CreateFolder from '../CreateFolder/CreateFolder';
 import { SearchById } from '../../../actions/main';
+import { GetFolders } from '../../../actions/folders';
 
 
 const Actions = ({showAdd}) => {
@@ -15,14 +16,17 @@ const Actions = ({showAdd}) => {
       }
 
     }, [])
+
+    useEffect(()=> {
+      dispatch(GetFolders())
+    },[])
     
 
 
   return (
     <>
-            <CreateFolder showAdd={showAdd} />
+            <CreateFolder showAdd={showAdd} mainFolder={true}/>
             <Button>Edit Folder</Button>
-            <Button>Add Bookmark</Button>
     </>
   )
 }

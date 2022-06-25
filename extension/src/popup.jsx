@@ -40,6 +40,7 @@ const Popup = () => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
     const { authData } = useSelector((state)=>state.authSlice); 
     const [url, setUrl] = useState('')
+    const [chromeTab, setChromeTab] = useState({});
     const [rerender, setRerender] = useState(false);
     const [collapseBookmarks, setCollapseBookmarks] = useState(false);
     const [collapseFriends, setCollapseFriends] = useState(false);
@@ -59,17 +60,15 @@ const Popup = () => {
     const getTabInfo = () => {
         const tab = getCurrentTab()
             .then((response) => {
-                const {url} = response
-                setUrl(url)
+                const {url} = response;
+                setUrl(url);
+                setChromeTab(response);
             })
     }
 
     useEffect(()=> {
-        const tab = getCurrentTab()
-            .then((response) => {
-                const {url} = response
-                setUrl(url)
-            })
+        getTabInfo();
+
         dispatch(GetFriends());
         dispatch(GetFolders());
     },[])
@@ -89,12 +88,12 @@ const Popup = () => {
             </>}
                 
             {user && 
-            (<> {url !== '' && (<Interface url={url}/>)}
-                <Button onClick={()=>setCollapseBookmarks(!collapseBookmarks)}> {collapseBookmarks ? 'Hide Folders' : 'Folders'}</Button>
+            (<> {url !== '' && (<Interface setCollapseBookmarks={setCollapseBookmarks} setCollapseFriends={setCollapseFriends} collapseBookmarks={collapseBookmarks} collapseFriends={collapseFriends} url={url} tab={chromeTab}/>)}
+                <Button onClick={()=>{setCollapseBookmarks(!collapseBookmarks);setCollapseFriends(false);}}> {collapseBookmarks ? 'Hide Folders' : 'Folders'}</Button>
                 <Collapse in={collapseBookmarks} timeout='auto' unmountOnExit>
                     <BookmarkFolderMain />
                 </Collapse>
-                <Button onClick={()=>setCollapseFriends(!collapseFriends)}> {collapseFriends ? 'Hide Social' : 'Social'}</Button>
+                <Button onClick={()=>{setCollapseFriends(!collapseFriends);setCollapseBookmarks(false)}}> {collapseFriends ? 'Hide Social' : 'Social'}</Button>
                 <Collapse in={collapseFriends} timeout='auto' unmountOnExit>
                     <Friends />
                 </Collapse>

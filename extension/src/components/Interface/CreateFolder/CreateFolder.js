@@ -4,19 +4,26 @@ import { TextField, Button, Autocomplete, Switch, FormControlLabel } from '@mui/
 
 import { CreateNewFolder } from '../../../actions/folders';
 
-const CreateFolder = ({showAdd}) => {
+const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder }) => {
     const dispatch = useDispatch();
     const { friendArray } = useSelector((state)=>state.mainSlice)
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
-    const initialFolderState = { title:'', creator:user.result._id, editors:[], viewers:[], mainFolder:true, availableToFriends:false};
+    let initialFolderState = { title:'', creator:user.result._id, editors:[], viewers:[], mainFolder:mainFolder, availableToFriends:false};
     const [newFolder, setNewFolder] = useState(initialFolderState);
     const [showCreate, setShowCreate] = useState(false);
     const [editors, setEditors] = useState([]);
     const [viewers, setViewers] = useState([]);
 
+    if (mainFolder === false) {
+      initialFolderState = { title:'', creator:user.result._id, mainFolder:mainFolder, subFolders:[], parentFolders:[...folderInfo.parentFolders,folderInfo._id], parentFolder:folderInfo._id };
+    }
+
     const createNewFolder = () => {
       dispatch(CreateNewFolder(newFolder, editors, viewers));
       setShowCreate(false);
+      if (!mainFolder) {
+        setShowAddSubFolder(false);
+      }
     }
 
     const handleViewable = () => {
@@ -40,7 +47,20 @@ const CreateFolder = ({showAdd}) => {
 
   return (
     <>
-    <Button onClick={()=>setShowCreate(!showCreate)}>{!showCreate ? 'Create Folder' : 'Cancel'}</Button>
+    {mainFolder && (<Button onClick={()=>setShowCreate(!showCreate)}>{!showCreate ? 'Create Folder' : 'Cancel'}</Button>)}
+
+        {!mainFolder && showAdd && (<div>
+            <TextField 
+              required
+              label="Folder Name"
+              value={newFolder.title}
+              onChange={(e)=>setNewFolder({...newFolder,title:e.target.value})}
+              type='text'
+            />
+
+            <Button sx={{color:'secondary.main'}} onClick={createNewFolder} disabled={Boolean(newFolder.title.trim() === '')}>Create</Button>
+          </div>)}
+
         {showAdd && showCreate && (<div>
                 <TextField 
                   required
@@ -49,8 +69,8 @@ const CreateFolder = ({showAdd}) => {
                   onChange={(e)=>setNewFolder({...newFolder,title:e.target.value})}
                   type='text'
                 />
-
-                <Autocomplete
+              
+                {mainFolder && (<Autocomplete
                   multiple
                   disablePortal
                   id="invite-editors"
@@ -60,11 +80,12 @@ const CreateFolder = ({showAdd}) => {
                   getOptionLabel={option => option.username}
                   sx={{ width: 300 }}
                   renderInput={(params) => <TextField {...params} label="Invite Editors" placeholder="Invite Editors"/>}
-                 />
+                 /> )}
 
-                <FormControlLabel control={<Switch value={newFolder.availableToFriends} onChange={handleViewable}/>} label={newFolder.availableToFriends ? 'Available to all friends' : 'Private viewers optional'} />
+                {mainFolder && (<FormControlLabel control={<Switch value={newFolder.availableToFriends} onChange={handleViewable}/>} label={newFolder.availableToFriends ? 'Available to all friends' : 'Private viewers optional'} />)}
 
-                {!newFolder.availableToFriends && (<Autocomplete
+
+                {!newFolder.availableToFriends && mainFolder&& (<Autocomplete
                   multiple
                   disablePortal
                   id="invite-viewers"
@@ -74,10 +95,14 @@ const CreateFolder = ({showAdd}) => {
                   getOptionLabel={option => option.username}
                   sx={{ width: 300 }}
                   renderInput={(params) => <TextField {...params} label="Invite Viewers" placeholder="Invite Viewers"/>}
+
+                  
                 />)}
                 
 
                 <Button sx={{color:'secondary.main'}} onClick={createNewFolder} disabled={Boolean(newFolder.title.trim() === '')}>Create</Button>
+
+
         </div>)}
     </>
   )

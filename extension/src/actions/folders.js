@@ -26,6 +26,8 @@ export const CreateNewFolder = (folder,editors,viewers) => async (dispatch) => {
             }
         }
 
+    dispatch(GetFolders());
+
     } catch (error) {
         console.log(error);
     }
@@ -61,14 +63,31 @@ export const GetFolders = () => async (dispatch) => {
     }
 }
 
-export const SearchFolderById = (stringId) => async (dispatch) => {
+export const SearchFolderById = (folderId) => async (dispatch) => {
+    if (!folderId) {
+        return;
+    }
+    
     try {
-        const id = stringId.replace(/^"(.+(?="$))"$/, '$1');
+        const id = folderId.replace(/^"(.+(?="$))"$/, '$1');
         dispatch(LOADING_ON());
         const { data } = await api.searchFolderById(id);
         
         dispatch(LOADING_OFF());
         return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const AddBookmark = (folderId, bookmark) => async (dispatch) => {
+    try{
+        dispatch(LOADING_ON);
+        const data = await api.addBookmark(folderId, bookmark);
+
+        console.log(data);
+        dispatch(LOADING_OFF());
+        dispatch(GetFolders());
     } catch (error) {
         console.log(error);
     }
