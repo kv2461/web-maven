@@ -76,6 +76,7 @@ const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder, set
                   onChange={(event,value)=>setEditors(value)}
                   getOptionLabel={option => option.username}
                   sx={{ width: 300 }}
+                  noOptionsText={'No Friends'}
                   renderInput={(params) => <TextField {...params} label="Invite Editors" placeholder="Invite Editors"/>}
                  /> )}
 
