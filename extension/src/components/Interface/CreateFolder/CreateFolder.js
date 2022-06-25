@@ -21,12 +21,18 @@ const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder, set
     const createNewFolder = () => {
       dispatch(CreateNewFolder(newFolder, editors, viewers));
 <<<<<<< HEAD
+<<<<<<< HEAD
       setShowAdd(false);
       if (!mainFolder) {
         setShowAddSubFolder(false);
 =======
 
 >>>>>>> 69a9884c21abfdc90e94aa859aa961e931549d74
+=======
+      setShowAdd(false);
+      if (!mainFolder) {
+        setShowAddSubFolder(false);
+>>>>>>> parent of c7550c8 (fixed bugs where page wouldnt render after creation)
       }
       setViewers([])
       setEditors([])
@@ -46,6 +52,9 @@ const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder, set
     },[newFolder.availableToFriends])
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of c7550c8 (fixed bugs where page wouldnt render after creation)
     useEffect(()=>{
       if (!showAdd) {
         setViewers([])
@@ -53,9 +62,12 @@ const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder, set
         setNewFolder(initialFolderState);
       }
     },[showAdd])
+<<<<<<< HEAD
 =======
 
 >>>>>>> 69a9884c21abfdc90e94aa859aa961e931549d74
+=======
+>>>>>>> parent of c7550c8 (fixed bugs where page wouldnt render after creation)
 
 
   return (

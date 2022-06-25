@@ -68,10 +68,14 @@ const Interface = ({ url, tab, }) => {
         </div>
         <div style={{display:'flex',flexDirection:'column',}}>
 <<<<<<< HEAD
+<<<<<<< HEAD
             {showAdd && (<CreateFolder showAdd={showAdd} mainFolder={true}/> )}
 =======
 
 >>>>>>> 69a9884c21abfdc90e94aa859aa961e931549d74
+=======
+            {showAdd && (<CreateFolder showAdd={showAdd} mainFolder={true}/> )}
+>>>>>>> parent of c7550c8 (fixed bugs where page wouldnt render after creation)
             {/* {showBookmark && (<BookmarkActions showBookmark={showBookmark} url={url} tab={tab}/>)
             } */}
             <Collapse in={collapseBookmarks} timeout='auto' unmountOnExit>
