@@ -1,14 +1,20 @@
 import React,{ useState, useEffect } from 'react';
-import { Button } from '@mui/material';
+import { Button, IconButton, Collapse } from '@mui/material';
+import { CreateNewFolder, Bookmark, FolderCopy, Group } from '@mui/icons-material';
 
 import Actions from './Actions/Actions';
 import BookmarkActions from '../BookmarkActions/BookmarkActions';
+import BookmarkFolderMain from '../BookmarkFolder/BookmarkFolderMain';
+import Friends from '../Friends/Friends';
 
 
-const Interface = ({ url, tab, setCollapseBookmarks, setCollapseFriends, collapseBookmarks, collapseFriends }) => {
+const Interface = ({ url, tab, }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
     const [showAdd, setShowAdd] = useState(false);
     const [showBookmark, setShowBookmark] = useState(false);
+    const [collapseBookmarks, setCollapseBookmarks] = useState(false);
+    const [collapseFriends, setCollapseFriends] = useState(false);
+
 
     const bookmark = () => {
       setShowAdd(false);
@@ -37,16 +43,26 @@ const Interface = ({ url, tab, setCollapseBookmarks, setCollapseFriends, collaps
 
   return (
     <>
-        <div style={{display:'flex',flexDirection:'row'}}>
-            <Button onClick={add}>+</Button>
-            <Button onClick={bookmark}>-</Button>
+        <div style={{display:'flex',flexDirection:'row', justifyContent:'space-evenly'}}>
+            <IconButton onClick={add}><CreateNewFolder sx={{fontSize:'3rem'}} /></IconButton>
+            <IconButton onClick={bookmark}><Bookmark sx={{fontSize:'3rem'}} /></IconButton>
+            <IconButton onClick={()=>{setCollapseBookmarks(!collapseBookmarks);setCollapseFriends(false);}}><FolderCopy sx={{fontSize:'3rem'}}/></IconButton>
+            <IconButton onClick={()=>{setCollapseFriends(!collapseFriends);setCollapseBookmarks(false)}}><Group sx={{fontSize:'3rem'}}/></IconButton>        
         </div>
-        <div>
-            {showAdd && (<Actions showAdd={showAdd} />
-            )}
+        <div style={{display:'flex',flexDirection:'column',}}>
+            {showAdd && (<Actions showAdd={showAdd} /> )}
             {showBookmark && (<BookmarkActions showBookmark={showBookmark} url={url} tab={tab}/>)
             }
+            <Collapse in={collapseBookmarks} timeout='auto' unmountOnExit>
+              <BookmarkFolderMain />
+            </Collapse>
+            <Collapse in={collapseFriends} timeout='auto' unmountOnExit>
+              <Friends />
+            </Collapse>
         </div>
+
+        
+               
     </>
   )
 }

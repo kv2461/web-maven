@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Typography, ButtonBase, Collapse, IconButton, ListSubheader } from '@mui/material';
+import { Box, Typography, ButtonBase, Collapse, IconButton, ListSubheader, ListItem, List} from '@mui/material';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
+
+import BookmarkItem from '../BookmarkActions/BookmarkItem';
 
 import { StyledList } from './styles';
 import { SearchFolderById } from '../../actions/folders';
@@ -12,7 +14,7 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level}) => {
     const [folderInfo, setFolderInfo] = useState({});
     const [folderId, setFolderId] = useState(1)
     const [UI, setUI] = useState(parent);
-    
+
     useEffect(()=> {
         const getInfo = async () => {
           const data = await dispatch(SearchFolderById(folder));
@@ -34,42 +36,30 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level}) => {
 
 
   return (
-    <li style={{marginLeft:`${level*3}px`}} key={folder}>
+    <>
+    <ListItem sx={level === 1 ? {m:0,p:0} : {m:0, p:0, marginLeft: `${level*5}px`}} key={folder}>
         <ButtonBase onClick={selectFolder}>
             <Typography sx={selected === folderId ?{color:'primary.main'}:null}variant='body1'><strong>{folderInfo.title}</strong></Typography>
         </ButtonBase>
         <IconButton onClick={()=>setCollapseFolder(!collapseFolder)} edge='end'>
             <KeyboardArrowDown />
         </IconButton>
-        <Collapse in={collapseFolder} timeout="auto" unmountOnExit>
-            <StyledList subheader={<li />}>
-                
-
+        
+    </ListItem>
+    <Collapse sx={{m:0,p:0}}in={collapseFolder} timeout="auto" unmountOnExit flexDirection='column'>
+          
+                <List sx={{m:0,p:0}}>
                 {folderInfo.subFolders?.length > 0 && folderInfo.subFolders.map((subfolder,index) => (
                     <BookmarkFolder key={index} folder={subfolder} parent={parent} setSelected={setSelected} selected={selected} level={level+1}/>
                 ))}
-    
-
-                {folderInfo.bookmarks?.length > 0 && folderInfo.bookmarks.map((bookmark,index)=>(<a href={bookmark.url} target='_blank'key={Date.now()+index}>{bookmark.title}</a>))}
-
+                </List>
                 
+                <List sx={{m:0,p:0}}>
+                    {folderInfo.bookmarks?.length > 0 && folderInfo.bookmarks.map((bookmark,index)=>(<BookmarkItem bookmark={bookmark} key={index} level={level+1}/>))}
+                </List>
 
-                {/* {           //should add createdAt for both bookmarks and bookmarkfolders so they can be mixed into the same array 
-                                //also have send what sublevel each folder is in recursion so state sublevel folders can be an an array of object sublevels
-                listItems.map((item,index) => ( 
-                    <FoodListItem
-                            key={`${item?.key}`}
-                            listItem={item}
-                            index={index}
-                            length={listItems.length - 1}
-                            subgenre='foodRecipe'
-                            handleMoveUp = {()=>listLogic.handleMoveUp(item)}
-                            handleMoveDown = {()=>listLogic.handleMoveDown(item)}
-                    />))
-                }  */}
-            </StyledList>
         </Collapse>
-    </li>
+    </>
   )
 }
 

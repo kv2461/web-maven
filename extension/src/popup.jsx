@@ -4,7 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { Button, Collapse, Typography } from '@mui/material';
+import { Button, Collapse, Typography, Container, Grid, } from '@mui/material';
 
 import { GetFriends } from './actions/main';
 import { GetFolders } from './actions/folders'
@@ -24,6 +24,7 @@ import Friends from './components/Friends/Friends';
 
 import { theme } from './Theme';
 
+
 const store = configureStore({
     reducer: {
         mainSlice:mainSlice,
@@ -42,8 +43,6 @@ const Popup = () => {
     const [url, setUrl] = useState('')
     const [chromeTab, setChromeTab] = useState({});
     const [rerender, setRerender] = useState(false);
-    const [collapseBookmarks, setCollapseBookmarks] = useState(false);
-    const [collapseFriends, setCollapseFriends] = useState(false);
     const dispatch = useDispatch();
     
     const logout = () => {
@@ -80,26 +79,27 @@ const Popup = () => {
     
 
     return(
-        <div>
+        <Container sx={{p:1}}>
+            
             {!user && <Auth />}
+            
+            <Grid container display='flex' flexDirection='column' alignItems= 'flex-end'>
+            
             {user && <>
             <Typography>{user.result.username} logged in</Typography>
             <Button sx={{color:'secondary.main'}}onClick={logout}>Logout</Button>
             </>}
-                
+            </Grid>
+            
+          
+
+
             {user && 
-            (<> {url !== '' && (<Interface setCollapseBookmarks={setCollapseBookmarks} setCollapseFriends={setCollapseFriends} collapseBookmarks={collapseBookmarks} collapseFriends={collapseFriends} url={url} tab={chromeTab}/>)}
-                <Button onClick={()=>{setCollapseBookmarks(!collapseBookmarks);setCollapseFriends(false);}}> {collapseBookmarks ? 'Hide Folders' : 'Folders'}</Button>
-                <Collapse in={collapseBookmarks} timeout='auto' unmountOnExit>
-                    <BookmarkFolderMain />
-                </Collapse>
-                <Button onClick={()=>{setCollapseFriends(!collapseFriends);setCollapseBookmarks(false)}}> {collapseFriends ? 'Hide Social' : 'Social'}</Button>
-                <Collapse in={collapseFriends} timeout='auto' unmountOnExit>
-                    <Friends />
-                </Collapse>
+            (<> {url !== '' && (<Interface  url={url} tab={chromeTab}/>)}
             </>)
             }
-        </div>
+
+        </Container>
     )
 }
 

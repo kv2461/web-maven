@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { StyledList } from './styles';
+import { Button, List, Container } from '@mui/material';
 import {GetFolders} from '../../actions/folders';
 
 import BookmarkFolder from './BookmarkFolder';
@@ -8,21 +8,25 @@ import BookmarkFolder from './BookmarkFolder';
 const BookmarkFolderMain = () => {
   const dispatch = useDispatch();
   const { folders, sentFolders, recievedFolders } = useSelector((state)=>state.folderSlice)
+  const [showRequests, setShowRequests] = useState(false);
+  const [showFavorites, setShowFavorites] = useState(false);
+  const [showFolders, setShowFolders] = useState(false);
 
   useEffect(()=> {
     dispatch(GetFolders())
-    console.log(folders)
-    console.log(sentFolders)
-    console.log(recievedFolders)
   },[])
+
+
   return (
-    <StyledList subheader={<li />}>
-      <li key='requests and sent'>Bookmark Folder REQUESTS AND SENT</li>
-      <li key='created'>Bookmark Folder CREATED</li>
-      <ul>
-      {folders && folders.map((folder,index) => (<BookmarkFolder key={index} folder={folder} level={1}/>))}
-      </ul>
-    </StyledList>
+
+    <Container sx={{display:'flex',flexDirection:'column'}}>
+      <Button>Requests</Button>
+      <Button>Favorites</Button>
+      <Button onClick={()=>setShowFolders(!showFolders)}>Folders</Button>
+      <List sx={{m:0,p:0}}>
+        {showFolders && folders && folders.map((folder,index) => (<BookmarkFolder key={index} folder={folder} level={1}/>))}
+      </List>
+    </Container>
   )
 }
 
