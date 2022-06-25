@@ -67,7 +67,11 @@ const Interface = ({ url, tab, }) => {
             <IconButton onClick={()=>{setCollapseFriends(!collapseFriends);setCollapseBookmarks(false)}}><Group sx={{color:'#95E1D3', fontSize:'3rem'}}/></IconButton>        
         </div>
         <div style={{display:'flex',flexDirection:'column',}}>
+<<<<<<< HEAD
             {showAdd && (<CreateFolder showAdd={showAdd} mainFolder={true}/> )}
+=======
+
+>>>>>>> 69a9884c21abfdc90e94aa859aa961e931549d74
             {/* {showBookmark && (<BookmarkActions showBookmark={showBookmark} url={url} tab={tab}/>)
             } */}
             <Collapse in={collapseBookmarks} timeout='auto' unmountOnExit>
