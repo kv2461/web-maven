@@ -4,13 +4,12 @@ import { TextField, Button, Autocomplete, Switch, FormControlLabel } from '@mui/
 
 import { CreateNewFolder } from '../../../actions/folders';
 
-const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder }) => {
+const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder, setShowAdd }) => {
     const dispatch = useDispatch();
     const { friendArray } = useSelector((state)=>state.mainSlice)
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
     let initialFolderState = { title:'', creator:user.result._id, editors:[], viewers:[], mainFolder:mainFolder, availableToFriends:false};
     const [newFolder, setNewFolder] = useState(initialFolderState);
-    const [showCreate, setShowCreate] = useState(false);
     const [editors, setEditors] = useState([]);
     const [viewers, setViewers] = useState([]);
 
@@ -20,7 +19,7 @@ const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder }) =
 
     const createNewFolder = () => {
       dispatch(CreateNewFolder(newFolder, editors, viewers));
-      setShowCreate(false);
+      setShowAdd(false);
       if (!mainFolder) {
         setShowAddSubFolder(false);
       }
@@ -37,18 +36,16 @@ const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder }) =
     },[newFolder.availableToFriends])
 
     useEffect(()=>{
-      if (!showCreate) {
+      if (!showAdd) {
         setViewers([])
         setEditors([])
         setNewFolder(initialFolderState);
       }
-    },[showCreate])
+    },[showAdd])
 
 
   return (
     <>
-    {mainFolder && (<Button onClick={()=>setShowCreate(!showCreate)}>{!showCreate ? 'Create Folder' : 'Cancel'}</Button>)}
-
         {!mainFolder && showAdd && (<div>
             <TextField 
               required
@@ -61,7 +58,7 @@ const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder }) =
             <Button sx={{color:'secondary.main'}} onClick={createNewFolder} disabled={Boolean(newFolder.title.trim() === '')}>Create</Button>
           </div>)}
 
-        {showAdd && showCreate && (<div>
+        {showAdd && (<div>
                 <TextField 
                   required
                   label="Folder Name"
@@ -85,7 +82,7 @@ const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder }) =
                 {mainFolder && (<FormControlLabel control={<Switch value={newFolder.availableToFriends} onChange={handleViewable}/>} label={newFolder.availableToFriends ? 'Available to all friends' : 'Private viewers optional'} />)}
 
 
-                {!newFolder.availableToFriends && mainFolder&& (<Autocomplete
+                {!newFolder.availableToFriends && mainFolder && (<Autocomplete
                   multiple
                   disablePortal
                   id="invite-viewers"

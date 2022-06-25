@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SearchByUsername, SendFriendRequest, GetFriendStatus, CancelFriendRequest, GetFriends, RemoveFriend } from '../../actions/main';
 import { CLEAR } from '../../reducers/main';
 
-import AddedFriends from './AddedFriends';
 import Sent from './Sent';
 import Recieved from './Recieved';
+import Friend from './Friend';
 
 const Friends = () => {
   const user = JSON.parse(localStorage.getItem('web-maven-profile'))
@@ -22,6 +22,7 @@ const Friends = () => {
 
   const [collapseSent, setCollapseSent] = useState(false);
   const [collapseFriendRequests, setCollapseFriendRequests] = useState(false);
+  const [collapseFriends, setCollapseFriends] = useState(false);
 
   const searchByUsername = (usernameQuery) => {
     setRerender(!rerender);
@@ -57,7 +58,7 @@ const Friends = () => {
 
   return (
     <>
-      <TextField value={usernameQuery} variant='outlined' label='Search Username' onChange={(e)=>setUsernameQuery(e.target.value)} type='text'
+      <TextField value={usernameQuery} variant='outlined' fullWidth label='Search Username' onChange={(e)=>setUsernameQuery(e.target.value)} type='text'
         InputProps={{endAdornment: (
           <InputAdornment position='end'>
             <IconButton onClick={()=>searchByUsername(usernameQuery)} edge='end'>
@@ -92,26 +93,36 @@ const Friends = () => {
       </Box>)}
       { searchedFriendError && (<Typography sx={{color:'secondary.main'}}>{searchedFriendError}</Typography>)}
       
-      
+      <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
       {sent?.length>0 && 
         (<>
-        <Button onClick={()=>setCollapseSent(!collapseSent)}> {collapseSent ? 'Hide Sent' : 'Sent'}</Button>
-        <Collapse in={collapseSent} timeout='auto' unmountOnExit>
-                  {sent.map((friendReq) => (<Sent key={friendReq._id} friendReq={friendReq}/>))}
-        </Collapse>
+        <Button onClick={()=>{setCollapseSent(!collapseSent);setCollapseFriendRequests(false);setCollapseFriends(false);}}> {collapseSent ? 'Hide Pending' : 'Pending'}</Button>
         </>)
       }
 
       {uncompleted?.length>0 && 
         (<>
-        <Button onClick={()=>setCollapseFriendRequests(!collapseFriendRequests)}> {collapseFriendRequests ? 'Hide Friend Requests' : 'Friend Requests'}</Button>
-        <Collapse in={collapseFriendRequests} timeout='auto' unmountOnExit>
-                  {uncompleted.map((friendReq) => (<Recieved key={friendReq._id} friendReq={friendReq}/>))}
-        </Collapse>
+        <Button onClick={()=>{setCollapseFriendRequests(!collapseFriendRequests);setCollapseSent(false);setCollapseFriends(false)}}> {collapseFriendRequests ? 'Hide Friend Requests' : 'Friend Requests'}</Button>
         </>)
       }
 
-      {friends?.length > 0 && (<AddedFriends friends={friends}/>)} 
+        
+        
+      
+      {friends?.length > 0 && (<Button onClick={()=>{setCollapseFriends(!collapseFriends);setCollapseFriendRequests(false);setCollapseSent(false)}}> {collapseFriends ? 'Hide Friends' : 'Friends'}</Button>)} 
+      </div>
+      
+      <div>
+        <Collapse in={collapseSent} timeout='auto' unmountOnExit>
+                  {sent.map((friendReq) => (<Sent key={friendReq._id} friendReq={friendReq}/>))}
+        </Collapse>
+        <Collapse in={collapseFriendRequests} timeout='auto' unmountOnExit>
+                  {uncompleted.map((friendReq) => (<Recieved key={friendReq._id} friendReq={friendReq}/>))}
+        </Collapse>
+        <Collapse in={collapseFriends} timeout='auto' unmountOnExit>
+                  {friends.map((friend) => (<Friend key={friend} friend={friend}/>))}
+        </Collapse>
+      </div>
     </>
   )
 }

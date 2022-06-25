@@ -5,24 +5,30 @@ import { CreateNewFolder, Bookmark, FolderCopy, Group } from '@mui/icons-materia
 
 import Actions from './Actions/Actions';
 import BookmarkActions from '../BookmarkActions/BookmarkActions';
+import CreateFolder from './CreateFolder/CreateFolder';
 import BookmarkFolderMain from '../BookmarkFolder/BookmarkFolderMain';
 import AddBookmark from '../BookmarkActions/AddBookmark.js';
 import Friends from '../Friends/Friends';
 import { GetFolders } from '../../actions/folders';
+import { SearchById } from '../../actions/main';
 
 
 const Interface = ({ url, tab, }) => {
-    const user = JSON.parse(localStorage.getItem('web-maven-profile'));
+    const user = JSON.parse(localStorage.getItem('web-maven-profile'));    
+    const dispatch = useDispatch();
+    const { friends } = useSelector((state)=>state.mainSlice)
     const [showAdd, setShowAdd] = useState(false);
     const [showBookmark, setShowBookmark] = useState(false);
     const [collapseBookmarks, setCollapseBookmarks] = useState(false);
     const [collapseFriends, setCollapseFriends] = useState(false);
-
-    const dispatch = useDispatch();
     const [selected, setSelected] = useState('');
     
     useEffect(()=> {
       dispatch(GetFolders())
+      for (let i=0; i<friends.length; i++) {
+        dispatch(SearchById(friends[i],'friends'))
+      }
+
     },[])
     
 
@@ -55,13 +61,13 @@ const Interface = ({ url, tab, }) => {
   return (
     <>
         <div style={{display:'flex',flexDirection:'row', justifyContent:'space-evenly'}}>
-            <IconButton onClick={add}><CreateNewFolder sx={{fontSize:'3rem'}} /></IconButton>
-            <IconButton onClick={bookmark}><Bookmark sx={{fontSize:'3rem'}} /></IconButton>
-            <IconButton onClick={()=>{setCollapseBookmarks(!collapseBookmarks);setCollapseFriends(false);}}><FolderCopy sx={{fontSize:'3rem'}}/></IconButton>
-            <IconButton onClick={()=>{setCollapseFriends(!collapseFriends);setCollapseBookmarks(false)}}><Group sx={{fontSize:'3rem'}}/></IconButton>        
+            <IconButton onClick={add}><CreateNewFolder sx={{color:'#F38181', fontSize:'3rem'}} /></IconButton>
+            <IconButton onClick={bookmark}><Bookmark sx={{color:'#FCE38A', fontSize:'3rem'}} /></IconButton>
+            <IconButton onClick={()=>{setCollapseBookmarks(!collapseBookmarks);setCollapseFriends(false);}}><FolderCopy sx={{color:'#66DE93', fontSize:'3rem'}}/></IconButton>
+            <IconButton onClick={()=>{setCollapseFriends(!collapseFriends);setCollapseBookmarks(false)}}><Group sx={{color:'#95E1D3', fontSize:'3rem'}}/></IconButton>        
         </div>
         <div style={{display:'flex',flexDirection:'column',}}>
-            {showAdd && (<Actions showAdd={showAdd} /> )}
+            {showAdd && (<CreateFolder showAdd={showAdd} mainFolder={true}/> )}
             {/* {showBookmark && (<BookmarkActions showBookmark={showBookmark} url={url} tab={tab}/>)
             } */}
             <Collapse in={collapseBookmarks} timeout='auto' unmountOnExit>

@@ -7,14 +7,14 @@ import Friend from './Friend';
 
 //this component should house the added friends section, will have smaller components inside this as well for individual friends
 
-const AddedFriends = ({friends}) => {
+const AddedFriends = ({friends, collapseFriendRequests, collapseSent, setCollapseFriendRequests, setCollapseSent}) => {
     const dispatch = useDispatch();
     const { loading } = useSelector((state)=>state.mainSlice);
     const [collapseFriends, setCollapseFriends] = useState(false);
 
+
     useEffect(()=> {
         dispatch(GetFriends());
-
     },[])
 
 

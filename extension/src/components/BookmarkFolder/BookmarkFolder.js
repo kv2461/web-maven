@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Typography, ButtonBase, Collapse, IconButton, ListSubheader, ListItem, List} from '@mui/material';
-import { KeyboardArrowDown, Folder } from '@mui/icons-material';
-import { useDispatch, useSelector } from 'react-redux';
+import { Box, Typography, ButtonBase, Collapse, IconButton, ListItem, List} from '@mui/material';
+import { Folder } from '@mui/icons-material';
+import { useDispatch, } from 'react-redux';
 
 import BookmarkItem from '../BookmarkActions/BookmarkItem';
 
-import { StyledList } from './styles';
 import { SearchFolderById } from '../../actions/folders';
 
 const BookmarkFolder = ({folder, parent, selected, setSelected, level}) => {
@@ -35,8 +34,10 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level}) => {
         if (UI === 'bookmark') {
             setFolderId(folder);
             setSelected(folder);
+        } else {
+            setCollapseFolder(!collapseFolder)
+            //selecting them might be the way to delete them in the future if the UI is folder edit
         }
-        console.log(folderInfo.subFolders)
     }
 
 
@@ -50,7 +51,7 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level}) => {
             <Typography sx={selected === folderId ?{color:'primary.main'}:textColor}variant='body1'><strong>{folderInfo.title}</strong></Typography>
         </ButtonBase>
     </ListItem>
-    <Collapse sx={{m:0,p:0}}in={collapseFolder} timeout="auto" unmountOnExit flexDirection='column'>
+    <Collapse sx={{m:0,p:0}} in={collapseFolder} timeout="auto" unmountOnExit>
           
                 <List sx={{m:0,p:0}}>
                 {folderInfo.subFolders?.length > 0 && folderInfo.subFolders.map((subfolder,index) => (
