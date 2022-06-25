@@ -5,7 +5,6 @@ import BookmarkFolder from '../models/bookmarkfolder.js';
 import BookmarkFolderRequest from '../models/bookmarkfolderrequest.js';
 
 export const createNewFolder = async (req,res) => {
-
     try {
         const newBookmarkFolder = new BookmarkFolder(req.body)
 

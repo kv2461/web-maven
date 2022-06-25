@@ -4,26 +4,27 @@ import { TextField, Button, Autocomplete, Switch, FormControlLabel, Typography }
 
 import { CreateNewFolder } from '../../../actions/folders';
 
-const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder, setShowAdd }) => {
+const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreateFolder }) => {
     const dispatch = useDispatch();
     const { friendArray } = useSelector((state)=>state.mainSlice)
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
-    let initialFolderState = { title:'', creator:user.result._id, editors:[], viewers:[], mainFolder:mainFolder, availableToFriends:false};
+    const initialFolderState = { title:'', creator:user.result._id, editors:[], viewers:[], mainFolder:mainFolder, availableToFriends:false};
     const [newFolder, setNewFolder] = useState(initialFolderState);
     const [editors, setEditors] = useState([]);
     const [viewers, setViewers] = useState([]);
     const [created, setCreated] = useState(false);
 
-    if (mainFolder === false) {
-      initialFolderState = { title:'', creator:user.result._id, mainFolder:mainFolder, subFolders:[], parentFolders:[...folderInfo.parentFolders,folderInfo._id], parentFolder:folderInfo._id };
-    }
+
+    useEffect(()=> {
+      if (!mainFolder) {
+        
+        setNewFolder({ title:'', creator:user.result._id, mainFolder:mainFolder, subFolders:[], parentFolders:[...folderInfo?.parentFolders,folderInfo?._id], parentFolder:folderInfo._id });
+      }
+    },[])
 
     const createNewFolder = () => {
       dispatch(CreateNewFolder(newFolder, editors, viewers));
-      
-      if (!mainFolder) {
-        setShowAddSubFolder(false);
-        
+
       }
       setViewers([])
       setEditors([])
@@ -47,7 +48,7 @@ const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder, set
 
   return (
     <>
-        {!mainFolder && showAdd && (<div>
+        {!mainFolder && showCreateFolder && (<div> 
             <TextField 
               required
               label="Folder Name"
@@ -59,7 +60,7 @@ const CreateFolder = ({ showAdd, mainFolder,folderInfo, setShowAddSubFolder, set
             <Button sx={{color:'secondary.main'}} onClick={createNewFolder} disabled={Boolean(newFolder.title.trim() === '')}>Create</Button>
           </div>)}
 
-        {showAdd && (<div>
+        {showCreateFolder && mainFolder && (<div>
                 <TextField 
                   required
                   label="Folder Name"
