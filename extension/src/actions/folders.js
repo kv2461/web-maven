@@ -1,5 +1,5 @@
 import { GET_FOLDERS } from '../reducers/folders'; 
-import { LOADING_OFF, LOADING_ON } from '../reducers/main';
+import { LOADING_OFF, LOADING_ON, CLEAR } from '../reducers/main';
 
 import * as api from '../api';
 
@@ -88,6 +88,7 @@ export const AddBookmark = (folderId, bookmark) => async (dispatch) => {
         console.log(data);
         dispatch(LOADING_OFF());
         dispatch(GetFolders());
+        dispatch(CLEAR());
     } catch (error) {
         console.log(error);
     }

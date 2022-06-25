@@ -1,11 +1,14 @@
 import React,{ useState, useEffect } from 'react';
+import { useDispatch, useSelector} from 'react-redux';
 import { Button, IconButton, Collapse } from '@mui/material';
 import { CreateNewFolder, Bookmark, FolderCopy, Group } from '@mui/icons-material';
 
 import Actions from './Actions/Actions';
 import BookmarkActions from '../BookmarkActions/BookmarkActions';
 import BookmarkFolderMain from '../BookmarkFolder/BookmarkFolderMain';
+import AddBookmark from '../BookmarkActions/AddBookmark.js';
 import Friends from '../Friends/Friends';
+import { GetFolders } from '../../actions/folders';
 
 
 const Interface = ({ url, tab, }) => {
@@ -14,6 +17,14 @@ const Interface = ({ url, tab, }) => {
     const [showBookmark, setShowBookmark] = useState(false);
     const [collapseBookmarks, setCollapseBookmarks] = useState(false);
     const [collapseFriends, setCollapseFriends] = useState(false);
+
+    const dispatch = useDispatch();
+    const [selected, setSelected] = useState('');
+    
+    useEffect(()=> {
+      dispatch(GetFolders())
+    },[])
+    
 
 
     const bookmark = () => {
@@ -51,14 +62,15 @@ const Interface = ({ url, tab, }) => {
         </div>
         <div style={{display:'flex',flexDirection:'column',}}>
             {showAdd && (<Actions showAdd={showAdd} /> )}
-            {showBookmark && (<BookmarkActions showBookmark={showBookmark} url={url} tab={tab}/>)
-            }
+            {/* {showBookmark && (<BookmarkActions showBookmark={showBookmark} url={url} tab={tab}/>)
+            } */}
             <Collapse in={collapseBookmarks} timeout='auto' unmountOnExit>
               <BookmarkFolderMain />
             </Collapse>
             <Collapse in={collapseFriends} timeout='auto' unmountOnExit>
               <Friends />
             </Collapse>
+            {showBookmark && (<AddBookmark showBookmark={showBookmark} url={url} tab={tab} setSelected={setSelected} selected={selected} />)}
         </div>
 
         
