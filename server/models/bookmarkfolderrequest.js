@@ -20,7 +20,7 @@ const bookmarkFolderRequestSchema = new mongoose.Schema({
     bookmarkFolderId: {
         type: String,
         required: true, 
-    }
+    },
 })
 
 const BookmarkFolderRequest = mongoose.model('BookmarkFolderRequest', bookmarkFolderRequestSchema);
