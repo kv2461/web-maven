@@ -1,6 +1,6 @@
 import React, { useState, useEffect, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Autocomplete, Switch, FormControlLabel } from '@mui/material';
+import { TextField, Button, Autocomplete, Switch, FormControlLabel, Typography, Container } from '@mui/material';
 
 import { CreateNewFolder } from '../../../actions/folders';
 
@@ -39,23 +39,17 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
       }
     },[newFolder.availableToFriends])
 
-    // useEffect(()=>{
-    //   if (!showCreateFolder) {
-    //     setViewers([])
-    //     setEditors([])
-    //     if (mainFolder) {
-    //       setNewFolder(initialFolderState);
-    //     } else {
-    //       setNewFolder(initialSubFolderState);
-    //     }
-    //   }
-    // },[showCreateFolder])
-
-
   return (
     <>
+      <div style={{padding:'1px 0 10px 0'}}>
+      {mainFolder && (<Typography sx={{color:'#35A7FF'}} variant='h6'>Create Bookmark Folder</Typography>)}
+      {!mainFolder && (<Typography sx={{color:'#35A7FF'}} variant='h6'>Create Subfolder</Typography>)}
+      {/* <Typography sx={{color:'#35A7FF', paddingLeft:'5px'}} variant='p'>and invite some friends!</Typography> */}
+      </div>
+
         {!mainFolder && showCreateFolder && (<div> 
             <TextField 
+            fullWidth
               required
               label="Folder Name"
               value={newFolder.title}
@@ -66,8 +60,10 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
             <Button sx={{color:'secondary.main'}} onClick={createNewFolder} disabled={Boolean(newFolder.title.trim() === '')}>Create</Button>
           </div>)}
 
-        {showCreateFolder && mainFolder && (<div>
-                <TextField 
+
+        {showCreateFolder && mainFolder && (<div style={{margin:'0 9px 0 0'}}>
+                <TextField style={{margin:'0 5px 5px 5px'}}
+                  fullWidth
                   required
                   label="Folder Name"
                   value={newFolder.title}
@@ -75,7 +71,7 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
                   type='text'
                 />
               
-                {mainFolder && (<Autocomplete
+                <Autocomplete style={{margin:'0 5px 5px 5px'}}
                   multiple
                   disablePortal
                   id="invite-editors"
@@ -83,15 +79,15 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
                   value={editors}
                   onChange={(event,value)=>setEditors(value)}
                   getOptionLabel={option => option.username}
-                  sx={{ width: 300 }}
+                  fullWidth
                   noOptionsText={'No Friends'}
                   renderInput={(params) => <TextField {...params} label="Invite Editors" placeholder="Invite Editors"/>}
-                 /> )}
+                 /> 
 
-                {mainFolder && (<FormControlLabel control={<Switch value={newFolder.availableToFriends} onChange={handleViewable}/>} label={newFolder.availableToFriends ? 'Available to all friends' : 'Private viewers optional'} />)}
+               <FormControlLabel control={<Switch style={{margin:'0 5px 5px 5px'}} value={newFolder.availableToFriends} onChange={handleViewable}/>} label={newFolder.availableToFriends ? 'Available to all friends' : 'Private viewers optional'} />
 
 
-                {!newFolder.availableToFriends && mainFolder && (<Autocomplete
+                {!newFolder.availableToFriends  && (<Autocomplete style={{margin:'0 5px 5px 5px'}}
                   multiple
                   disablePortal
                   id="invite-viewers"
@@ -99,14 +95,14 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
                   value={viewers}
                   onChange={(event,value)=>setViewers(value)}
                   getOptionLabel={option => option.username}
-                  sx={{ width: 300 }}
+                  fullWidth
                   renderInput={(params) => <TextField {...params} label="Invite Viewers" placeholder="Invite Viewers"/>}
 
                   
                 />)}
                 
-
-                <Button sx={{color:'secondary.main'}} onClick={createNewFolder} disabled={Boolean(newFolder.title.trim() === '')}>Create</Button>
+                
+                <Button sx={{color:'secondary.main'}}  onClick={createNewFolder} disabled={Boolean(newFolder.title.trim() === '')}>Create</Button>
 
 
         </div>)}

@@ -61,10 +61,10 @@ const Interface = ({ url, tab, }) => {
   return (
     <>
         <div style={{display:'flex',flexDirection:'row', justifyContent:'space-evenly'}}>
-            <IconButton onClick={add}><CreateNewFolder sx={{color:'#F38181', fontSize:'3rem'}} /></IconButton>
-            <IconButton onClick={bookmark}><Bookmark sx={{color:'#FCE38A', fontSize:'3rem'}} /></IconButton>
-            <IconButton onClick={()=>{setCollapseBookmarks(!collapseBookmarks);setCollapseFriends(false);}}><FolderCopy sx={{color:'#66DE93', fontSize:'3rem'}}/></IconButton>
-            <IconButton onClick={()=>{setCollapseFriends(!collapseFriends);setCollapseBookmarks(false)}}><Group sx={{color:'#95E1D3', fontSize:'3rem'}}/></IconButton>        
+            <IconButton onClick={add}><CreateNewFolder sx={{color:'#FF5964', fontSize:'3rem'}} /></IconButton>
+            <IconButton onClick={bookmark}><Bookmark sx={{color:'#FFE74C', fontSize:'3rem'}} /></IconButton>
+            <IconButton onClick={()=>{setCollapseBookmarks(!collapseBookmarks);setCollapseFriends(false);}}><FolderCopy sx={{color:'#6BF178', fontSize:'3rem'}}/></IconButton>
+            <IconButton onClick={()=>{setCollapseFriends(!collapseFriends);setCollapseBookmarks(false)}}><Group sx={{color:'#35A7FF', fontSize:'3rem'}}/></IconButton>        
         </div>
         <div style={{display:'flex',flexDirection:'column',}}>
             {showCreateFolder && (<CreateFolder setShowCreateFolder={setShowCreateFolder} showCreateFolder={showCreateFolder} mainFolder={true}/> )}

@@ -113,9 +113,6 @@ export const searchFolderById = async (req,res) => {
 
 export const addBookmark = async (req,res) => {
     const {folderId, bookmark} = req.body;
-    console.log(folderId);
-    console.log(bookmark);
-
     try {
         
         const existingFolder = await BookmarkFolder.findById(folderId);

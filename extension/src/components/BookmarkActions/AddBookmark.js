@@ -1,6 +1,6 @@
 import React, { useState, useEffect, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Autocomplete, Switch, FormControlLabel, InputAdornment} from '@mui/material';
+import { TextField, Button, Typography, InputAdornment} from '@mui/material';
 import { StyledList } from './styles';
 
 import BookmarkFolder from '../BookmarkFolder/BookmarkFolder';
@@ -69,6 +69,7 @@ const Bookmark = ({showBookmark, url, tab, setSelected, selected}) => {
                 />
                 <StyledList subheader={<li />}>
                 {folders && folders.map((folder,index) => (<BookmarkFolder key={index} folder={folder} parent='bookmark' setSelected={setSelected} selected={selected} level={1}/>))}
+                {folders && folders?.length === 0 && (<Typography sx={{color:'secondary.main'}}>You currently have no folders to add to, create a folder, maybe?</Typography>)}
                 </StyledList>
 
                 <div style={{display:'flex', flexDirection:'column'}}>
