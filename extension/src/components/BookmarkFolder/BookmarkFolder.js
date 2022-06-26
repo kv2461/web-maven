@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Typography, ButtonBase, Collapse, IconButton, ListItem, List} from '@mui/material';
-import { Folder } from '@mui/icons-material';
+import { Folder, Group } from '@mui/icons-material';
 import { useDispatch, } from 'react-redux';
 
 import BookmarkItem from '../BookmarkActions/BookmarkItem';
@@ -13,6 +13,7 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
     const [folderInfo, setFolderInfo] = useState({});
     const [folderId, setFolderId] = useState(1)
     const [UI, setUI] = useState(parent);
+    const [collapseEditors, setCollapseEditors] = useState(false);
 
     const textColor = 
         {color: level % 2 === 0 ? 'text.secondary' : 'text.primary',
@@ -51,13 +52,16 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
 
   return (
     <>
-    <ListItem sx={level === 1 ? {m:0,p:0, marginLeft:0} : {m:0, p:0, marginLeft: `${level*5}px`}} key={folder}>
+    <ListItem sx={level === 1 ? {m:0,p:0, marginLeft:0} : {m:0, p:0, marginLeft: `${level*5}px`, display:'flex',}} key={folder}>
         <IconButton onClick={()=>setCollapseFolder(!collapseFolder)} edge='end'>
             <Folder sx={{fontSize:'1.2rem', color:'#F8ECD1'}} />
         </IconButton>
         <ButtonBase onClick={selectFolder}>
             <Typography sx={selected === folderId ?{color:'primary.main'}:textColor}variant='body1'><strong>{folderInfo.title}</strong></Typography>
         </ButtonBase>
+        {folderInfo?.editors?.length > 0 && (<IconButton onClick={()=>{setCollapseEditors(!collapseEditors)}}>
+            <Group sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
+        </IconButton>)}
     </ListItem>
     <Collapse sx={{m:0,p:0}} in={collapseFolder} timeout="auto" unmountOnExit>
           
