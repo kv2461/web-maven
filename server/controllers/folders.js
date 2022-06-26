@@ -67,21 +67,79 @@ export const sendViewerRequest = async (req,res) => {
     const {friend, bookmarkFolderId} = req.body;
  
     try {
-        const existingRequest = await BookmarkFolderRequest.findOne({requester:req.userId, recipient:friend._id, rights:'viewer', bookmarkFolderId:bookmarkFolderId})
+        const existingRequest = await BookmarkFolderRequest.findOne({requester:req.userId, recipient:friend._id, rights:'viewer', bookmarkFolderId:bookmarkFolderId});
+        
 
-        if (existingRequest) return res.status(400).json({message:'Already sent'})
+        if (existingRequest) return res.status(400).json({message:'Already sent'});
 
-        const existingRequest2 = await BookmarkFolderRequest.findOne({requester:req.userId, recipient:friend._id, rights:'editor', bookmarkFolderId:bookmarkFolderId})
+        const existingRequest2 = await BookmarkFolderRequest.findOne({requester:req.userId, recipient:friend._id, rights:'editor', bookmarkFolderId:bookmarkFolderId});
 
-        if (existingRequest2) return res.status(400).json({message:'Already invited to be editor'})
+        if (existingRequest2) return res.status(400).json({message:'Already invited to be editor'});
+        
+        const existingRequestByAnother = await BookmarkFolderRequest.findOne({recipient:friend._id,bookmarkFolderId:bookmarkFolderId});
 
-        const newEditorRequest = new BookmarkFolderRequest({requester:req.userId, recipient:friend._id, status:'unseen', rights:'viewer', bookmarkFolderId:bookmarkFolderId})
+        if (existingRequestByAnother) return res.status(400).json({message:'Already invited/joined'});
+
+        const newEditorRequest = new BookmarkFolderRequest({requester:req.userId, recipient:friend._id, status:'unseen', rights:'viewer', bookmarkFolderId:bookmarkFolderId});
 
         await newEditorRequest.save();
 
         res.status(201).json(newEditorRequest);
     } catch(error) {
-        res.status(404).json({message:error.message})
+        res.status(404).json({message:error.message});
+    }
+}
+
+export const acceptBookmarkRequest = async (req,res) => {
+    const {requestId, bookmarkFolderId, rights} = req.body;
+    console.log(req.userId);
+    console.log(requestId);
+    console.log(bookmarkFolderId);
+    console.log(rights);
+
+    try {
+        //update request to complete
+        const existingRequest = await BookmarkFolderRequest.findOne({recipient:req.userId, rights:rights, bookmarkFolderId : bookmarkFolderId})
+
+        existingRequest.status = 'complete';
+        
+        //update user to have bookmarkFolderId
+        const userAccount = await User.findById(req.userId);
+
+        let indexUser = userAccount.bookmarkfolders.findIndex((id)=>id===String(bookmarkFolderId));
+
+        
+
+        if (indexUser===-1) {
+            userAccount.bookmarkfolders.push(bookmarkFolderId);
+        }
+
+        //update bookmarkFolderId to add userId 
+        const bookmarkFolder = await BookmarkFolder.findById(bookmarkFolderId);
+
+        let indexFolder = bookmarkFolder[`${rights}s`].findIndex((id)=>id===String(req.userId));
+
+       
+
+        if(indexFolder===-1) {
+           bookmarkFolder[`${rights}s`].push(req.userId); 
+        } 
+    
+        //save to db
+
+        const updatedRequest = await BookmarkFolderRequest.findByIdAndUpdate(existingRequest._id, existingRequest, {new:true});
+
+        const updatedUser = await User.findByIdAndUpdate(req.userId, userAccount, {new:true});
+
+        const updatedFolder = await BookmarkFolder.findByIdAndUpdate(bookmarkFolderId, bookmarkFolder, {new:true});
+
+        const data = {updatedFolder, updatedUser, updatedRequest};
+
+       
+
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(404).json({message:error.message});
     }
 }
 

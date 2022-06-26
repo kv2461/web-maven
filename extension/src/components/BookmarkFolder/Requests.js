@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, } from 'react-redux';
 import { Box, Typography, ListItem, ButtonBase, Collapse, Button } from '@mui/material';
 import { Folder } from '@mui/icons-material';
 import { SearchById } from '../../actions/main';
-import { SearchFolderById } from '../../actions/folders';
+import { SearchFolderById, AcceptBookmarkRequest, GetFolders } from '../../actions/folders';
 
 
 const Requests = ({selected, setSelected, inviteToFolder}) => {
+  const user = JSON.parse(localStorage.getItem('web-maven-profile'));
   const dispatch = useDispatch();
   const [folderInfo, setFolderInfo] = useState();
   const [friendInfo, setFriendInfo] = useState();
   const [folderId, setFolderId] = useState(1);
   const [collapseInvite, setCollapseInvite] = useState(false);
+  const [completed,setCompleted] = useState(false);
 
   useEffect(()=> {
     const getInfo = async () => {
@@ -49,8 +51,12 @@ const Requests = ({selected, setSelected, inviteToFolder}) => {
 
 
   const accept = () => {
-    console.log(inviteToFolder._id)
-    console.log(folderId)
+    dispatch(AcceptBookmarkRequest(inviteToFolder._id, folderId, inviteToFolder.rights))
+    setFolderId('');
+    setSelected('');
+    setCollapseInvite(false);
+    dispatch(GetFolders());
+    setCompleted(true);
   }
 
   const deny = () => {
@@ -61,6 +67,8 @@ const Requests = ({selected, setSelected, inviteToFolder}) => {
 
   return (
     <div style={{margin:0,padding:0, display:'flex', flexDirection:'row'}}>
+      {!completed && (<>
+        
     <ListItem sx={{m:0,p:0, marginLeft:0, display:'flex', flexDirection:'column', alignItems:'flex-start'}} >
       <ButtonBase  sx={{m:0,p:0, marginLeft:0, display:'flex', flexDirection:'column', alignItems:'flex-start'}} onClick={selectFolder}>
         <div>
@@ -81,6 +89,8 @@ const Requests = ({selected, setSelected, inviteToFolder}) => {
       <Button onClick={accept}>Accept</Button>
       <Button onClick={deny}>Deny</Button>
     </Box>)}
+
+    </>)}
   </div>
   )
 

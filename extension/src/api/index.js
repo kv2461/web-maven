@@ -49,4 +49,8 @@ export const getFolders = () => API.get('/folders/get');
 
 export const searchFolderById = (id) => API.get(`/folders/searchById/${id}`);
 
+export const acceptBookmarkRequest = (requestId, bookmarkFolderId, rights) => API.patch('/folders/accept', {requestId, bookmarkFolderId, rights});
+
+
+//bookmarks
 export const addBookmark = (folderId, bookmark) => API.patch('/folders/addBookmark', {folderId, bookmark});

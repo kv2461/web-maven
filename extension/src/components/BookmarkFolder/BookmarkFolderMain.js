@@ -15,6 +15,9 @@ const BookmarkFolderMain = () => {
   const [showFolders, setShowFolders] = useState(false);
   const [selected, setSelected] = useState('');
 
+  const recievedFoldersPending = recievedFolders.filter((invite) => invite.status === 'unseen');
+  
+
   useEffect(()=> {
     dispatch(GetFolders())
   },[])
@@ -48,8 +51,8 @@ const BookmarkFolderMain = () => {
         {showFolders && folders && folders.length === 0 && (<Typography sx={{color:'secondary.main'}}>You currently have no bookmark folders created or joined</Typography>)}
         {showFolders && folders && folders.map((folder,index) => (<BookmarkFolder key={index} folder={folder} level={1} selected={selected} setSelected={setSelected}/>))}
 
-        {showRequests && recievedFolders && recievedFolders.map((inviteToFolder,index) => (<Requests key={index} inviteToFolder={inviteToFolder} selected={selected} setSelected={setSelected}/>))}
-        {showRequests && recievedFolders && recievedFolders.length === 0 && (<Typography sx={{color:'secondary.main'}}>You currently have no requests to join a bookmark folder</Typography>)}
+        {showRequests && recievedFoldersPending && recievedFoldersPending.map((inviteToFolder,index) => (<Requests key={index} inviteToFolder={inviteToFolder} selected={selected} setSelected={setSelected}/>))}
+        {showRequests && recievedFoldersPending && recievedFoldersPending.length === 0 && (<Typography sx={{color:'secondary.main'}}>You currently have no requests to join a bookmark folder</Typography>)}
 
         {showFavorites && (<Typography sx={{color:'secondary.main'}}>You currently have no favorite bookmark folders</Typography>)}
       </StyledList>

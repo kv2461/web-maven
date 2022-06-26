@@ -3,6 +3,8 @@ import { LOADING_OFF, LOADING_ON, CLEAR } from '../reducers/main';
 
 import * as api from '../api';
 
+//FOLDER STRUCTURE
+
 export const CreateNewFolder = (folder,editors,viewers) => async (dispatch) => {
     try {
         const { data } = await api.createNewFolder(folder);
@@ -33,6 +35,9 @@ export const CreateNewFolder = (folder,editors,viewers) => async (dispatch) => {
     }
 }
 
+
+//FOLDER SHARE REQUESTS 
+
 export const SendEditorRequest = (friend, bookmarkFolderId) => async (dispatch) => {
     try {
         const { data } = await api.sendEditorRequest(friend,bookmarkFolderId);
@@ -52,6 +57,24 @@ export const SendViewerRequest = (friend, bookmarkFolderId) => async (dispatch) 
         console.log(error);
     }
 }
+
+export  const AcceptBookmarkRequest = (requestId, bookmarkFolderId, rights) => async (dispatch) => {
+
+
+    try {
+        const { data } = await api.acceptBookmarkRequest(requestId, bookmarkFolderId, rights);
+
+
+        console.log(data);
+    } catch (error) {
+        console.log(error);
+    }
+} 
+
+
+
+
+//FOLDER INFO
 
 export const GetFolders = () => async (dispatch) => {
     try {
@@ -79,6 +102,11 @@ export const SearchFolderById = (folderId) => async (dispatch) => {
         console.log(error);
     }
 }
+
+
+
+
+//BOOKMARK
 
 export const AddBookmark = (folderId, bookmark) => async (dispatch) => {
     try{
