@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Typography, ButtonBase, Collapse, IconButton, ListItem, List} from '@mui/material';
 import { Folder, Group } from '@mui/icons-material';
-import { useDispatch, } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import BookmarkItem from '../BookmarkActions/BookmarkItem';
 
 import { SearchFolderById } from '../../actions/folders';
+import People from './People/People';
 
 const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
     const dispatch = useDispatch();
+    const { friends } = useSelector((state)=>state.mainSlice)
     const [collapseFolder, setCollapseFolder] = useState(false);
     const [folderInfo, setFolderInfo] = useState({});
     const [folderId, setFolderId] = useState(1)
     const [UI, setUI] = useState(parent);
-    const [collapseEditors, setCollapseEditors] = useState(false);
+    const [collapsePeople, setCollapsePeople] = useState(false);
 
     const textColor = 
         {color: level % 2 === 0 ? 'text.secondary' : 'text.primary',
@@ -34,7 +36,7 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
     const selectFolder = () => {
             setFolderId(folder);
             setSelected(folder);
-            console.log(selected);
+            console.log(friends);
         // if (UI === 'bookmark') {
             
         // } else {
@@ -59,10 +61,14 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
         <ButtonBase onClick={selectFolder}>
             <Typography sx={selected === folderId ?{color:'primary.main'}:textColor}variant='body1'><strong>{folderInfo.title}</strong></Typography>
         </ButtonBase>
-        {folderInfo?.editors?.length > 0 && (<IconButton onClick={()=>{setCollapseEditors(!collapseEditors)}}>
+        {folderInfo?.editors?.length > 0 && (<IconButton onClick={()=>{setCollapsePeople(!collapsePeople)}}>
             <Group sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
         </IconButton>)}
+
+        
     </ListItem>
+
+    {collapsePeople && <People folderInfo={folderInfo}/>}
     <Collapse sx={{m:0,p:0}} in={collapseFolder} timeout="auto" unmountOnExit>
           
                 <List sx={{m:0,p:0}}>
@@ -76,6 +82,7 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
                 </List>
 
         </Collapse>
+
     </>
   )
 }

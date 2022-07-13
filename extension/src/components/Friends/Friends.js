@@ -17,7 +17,8 @@ const Friends = () => {
   const { searchedFriend, searchedFriendError, sendFriendReqError, sent, inventory, loading, friends } = useSelector((state)=>state.mainSlice);
   const isSelf = Boolean(searchedFriend._id === user.result._id);
   const sentAlready = Boolean(sent.filter(friendStatus => friendStatus.recipient === searchedFriend._id).length > 0);
-  const uncompleted = inventory.filter((request)=>request.status !== 'completed');
+  const sentCompleted = sent.filter((request) => request.status !== 'completed');
+  const uncompleted = inventory.filter((request) => request.status !== 'completed');
   const friendAlready = Boolean(friends.findIndex((friend) =>friend === searchedFriend._id) !== -1);
 
   const [collapseSent, setCollapseSent] = useState(false);
@@ -94,15 +95,15 @@ const Friends = () => {
       { searchedFriendError && (<Typography sx={{color:'secondary.main'}}>{searchedFriendError}</Typography>)}
       
       <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
-      {sent?.length>0 && 
+      {sentCompleted?.length>0 && 
         (<>
-        <Button onClick={()=>{setCollapseSent(!collapseSent);setCollapseFriendRequests(false);setCollapseFriends(false);}}> {collapseSent ? 'Hide Pending' : 'Pending'}</Button>
+        <Button onClick={()=>{setCollapseSent(!collapseSent);setCollapseFriendRequests(false);setCollapseFriends(false);}}> {collapseSent ? 'Hide Pending' : `Sent Pending (${sentCompleted.length})`}</Button>
         </>)
       }
 
       {uncompleted?.length>0 && 
         (<>
-        <Button onClick={()=>{setCollapseFriendRequests(!collapseFriendRequests);setCollapseSent(false);setCollapseFriends(false)}}> {collapseFriendRequests ? 'Hide Friend Requests' : 'Friend Requests'}</Button>
+        <Button onClick={()=>{setCollapseFriendRequests(!collapseFriendRequests);setCollapseSent(false);setCollapseFriends(false)}}> {collapseFriendRequests ? 'Hide Friend Requests' : `Friend Requests (${uncompleted.length})`}</Button>
         </>)
       }
 
@@ -114,7 +115,7 @@ const Friends = () => {
       
       <div>
         <Collapse in={collapseSent} timeout='auto' unmountOnExit>
-                  {sent.map((friendReq) => (<Sent key={friendReq._id} friendReq={friendReq}/>))}
+                  {sentCompleted.map((friendReq) => (<Sent key={friendReq._id} friendReq={friendReq}/>))}
         </Collapse>
         <Collapse in={collapseFriendRequests} timeout='auto' unmountOnExit>
                   {uncompleted.map((friendReq) => (<Recieved key={friendReq._id} friendReq={friendReq}/>))}

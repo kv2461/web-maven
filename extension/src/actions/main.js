@@ -19,10 +19,12 @@ export const SearchByUsername = (username) => async (dispatch) => {
 
 export const SearchById = (id,situation) => async (dispatch) => {
     try {
+        
         dispatch(LOADING_ON());
         const { data } = await api.searchById(id);
         
         dispatch(LOADING_OFF());
+
         if (situation === 'friends') {
             dispatch(FRIEND_ARRAY(data));
         }

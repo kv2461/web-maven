@@ -10,7 +10,7 @@ import BookmarkFolderMain from '../BookmarkFolder/BookmarkFolderMain';
 import AddBookmark from '../BookmarkActions/AddBookmark.js';
 import Friends from '../Friends/Friends';
 import { GetFolders } from '../../actions/folders';
-import { SearchById } from '../../actions/main';
+import { SearchById, GetFriends } from '../../actions/main';
 
 
 const Interface = ({ url, tab, }) => {
@@ -56,7 +56,11 @@ const Interface = ({ url, tab, }) => {
 
     }, [collapseBookmarks,collapseFriends])
     
+    useEffect(()=> {
+      dispatch(GetFriends());
 
+    },[])
+  
 
   return (
     <>

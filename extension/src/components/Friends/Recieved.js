@@ -6,7 +6,7 @@ import { SearchById } from '../../actions/main';
 
 import { DenyFriendRequest, AcceptFriendRequest } from '../../actions/main';
 
-const Recieved = ({friendReq}) => {
+const Recieved = ({ friendReq }) => {
     const dispatch = useDispatch();
     const [friend, setFriend] = useState('');
 
@@ -15,6 +15,7 @@ const Recieved = ({friendReq}) => {
         const data = await dispatch(SearchById(friendReq.requester));
 
         setFriend(data);
+        
       }
 
       getInfo()

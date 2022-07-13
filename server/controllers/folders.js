@@ -11,19 +11,24 @@ export const createNewFolder = async (req,res) => {
         const existingUser = await User.findById(req.userId);
         
         const {_id} = await newBookmarkFolder.save();
+        console.log(_id);
 
         if (newBookmarkFolder.mainFolder) {
             existingUser.bookmarkfolders.push(_id);
             await User.findByIdAndUpdate(req.userId, existingUser, {new:true});
+            
+            res.status(201).json(newBookmarkFolder);
         } else {
             const existingParentFolder = await BookmarkFolder.findById(newBookmarkFolder.parentFolder); 
 
             existingParentFolder.subFolders.push(_id);
 
             const updatedFolder = await BookmarkFolder.findByIdAndUpdate(newBookmarkFolder.parentFolder,existingParentFolder, {new:true})
+
+            res.status(201).json(updatedFolder);
         }
 
-        res.status(201).json(newBookmarkFolder);
+        
 
         
 
@@ -92,10 +97,6 @@ export const sendViewerRequest = async (req,res) => {
 
 export const acceptBookmarkRequest = async (req,res) => {
     const {requestId, bookmarkFolderId, rights} = req.body;
-    console.log(req.userId);
-    console.log(requestId);
-    console.log(bookmarkFolderId);
-    console.log(rights);
 
     try {
         //update request to complete

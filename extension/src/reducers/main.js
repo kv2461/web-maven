@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const mainSlice = createSlice({
     name:'state',
-    initialState:{state:{}, searchedFriend:{}, searchedFriendError:'', sendFriendReqError:'', sent:[], inventory:[], loading:false, friends:[], friendArray:[]},
+    initialState:{state:{}, searchedFriend:{}, searchedFriendError:'', sendFriendReqError:'', sent:[], inventory:[], loading:false, friends:[], friendArray:[], },
     reducers: {
         SEARCH_FRIEND: (state, action) => {
             return {...state, searchedFriend:action.payload, searchedFriendError:'', sendFriendReqError:''}
