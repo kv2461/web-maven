@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Typography, ButtonBase, Collapse, IconButton, ListItem, List} from '@mui/material';
+import { Box, Typography, ButtonBase, Collapse, IconButton, ListItem, List } from '@mui/material';
 import { Folder, Group } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import BookmarkItem from '../BookmarkActions/BookmarkItem';
 
 import { SearchFolderById } from '../../actions/folders';
+import { SearchById } from '../../actions/main';
+
 import People from './People/People';
 
 const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
@@ -51,6 +53,16 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
         }
     },[selected, folderId])
 
+    useEffect(()=> {
+        const getInfo = async (friend) => {
+          const data = await dispatch(SearchById(friend,'friends'));
+  
+        }
+  
+        friends.map((friend) => getInfo(friend));
+          
+      },[friends])
+
 
   return (
     <>
@@ -68,7 +80,7 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
         
     </ListItem>
 
-    {collapsePeople && <People folderInfo={folderInfo}/>}
+    {collapsePeople && <People friends={friends} folderInfo={folderInfo}/>}
     <Collapse sx={{m:0,p:0}} in={collapseFolder} timeout="auto" unmountOnExit>
           
                 <List sx={{m:0,p:0}}>

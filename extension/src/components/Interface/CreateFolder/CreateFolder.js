@@ -1,17 +1,20 @@
 import React, { useState, useEffect, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Autocomplete, Switch, FormControlLabel, Typography, Container } from '@mui/material';
+import { TextField, Button, Autocomplete, Switch, FormControlLabel, Typography } from '@mui/material';
 
 import { CreateNewFolder } from '../../../actions/folders';
+import { SearchById } from '../../../actions/main';
+
 
 const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreateFolder }) => {
     const dispatch = useDispatch();
-    const { friendArray } = useSelector((state)=>state.mainSlice)
+    const { friends, friendArray } = useSelector((state)=>state.mainSlice)
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
     const initialFolderState = { title:'', creator:user.result._id, editors:[], viewers:[], mainFolder:mainFolder, availableToFriends:false};
     const [newFolder, setNewFolder] = useState(initialFolderState);
     const [editors, setEditors] = useState([]);
     const [viewers, setViewers] = useState([]);
+
 
 
     useEffect(()=> {
@@ -38,6 +41,17 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
         setViewers([]);
       }
     },[newFolder.availableToFriends])
+
+    useEffect(()=> {
+      const getInfo = async (friend) => {
+        const data = await dispatch(SearchById(friend,'friends'));
+
+      }
+
+      friends.map((friend) => getInfo(friend));
+        
+    },[friends])
+
 
   return (
     <>

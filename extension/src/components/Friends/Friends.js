@@ -19,7 +19,7 @@ const Friends = () => {
   const sentAlready = Boolean(sent.filter(friendStatus => friendStatus.recipient === searchedFriend._id).length > 0);
   const sentCompleted = sent.filter((request) => request.status !== 'completed');
   const uncompleted = inventory.filter((request) => request.status !== 'completed');
-  const friendAlready = Boolean(friends.findIndex((friend) =>friend === searchedFriend._id) !== -1);
+  const friendAlready = Boolean(friends.findIndex((friend) => friend === searchedFriend._id) !== -1);
 
   const [collapseSent, setCollapseSent] = useState(false);
   const [collapseFriendRequests, setCollapseFriendRequests] = useState(false);

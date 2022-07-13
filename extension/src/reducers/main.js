@@ -34,6 +34,6 @@ export const mainSlice = createSlice({
     }
 })
 
-export const { SEARCH_FRIEND, SEARCH_FRIEND_ERROR, SEND_FRIENDREQ_ERROR, FRIEND_STATUS, LOADING_OFF, LOADING_ON, CLEAR, ADDED_FRIENDS, FRIEND_ARRAY} = mainSlice.actions; 
+export const { SEARCH_FRIEND, SEARCH_FRIEND_ERROR, SEND_FRIENDREQ_ERROR, FRIEND_STATUS, LOADING_OFF, LOADING_ON, CLEAR, ADDED_FRIENDS, FRIEND_ARRAY, } = mainSlice.actions; 
 
 export default mainSlice.reducer;
