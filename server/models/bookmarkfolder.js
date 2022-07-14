@@ -47,6 +47,9 @@ const bookmarkFolderSchema = new mongoose.Schema({
     mainParentFolder:{
         type:String,
     },
+    mainCreator:{
+        type:String,
+    }
     
 })
 

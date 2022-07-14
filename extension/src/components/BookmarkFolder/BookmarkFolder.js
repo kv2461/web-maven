@@ -10,29 +10,19 @@ import { SearchById } from '../../actions/main';
 
 import People from './People/People';
 
-const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
+const BookmarkFolder = ({ folder, parent, selected, setSelected, level, }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'))
     const dispatch = useDispatch();
     const { friends } = useSelector((state)=>state.mainSlice)
     const [collapseFolder, setCollapseFolder] = useState(false);
     const [folderInfo, setFolderInfo] = useState({});
-    const [parentFolderInfo, setParentFolderInfo] = useState({});
     const [folderId, setFolderId] = useState(1)
     const [UI, setUI] = useState(parent);
     const [collapsePeople, setCollapsePeople] = useState(false);
     const isCreator = Boolean(folderInfo?.creator === user.result._id);
     const isEditor = Boolean(folderInfo?.editors?.indexOf(user.result._id) !== -1);
-    
+    const isMainCreator = Boolean(folderInfo?.mainCreator === user.result._id);
 
-    if (folderInfo?.main === 'false') {
-        const getInfo = async () => {
-            const data = await dispatch(SearchFolderById(folderInfo.parentFolders[0]));
-    
-            setParentFolderInfo(data);
-          }
-    }
-    const isMainCreator = Boolean(parentFolderInfo?.creator === user.result._id);
-    console.log(parentFolderInfo) //in progress
 
     const textColor = 
         {color: level % 2 === 0 ? 'text.secondary' : 'text.primary',
@@ -72,12 +62,6 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
     }
 
     useEffect(()=> {
-        if (selected!==folderId ) {
-            setCollapseFolder(false);
-        }
-    },[selected, folderId]) //subfolders are closing when opened because whole main folder is closing
-
-    useEffect(()=> {
         const getInfo = async (friend) => {
           const data = await dispatch(SearchById(friend,'friends'));
   
@@ -90,7 +74,7 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
 
   return (
     <>
-    <ListItem sx={level === 1 ? {m:0,p:0, marginLeft:0, display:'flex', flexDirection:'row', justifyContent:'space-between'} : {m:0, p:0, marginLeft: `${level*5}px`, display:'flex', flexDirection:'row', justifyContent:'space-between'}} key={folder}>
+    <ListItem sx={level === 1 ? {m:0,p:0, paddingLeft:0, display:'flex', flexDirection:'row', justifyContent:'space-between'} : {m:0, p:0, paddingLeft: `${level*5}px`, display:'flex', flexDirection:'row', justifyContent:'space-between'}} key={folder}>
         <div>
             <IconButton onClick={()=>setCollapseFolder(!collapseFolder)} edge='end'>
                 <Folder sx={{fontSize:'1.2rem', color:'#F8ECD1'}} />
@@ -100,9 +84,9 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
             </ButtonBase>
             </div>
         <div>
-            {level === 1 && <IconButton onClick={()=>{setCollapsePeople(!collapsePeople)}}>
+            <IconButton onClick={()=>{setCollapsePeople(!collapsePeople)}}>
                 <Group sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
-            </IconButton>}
+            </IconButton>
             {level === 1 && !isCreator && <IconButton onClick={()=>{removeFromBookmarkFolder(user.result._id, )}}>
                 <Logout sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
             </IconButton>} 
@@ -114,18 +98,19 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
         
     </ListItem>
 
-    {collapsePeople && <People friends={friends} folderInfo={folderInfo} selected={selected} collapsePeople={collapsePeople}/>}
+    {collapsePeople && <People friends={friends} level={level} folderInfo={folderInfo} selected={selected} collapsePeople={collapsePeople}/>}
     <Collapse sx={{m:0,p:0}} in={collapseFolder} timeout="auto" unmountOnExit>
-          
+                <List sx={{m:0,p:0}}>
+                    {folderInfo.bookmarks?.length > 0 && folderInfo.bookmarks.map((bookmark,index)=>(<BookmarkItem bookmark={bookmark} textColor={textColor} key={index} level={level+1}/>))}
+                </List>
+
                 <List sx={{m:0,p:0}}>
                 {folderInfo.subFolders?.length > 0 && folderInfo.subFolders.map((subfolder,index) => (
                     <BookmarkFolder key={index} folder={subfolder} parent={parent} setSelected={setSelected} selected={selected} level={level+1}/>
                 ))}
                 </List>
                 
-                <List sx={{m:0,p:0}}>
-                    {folderInfo.bookmarks?.length > 0 && folderInfo.bookmarks.map((bookmark,index)=>(<BookmarkItem bookmark={bookmark} textColor={textColor} key={index} level={level+1}/>))}
-                </List>
+                
 
         </Collapse>
 

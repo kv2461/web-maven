@@ -44,7 +44,7 @@ const BookmarkFolderMain = () => {
   return (
 
     <Container sx={{display:'flex',flexDirection:'column'}}>
-      <Button onClick={toggleShowRequests}>Requests</Button>
+      <Button onClick={toggleShowRequests}>Requests ({recievedFoldersPending.length})</Button>
       <Button onClick={toggleShowFavorites}>Favorites</Button>
       <Button onClick={toggleShowFolders}>Folders</Button>
       <StyledList subheader={<li />}>
@@ -61,23 +61,3 @@ const BookmarkFolderMain = () => {
 }
 
 export default BookmarkFolderMain
-
-//i want collapsing and recursion
-
-//this should also be a list
-
-{/* <li key={itemKey}>
-<ul>
-   {index > 0 ? <Divider sx={{borderBottomWidth:3}} /> : null}
-    { subgenre === 'foodRecipe' ? 
-      <ListSubheader sx={{fontWeight:700 ,lineHeight:1, p:2}} >{`${name?.charAt(0).toUpperCase()}${name?.slice(1)}`}</ListSubheader>
-     : <ListSubheader sx={{fontWeight:700 ,lineHeight:1, p:2}} >{index + 1} - {name}</ListSubheader>
-    }
-
-    <ListItem key={itemKey}>
-      {subgenre === 'foodRecipe' && image !== null && (<Box component='img' sx={{m:1,p:1, maxHeight:'40px', maxWidth:'40px'}} src={image}/>)}
-        <ListItemText 
-          disableTypography 
-          primary={ <> */}
-
-          //to see if an editor or viewer is pending, the folder's info via hover info box or edit will show it

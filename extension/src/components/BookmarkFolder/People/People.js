@@ -7,7 +7,7 @@ import { CLEAR_EDITOR_ERROR, CLEAR_VIEWER_ERROR } from '../../../reducers/folder
 import Editor from './Editor';
 import Viewer from './Viewer';
 
-const People = ({ folderInfo, friends, selected, collapsePeople }) => {
+const People = ({ folderInfo, friends, selected, collapsePeople, level }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'))
     const dispatch = useDispatch();
     const { friendArray } = useSelector((state)=>state.mainSlice);
@@ -73,7 +73,7 @@ const People = ({ folderInfo, friends, selected, collapsePeople }) => {
   return (
     <Container>
         <Typography>Created by {creatorInfo.username}</Typography>
-        <Button onClick={()=>{setCollapseEditors(!collapseEditors);setCollapseViewers(false);}}> {collapseEditors ? 'Hide Editors' : `Editors (${folderInfo.editors.length})`}</Button>
+        {level === 1 && (<><Button onClick={()=>{setCollapseEditors(!collapseEditors);setCollapseViewers(false);}}> {collapseEditors ? 'Hide Editors' : `Editors (${folderInfo.editors.length})`}</Button>
         <Button onClick={()=>{setCollapseViewers(!collapseViewers);setCollapseEditors(false);}}> {collapseViewers ? 'Hide Viewers' : `Viewers (${folderInfo.viewers.length})`}</Button>
         <Collapse in={collapseEditors} timeout='auto' unmountOnExit>
             {folderInfo.editors.map((editor)=> (<Editor key={editor} editor={editor} creator={creatorInfo}/>))}
@@ -112,7 +112,7 @@ const People = ({ folderInfo, friends, selected, collapsePeople }) => {
                     value={viewers}
                     onChange={(event,value)=>setViewers(value)}
                     getOptionLabel={option => option.username}
-                    fullWidth
+                    fullWidt
                     noOptionsText={'No Friends'}
                     renderInput={(params) => <TextField {...params} label="Invite Viewers" placeholder="Invite Viewers"/>}
                 />
@@ -120,7 +120,8 @@ const People = ({ folderInfo, friends, selected, collapsePeople }) => {
             </>)}
             
         </Collapse>
-
+</>)}
+        
     </Container>
   )
 }

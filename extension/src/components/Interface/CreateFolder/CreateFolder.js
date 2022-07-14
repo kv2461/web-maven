@@ -10,7 +10,7 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
     const dispatch = useDispatch();
     const { friends, friendArray } = useSelector((state)=>state.mainSlice)
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
-    const initialFolderState = { title:'', creator:user.result._id, editors:[], viewers:[], mainFolder:mainFolder, availableToFriends:false};
+    const initialFolderState = { title:'', creator:user.result._id, editors:[], viewers:[], mainFolder:mainFolder, availableToFriends:false, mainCreator:user.result._id};
     const [newFolder, setNewFolder] = useState(initialFolderState);
     const [editors, setEditors] = useState([]);
     const [viewers, setViewers] = useState([]);
@@ -20,7 +20,7 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
     useEffect(()=> {
       if (!mainFolder) {
         
-        setNewFolder({ title:'', creator:user.result._id, mainFolder:mainFolder, subFolders:[], parentFolders:[...folderInfo?.parentFolders,folderInfo?._id], parentFolder:folderInfo._id });
+        setNewFolder({ title:'', creator:user.result._id, mainFolder:mainFolder, subFolders:[], parentFolders:[...folderInfo?.parentFolders,folderInfo?._id], parentFolder:folderInfo._id, mainCreator:folderInfo.mainCreator });
       }
     },[])
 
@@ -28,7 +28,7 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
       dispatch(CreateNewFolder(newFolder, editors, viewers));
       setShowCreateFolder(false);
       if (!mainFolder) {
-        setNewFolder({ title:'', creator:user.result._id, mainFolder:mainFolder, subFolders:[], parentFolders:[...folderInfo?.parentFolders,folderInfo?._id], parentFolder:folderInfo._id });
+        setNewFolder({ title:'', creator:user.result._id, mainFolder:mainFolder, subFolders:[], parentFolders:[...folderInfo?.parentFolders,folderInfo?._id], parentFolder:folderInfo._id, mainCreator:folderInfo.mainCreator });
       }
     }
 

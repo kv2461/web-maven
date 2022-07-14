@@ -1,7 +1,7 @@
 import React from 'react'
 import { ListItem, ListItemText, Box, Link} from '@mui/material';
 
-const BookmarkItem = ({bookmark, level,textColor}) => {
+const BookmarkItem = ({ bookmark, level, textColor }) => {
 
 
   return (
