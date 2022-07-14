@@ -297,3 +297,21 @@ export const addBookmark = async (req,res) => {
         res.status(404).json({message:error.message});
     }
 }
+
+export const deleteBookmark = async (req,res) => {
+    const {folderId, bookmark} = req.body;
+    try { 
+        const existingFolder = await BookmarkFolder.findById(folderId);
+
+        let indexFolder = existingFolder.bookmarks.findIndex((bm) => (bm.createdAt === bookmark.createdAt && bm.creator === bookmark.creator && bookmark.url === bookmark.url));
+            if ( indexFolder === -1) {
+                return res.status(400).json({message:`Already deleted`});
+            }
+
+        const updatedFolder = await BookmarkFolder.updateOne({ _id: folderId }, {$pull: { bookmarks: bookmark }}, {new:true})
+
+        res.status(201).json(updatedFolder);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}

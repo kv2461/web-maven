@@ -1,22 +1,23 @@
-import React from 'react'
-import { ListItem, ListItemText, Box, Link, IconButton } from '@mui/material';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { ListItem, ListItemText, Box, Link, IconButton, Typography } from '@mui/material';
 import { DeleteForever } from '@mui/icons-material';
+import { DeleteBookmark } from '../../actions/folders';
+import { CLEAR_BOOKMARK_ERROR } from '../../reducers/folders'
 
-const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isMainCreator, isEditor }) => {
+const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isMainCreator, isEditor, setCollapseFolder, collapseFolder }) => {
   const user = JSON.parse(localStorage.getItem('web-maven-profile'))
+  const dispatch = useDispatch();
   const isBookmarkCreator = Boolean(bookmark?.creator === user.result._id);
-  //need to make it so that only creator of bookmark folder, maincreator of parent folder, or creator of bookmark can delete
+
   //need an info button, which shows delete button and actual url and created by 
 
   //should make a way to have a favorite bookmark folder for users - favorite can be done by everyone
 
 
-  const deleteBookmark = () => {
-    console.log(bookmark);
-    console.log(folder);
-    console.log(isFolderCreator);
-    console.log(isMainCreator);
-    console.log(isBookmarkCreator);
+  const deleteBookmark = async() => {
+    dispatch(CLEAR_BOOKMARK_ERROR());
+    dispatch(DeleteBookmark(folder._id, bookmark));
   }
 
 
@@ -33,6 +34,7 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
                             </IconButton>}
                             </div>}
                   />
+                  
     </ListItem>
   </>
   )

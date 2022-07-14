@@ -1,6 +1,6 @@
 import { GET_FOLDERS } from '../reducers/folders'; 
 import { LOADING_OFF, LOADING_ON, CLEAR, } from '../reducers/main';
-import { ADD_EDITOR_ERROR, ADD_VIEWER_ERROR } from '../reducers/folders'
+import { ADD_EDITOR_ERROR, ADD_VIEWER_ERROR, DELETE_BOOKMARK_ERROR } from '../reducers/folders'
 
 import * as api from '../api';
 
@@ -156,14 +156,28 @@ export const SearchFolderById = (folderId) => async (dispatch) => {
 
 export const AddBookmark = (folderId, bookmark) => async (dispatch) => {
     try{
-        dispatch(LOADING_ON);
+        dispatch(LOADING_ON());
         const data = await api.addBookmark(folderId, bookmark);
 
-        console.log(data);
         dispatch(LOADING_OFF());
         dispatch(GetFolders());
         dispatch(CLEAR());
     } catch (error) {
         console.log(error);
+    }
+}
+
+export const DeleteBookmark = (folderId, bookmark) => async (dispatch) => {
+    try {
+        dispatch(LOADING_ON());
+        
+        const data = await api.deleteBookmark(folderId, bookmark);
+
+        dispatch(LOADING_OFF());
+        dispatch(GetFolders());
+        dispatch(CLEAR());
+    } catch (error) {
+        console.log(error.response.data.message);
+        dispatch(DELETE_BOOKMARK_ERROR(error.response.data.message));
     }
 }

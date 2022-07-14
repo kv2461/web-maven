@@ -8,12 +8,15 @@ import BookmarkItem from '../BookmarkActions/BookmarkItem';
 import { SearchFolderById, RemoveFromBookmarkFolder, DeleteBookmarkFolder } from '../../actions/folders';
 import { SearchById } from '../../actions/main';
 
+import { CLEAR_BOOKMARK_ERROR } from '../../reducers/folders'
+
 import People from './People/People';
 
 const BookmarkFolder = ({ folder, parent, selected, setSelected, level, }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
     const dispatch = useDispatch();
     const { friends } = useSelector((state)=>state.mainSlice);
+    const { bookmarkError } = useSelector((state)=>state.folderSlice);
     const [collapseFolder, setCollapseFolder] = useState(false);
     const [folderInfo, setFolderInfo] = useState({});
     const [folderId, setFolderId] = useState(1)
@@ -37,6 +40,11 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level, }) => {
         }
   
         getInfo()
+
+        if (bookmarkError) {
+            dispatch(CLEAR_BOOKMARK_ERROR());
+        }
+
 
       },[folder,selected,collapseFolder])
 
@@ -98,7 +106,8 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level, }) => {
     {collapsePeople && <People friends={friends} level={level} folderInfo={folderInfo} selected={selected} collapsePeople={collapsePeople}/>}
     <Collapse sx={{m:0,p:0}} in={collapseFolder} timeout="auto" unmountOnExit>
                 <List sx={{m:0,p:0}}>
-                    {folderInfo?.bookmarks?.length > 0 && folderInfo?.bookmarks?.map((bookmark,index)=>(<BookmarkItem folder={folderInfo} isFolderCreator={isCreator} isEditor={isEditor} isMainCreator={isMainCreator} bookmark={bookmark} textColor={textColor} key={index} level={level+1}/>))}
+                    {folderInfo?.bookmarks?.length > 0 && folderInfo?.bookmarks?.map((bookmark,index)=>(<BookmarkItem folder={folderInfo} isFolderCreator={isCreator} isEditor={isEditor} setCollapseFolder={setCollapseFolder} collapseFolder={collapseFolder} isMainCreator={isMainCreator} bookmark={bookmark} textColor={textColor} key={index} level={level+1}/>))}
+                    {bookmarkError && <Typography sx={{color:'secondary.main'}}>{bookmarkError}</Typography>}
                 </List>
 
                 <List sx={{m:0,p:0}}>
