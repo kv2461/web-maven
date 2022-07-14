@@ -5,20 +5,24 @@ import { SendEditorRequest } from '../../../actions/folders';
 import { SearchById } from '../../../actions/main';
 import { CLEAR_EDITOR_ERROR } from '../../../reducers/folders';
 import Editor from './Editor';
+import Viewer from './Viewer';
 
 const People = ({ folderInfo, friends, selected, collapsePeople }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'))
     const dispatch = useDispatch();
     const { friendArray } = useSelector((state)=>state.mainSlice);
-    const { addEditorError } = useSelector((state)=>state.folderSlice);
+    const { addEditorError, addViewerError } = useSelector((state)=>state.folderSlice);
     const [creatorInfo, setCreatorInfo] = useState({});
     const [collapseEditors, setCollapseEditors] = useState(false);
     const [collapseViewers, setCollapseViewers] = useState(false);
     const [addEditors, setAddEditors] = useState(false);
+    const [addViewers, setAddViewers] = useState(false);
     const [editors, setEditors] = useState([]);
-    const availableEditors = friendArray.filter((friend) => folderInfo.editors.indexOf(friend._id) === -1 && creatorInfo._id !== friend._id)
+    const [viewers, setViewers] = useState([]);
+    const availableEditors = friendArray.filter((friend) => folderInfo.editors.indexOf(friend._id) === -1 && creatorInfo._id !== friend._id);
+    const availableViewers = availableEditors.filter((friend) => folderInfo.viewers.indexOf(friend._id) === -1 );
     const isCreator = Boolean(folderInfo.creator === user.result._id);
-    const isEditor = Boolean(folderInfo.editors.indexOf(user.result._id) !== -1)
+    const isEditor = Boolean(folderInfo.editors.indexOf(user.result._id) !== -1);
 
 
     useEffect(() => {
@@ -50,9 +54,14 @@ const People = ({ folderInfo, friends, selected, collapsePeople }) => {
         setAddEditors(false);
       }
 
+      const sendViewerRequest = async () => {
+
+      }
+
       useEffect(() => {
         dispatch(CLEAR_EDITOR_ERROR());
       },[collapseEditors, editors, selected, collapsePeople])
+      
  
   return (
     <Container>
@@ -81,6 +90,30 @@ const People = ({ folderInfo, friends, selected, collapsePeople }) => {
             </>)}
             
         </Collapse>
+
+        <Collapse in={collapseViewers} timeout='auto' unmountOnExit>
+            {folderInfo.viewers.map((viewer)=> (<Viewer key={viewer} viewer={viewer} creator={creatorInfo} isEditor={isEditor}/>))}
+            {(isCreator || isEditor) && <Button onClick={()=>{setAddViewers(!addViewers)}}>{addViewers ? 'Cancel' : 'Add Viewers'}</Button>}
+            {addViewerError && addViewerError.map((err) => (<Typography sx={{color:'secondary.main'}}>{err}</Typography>))}
+            {addViewers && (
+            <>
+                <Autocomplete style={{margin:'0 5px 5px 5px'}}
+                    multiple
+                    disablePortal
+                    id="invite-editors"
+                    options={availableViewers}
+                    value={viewers}
+                    onChange={(event,value)=>setViewers(value)}
+                    getOptionLabel={option => option.username}
+                    fullWidth
+                    noOptionsText={'No Friends'}
+                    renderInput={(params) => <TextField {...params} label="Invite Editors" placeholder="Invite Viewers"/>}
+                />
+                <Button onClick={()=>{sendViewerRequest()}}>Add Viewers</Button>
+            </>)}
+            
+        </Collapse>
+
     </Container>
   )
 }
