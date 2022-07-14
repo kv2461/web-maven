@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Typography, ButtonBase, Collapse, IconButton, ListItem, List, Container } from '@mui/material';
+import { Typography, ButtonBase, Collapse, IconButton, ListItem, List, } from '@mui/material';
 import { Folder, Group, Logout, DeleteForever } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -77,7 +77,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level, }) => {
                 <Folder sx={{fontSize:'1.2rem', color:'#F8ECD1'}} />
             </IconButton>
             <ButtonBase onClick={selectFolder}>
-                <Typography sx={selected === folderId ?{color:'primary.main'}:textColor}variant='body1'><strong>{folderInfo.title}</strong></Typography>
+                <Typography sx={selected === folderId ?{color:'primary.main'}:textColor}variant='body1'><strong>{folderInfo?.title}</strong></Typography>
             </ButtonBase>
             </div>
         <div>
@@ -98,11 +98,11 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level, }) => {
     {collapsePeople && <People friends={friends} level={level} folderInfo={folderInfo} selected={selected} collapsePeople={collapsePeople}/>}
     <Collapse sx={{m:0,p:0}} in={collapseFolder} timeout="auto" unmountOnExit>
                 <List sx={{m:0,p:0}}>
-                    {folderInfo.bookmarks?.length > 0 && folderInfo.bookmarks.map((bookmark,index)=>(<BookmarkItem bookmark={bookmark} textColor={textColor} key={index} level={level+1}/>))}
+                    {folderInfo?.bookmarks?.length > 0 && folderInfo?.bookmarks?.map((bookmark,index)=>(<BookmarkItem bookmark={bookmark} textColor={textColor} key={index} level={level+1}/>))}
                 </List>
 
                 <List sx={{m:0,p:0}}>
-                {folderInfo.subFolders?.length > 0 && folderInfo.subFolders.map((subfolder,index) => (
+                {folderInfo?.subFolders?.length > 0 && folderInfo?.subFolders?.map((subfolder,index) => (
                     <BookmarkFolder key={index} folder={subfolder} parent={parent} setSelected={setSelected} selected={selected} level={level+1}/>
                 ))}
                 </List>
