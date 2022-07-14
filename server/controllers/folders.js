@@ -42,14 +42,19 @@ export const deleteBookmarkFolder = async (req, res) => {
     //delete from subfolder of mainfolder if its a subfolder
 
     try {
-        const foldersToBeDeleted = await BookmarkFolder.find({ $or: [{parentFolders: {$in:folder._id} }, ] }); //finds all folders that has folder as a parent, needs to be deleteMany when folder is deleted from subfolder
+        const foldersToBeDeleted = await BookmarkFolder.deleteMany({ $or: [{parentFolders: {$in:folder._id} }, ] }); 
+        //finds all folders that has folder as a parent, needs to be deleteMany when folder is deleted from subfolder
 
         if (!folder.mainFolder) { 
             const existingParent = await BookmarkFolder.findById(folder.parentFolder);
 
             existingParent.subFolders = existingParent.subFolders.filter((subfolder) => subfolder !== folder._id) //need to save
 
-            // console.log(existingParent);
+            const updatedFolder = await BookmarkFolder.findByIdAndUpdate(folder.parentFolder, existingParent, {new:true})
+
+            await BookmarkFolder.deleteOne({_id: folder._id}); //need to delete 
+        
+            res.status(201).json(updatedFolder);
         } else { //if main folder,  need to clean up each editor/viewer user object folder array, as well as creator's , use updateMany?
                 //also need to delete all the bookmark requests
             const usersToBeUpdated = await User.find({ $or: [{bookmarkfolders: {$in:folder._id} }, ] }); //switch to updateMany
@@ -59,13 +64,12 @@ export const deleteBookmarkFolder = async (req, res) => {
             const requestsToBeDeleted = await BookmarkFolderRequest.find({bookmarkFolderId: folder._id}); //switch to deleteMany
 
             // console.log(requestsToBeDeleted);
-        }
+            const folderToBeDeleted = await BookmarkFolder.findOne({_id: folder._id}); //need to delete 
 
-        const folderToBeDeleted = await BookmarkFolder.findOne({_id: folder._id}); //need to delete 
-
-        console.log(folderToBeDeleted);
+            console.log(folderToBeDeleted);
         
-        res.status(201).json(foldersToBeDeleted);
+            res.status(201).json(foldersToBeDeleted);
+        }
     } catch (error) {
         res.status(404).json({message:error.message});
     }

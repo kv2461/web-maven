@@ -54,6 +54,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level, }) => {
     }
 
     const deleteBookmarkFolder = async (folder) => {
+        setCollapseFolder(false);
         await dispatch(DeleteBookmarkFolder(folder));
     }
 
