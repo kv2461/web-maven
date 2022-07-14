@@ -16,12 +16,23 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
     const { friends } = useSelector((state)=>state.mainSlice)
     const [collapseFolder, setCollapseFolder] = useState(false);
     const [folderInfo, setFolderInfo] = useState({});
+    const [parentFolderInfo, setParentFolderInfo] = useState({});
     const [folderId, setFolderId] = useState(1)
     const [UI, setUI] = useState(parent);
     const [collapsePeople, setCollapsePeople] = useState(false);
     const isCreator = Boolean(folderInfo?.creator === user.result._id);
     const isEditor = Boolean(folderInfo?.editors?.indexOf(user.result._id) !== -1);
+    
 
+    if (folderInfo?.main === 'false') {
+        const getInfo = async () => {
+            const data = await dispatch(SearchFolderById(folderInfo.parentFolders[0]));
+    
+            setParentFolderInfo(data);
+          }
+    }
+    const isMainCreator = Boolean(parentFolderInfo?.creator === user.result._id);
+    console.log(parentFolderInfo) //in progress
 
     const textColor = 
         {color: level % 2 === 0 ? 'text.secondary' : 'text.primary',
@@ -61,10 +72,10 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
     }
 
     useEffect(()=> {
-        if (selected!==folderId) {
+        if (selected!==folderId ) {
             setCollapseFolder(false);
         }
-    },[selected, folderId])
+    },[selected, folderId]) //subfolders are closing when opened because whole main folder is closing
 
     useEffect(()=> {
         const getInfo = async (friend) => {
@@ -95,7 +106,7 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
             {level === 1 && !isCreator && <IconButton onClick={()=>{removeFromBookmarkFolder(user.result._id, )}}>
                 <Logout sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
             </IconButton>} 
-            {isCreator && <IconButton onClick={()=>{deleteBookmarkFolder()}}>
+            {(isCreator || isMainCreator) && <IconButton onClick={()=>{deleteBookmarkFolder()}}>
                 <DeleteForever sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
             </IconButton>}
         </div>
