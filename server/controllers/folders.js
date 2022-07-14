@@ -21,7 +21,7 @@ export const createNewFolder = async (req,res) => {
         } else {
             const existingParentFolder = await BookmarkFolder.findById(newBookmarkFolder.parentFolder); 
 
-            existingParentFolder.subFolders.push(_id);
+            existingParentFolder.subFolders.push(String(_id));
 
             const updatedFolder = await BookmarkFolder.findByIdAndUpdate(newBookmarkFolder.parentFolder,existingParentFolder, {new:true})
 
@@ -49,13 +49,21 @@ export const deleteBookmarkFolder = async (req, res) => {
 
             existingParent.subFolders = existingParent.subFolders.filter((subfolder) => subfolder !== folder._id) //need to save
 
-            console.log(existingParent);
+            // console.log(existingParent);
         } else { //if main folder,  need to clean up each editor/viewer user object folder array, as well as creator's , use updateMany?
                 //also need to delete all the bookmark requests
-            const usersToBeUpdated = await User.find({ $or: [{bookmarkfolders: {$in:folder._id} }, ] })
+            const usersToBeUpdated = await User.find({ $or: [{bookmarkfolders: {$in:folder._id} }, ] }); //switch to updateMany
 
-            console.log(usersToBeUpdated)
+            // console.log(usersToBeUpdated);
+
+            const requestsToBeDeleted = await BookmarkFolderRequest.find({bookmarkFolderId: folder._id}); //switch to deleteMany
+
+            // console.log(requestsToBeDeleted);
         }
+
+        const folderToBeDeleted = await BookmarkFolder.findOne({_id: folder._id}); //need to delete 
+
+        console.log(folderToBeDeleted);
         
         res.status(201).json(foldersToBeDeleted);
     } catch (error) {
