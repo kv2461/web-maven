@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import BookmarkItem from '../BookmarkActions/BookmarkItem';
 
-import { SearchFolderById, RemoveFromBookmarkFolder } from '../../actions/folders';
+import { SearchFolderById, RemoveFromBookmarkFolder, DeleteBookmarkFolder } from '../../actions/folders';
 import { SearchById } from '../../actions/main';
 
 import People from './People/People';
@@ -53,12 +53,8 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level, }) => {
         }
     }
 
-    const deleteBookmarkFolder = () => {
-        if (level !== 1) {
-            console.log('sub')
-        } else {
-            console.log('main')
-        }
+    const deleteBookmarkFolder = async (folder) => {
+        await dispatch(DeleteBookmarkFolder(folder));
     }
 
     useEffect(()=> {
@@ -87,10 +83,10 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level, }) => {
             <IconButton onClick={()=>{setCollapsePeople(!collapsePeople)}}>
                 <Group sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
             </IconButton>
-            {level === 1 && !isCreator && <IconButton onClick={()=>{removeFromBookmarkFolder(user.result._id, )}}>
+            {level === 1 && !isCreator && <IconButton onClick={()=>{removeFromBookmarkFolder(user.result._id)}}>
                 <Logout sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
             </IconButton>} 
-            {(isCreator || isMainCreator) && <IconButton onClick={()=>{deleteBookmarkFolder()}}>
+            {(isCreator || isMainCreator) && <IconButton onClick={()=>{deleteBookmarkFolder(folderInfo)}}>
                 <DeleteForever sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
             </IconButton>}
         </div>

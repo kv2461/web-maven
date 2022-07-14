@@ -1,12 +1,14 @@
 import express from 'express';
 
-import { createNewFolder, sendViewerRequest, sendEditorRequest, getFolders, searchFolderById, addBookmark, acceptBookmarkRequest, denyBookmarkRequest, removeFromBookmarkFolder } from '../controllers/folders.js';
+import { createNewFolder, sendViewerRequest, sendEditorRequest, getFolders, searchFolderById, addBookmark, acceptBookmarkRequest, denyBookmarkRequest, removeFromBookmarkFolder, deleteBookmarkFolder } from '../controllers/folders.js';
 
 import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
 router.post('/createNew', auth, createNewFolder);
+
+router.patch('/delete', auth, deleteBookmarkFolder)
 
 router.post('/sendEditorReq', auth, sendEditorRequest);
 

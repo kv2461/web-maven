@@ -4,7 +4,7 @@ import { ADD_EDITOR_ERROR, ADD_VIEWER_ERROR } from '../reducers/folders'
 
 import * as api from '../api';
 
-//FOLDER STRUCTURE
+//FOLDER MAIN
 
 export const CreateNewFolder = (folder,editors,viewers) => async (dispatch) => {
     try {
@@ -46,6 +46,18 @@ export const RemoveFromBookmarkFolder = (userId, bookmarkFolderId, rights) => as
     } catch (error) {
         console.log(error.response.data.message);
 
+    }
+}
+
+export const DeleteBookmarkFolder = (folder) => async (dispatch) => {
+    try {
+        const { data } = await api.deleteBookmarkFolder(folder);
+
+        console.log(data);
+
+        dispatch(GetFolders())
+    } catch (error) {
+        console.log(error.response.data.message);
     }
 }
 

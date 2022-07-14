@@ -41,6 +41,8 @@ export const removeFriend = (friend) => API.patch('/friends/remove', friend);
 //folders
 export const createNewFolder = (folder) => API.post('/folders/createNew', folder);
 
+export const deleteBookmarkFolder = (folder) => API.patch('/folders/delete', folder);
+
 export const sendEditorRequest = (friend,bookmarkFolderId) => API.post('/folders/sendEditorReq', {friend,bookmarkFolderId});
 
 export const sendViewerRequest = (friend,bookmarkFolderId) => API.post('/folders/sendViewerReq', {friend,bookmarkFolderId});
