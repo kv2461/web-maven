@@ -53,7 +53,11 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
     }
 
     const deleteBookmarkFolder = () => {
-        console.log('delete')
+        if (level !== 1) {
+            console.log('sub')
+        } else {
+            console.log('main')
+        }
     }
 
     useEffect(()=> {
@@ -85,12 +89,12 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
             </ButtonBase>
             </div>
         <div>
-            <IconButton onClick={()=>{setCollapsePeople(!collapsePeople)}}>
+            {level === 1 && <IconButton onClick={()=>{setCollapsePeople(!collapsePeople)}}>
                 <Group sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
-            </IconButton>
-            {!isCreator && <IconButton onClick={()=>{removeFromBookmarkFolder(user.result._id, )}}>
-                <Logout sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
             </IconButton>}
+            {level === 1 && !isCreator && <IconButton onClick={()=>{removeFromBookmarkFolder(user.result._id, )}}>
+                <Logout sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
+            </IconButton>} 
             {isCreator && <IconButton onClick={()=>{deleteBookmarkFolder()}}>
                 <DeleteForever sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
             </IconButton>}

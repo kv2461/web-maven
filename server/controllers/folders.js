@@ -42,45 +42,43 @@ export const removeFromBookmarkFolder = async (req,res) => {
         //delete Request
         const existingRequest = await BookmarkFolderRequest.findOne({recipient:userId, bookmarkFolderId:folderId})
 
-        console.log(existingRequest)
-        
         //update user to not have bookmarkFolderId
         const userAccount = await User.findById(userId);
 
-        console.log(userAccount)
+        let indexUser = userAccount.bookmarkfolders.findIndex((id)=>id===folderId);
 
-        // let indexUser = userAccount.bookmarkfolders.findIndex((id)=>id===String(bookmarkFolderId));
+        if (indexUser !==-1) {
+            userAccount.bookmarkfolders = userAccount.bookmarkfolders.filter((folder) => folder !== folderId)
+            console.log(folderId)
+        };
 
-        
-
-        // if (indexUser===-1) {
-        //     userAccount.bookmarkfolders.push(bookmarkFolderId);
-        // }
 
         // //update bookmarkFolderId to remove userId 
-        // const bookmarkFolder = await BookmarkFolder.findById(bookmarkFolderId);
+        const bookmarkFolder = await BookmarkFolder.findById(folderId);
 
-        // let indexFolder = bookmarkFolder[`${rights}s`].findIndex((id)=>id===String(req.userId));
+        let indexFolder = bookmarkFolder[`${rights}s`].findIndex((id)=>id===String(userId));
 
-       
 
-        // if(indexFolder===-1) {
-        //    bookmarkFolder[`${rights}s`].push(req.userId); 
-        // } 
+        if(indexFolder!==-1) {
+            bookmarkFolder[`${rights}s`] = bookmarkFolder[`${rights}s`].filter((people) => people !== userId); 
+        } 
+
     
         // //save to db
 
-        // const updatedRequest = await BookmarkFolderRequest.findByIdAndUpdate(existingRequest._id, existingRequest, {new:true});
+        if (existingRequest) {
+            await BookmarkFolderRequest.deleteOne({recipient:userId, bookmarkFolderId:folderId});
+        }
 
-        // const updatedUser = await User.findByIdAndUpdate(req.userId, userAccount, {new:true});
+        const updatedUser = await User.findByIdAndUpdate(userId, userAccount, {new:true});
 
-        // const updatedFolder = await BookmarkFolder.findByIdAndUpdate(bookmarkFolderId, bookmarkFolder, {new:true});
+        const updatedFolder = await BookmarkFolder.findByIdAndUpdate(folderId, bookmarkFolder, {new:true});
 
-        // const data = {updatedFolder, updatedUser, updatedRequest};
+        const data = {updatedFolder, updatedUser};
 
        
 
-        res.status(200).json(req.body);
+        res.status(200).json(data);
     } catch (error) {
         res.status(404).json({message:error.message});
     }
@@ -95,7 +93,9 @@ export const sendEditorRequest = async (req,res) => {
 
         if (existingRequest) return res.status(400).json({message:`A request has already been sent to ${friend.username}`});
 
-        const existingRequest2 = await BookmarkFolderRequest.findOne({recipient:friend._id, rights:'viewer', bookmarkFolderId:bookmarkFolderId});
+        const existingRequest2 = await BookmarkFolderRequest.findOne({recipient:friend._id, rights:'viewer', status:'unseen', bookmarkFolderId:bookmarkFolderId});
+
+        const existingRequest3 = await BookmarkFolderRequest.findOne({recipient:friend._id, rights:'viewer', status:'complete', bookmarkFolderId:bookmarkFolderId});
 
         if (existingRequest2) {
             existingRequest2.rights = 'editor';
@@ -103,6 +103,10 @@ export const sendEditorRequest = async (req,res) => {
             const updatedRequest = await BookmarkFolderRequest.findByIdAndUpdate(existingRequest2._id, existingRequest2, {new:true});
 
             res.status(201).json(updatedRequest);
+        } else if (existingRequest3) {
+            existingRequest3.rights = 'editor';
+            existingRequest3.status = 'unseen';
+            const updatedRequest = await BookmarkFolderRequest.findByIdAndUpdate(existingRequest3._id, existingRequest3, {new:true});
         } else {
             const newEditorRequest = new BookmarkFolderRequest({requester:req.userId, recipient:friend._id, status:'unseen', rights:'editor', bookmarkFolderId:bookmarkFolderId})
 
@@ -158,20 +162,24 @@ export const acceptBookmarkRequest = async (req,res) => {
 
         let indexUser = userAccount.bookmarkfolders.findIndex((id)=>id===String(bookmarkFolderId));
 
-        
 
-        if (indexUser===-1) {
+        if (indexUser === -1) {
             userAccount.bookmarkfolders.push(bookmarkFolderId);
-        }
+        } 
 
         //update bookmarkFolderId to add userId 
         const bookmarkFolder = await BookmarkFolder.findById(bookmarkFolderId);
 
+        if (rights === 'editor') {
+            let indexFolderViewer = bookmarkFolder.viewers.findIndex((id)=>id===String(req.userId));
+            if ( indexFolderViewer !== -1) {
+                bookmarkFolder.viewers = bookmarkFolder.viewers.filter((viewer) => viewer !== req.userId);
+            }
+        }
+
         let indexFolder = bookmarkFolder[`${rights}s`].findIndex((id)=>id===String(req.userId));
 
-       
-
-        if(indexFolder===-1) {
+        if(indexFolder === -1 ) {
            bookmarkFolder[`${rights}s`].push(req.userId); 
         } 
     
@@ -195,8 +203,6 @@ export const acceptBookmarkRequest = async (req,res) => {
 
 export const denyBookmarkRequest = async (req,res) => {
     const {requestId,  rights} = req.body;
-
-    console.log(requestId)
 
     try {
         // find request and delete
