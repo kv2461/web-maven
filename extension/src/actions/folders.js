@@ -1,5 +1,6 @@
 import { GET_FOLDERS } from '../reducers/folders'; 
-import { LOADING_OFF, LOADING_ON, CLEAR } from '../reducers/main';
+import { LOADING_OFF, LOADING_ON, CLEAR, } from '../reducers/main';
+import { ADD_EDITOR_ERROR } from '../reducers/folders'
 
 import * as api from '../api';
 
@@ -12,7 +13,7 @@ export const CreateNewFolder = (folder,editors,viewers) => async (dispatch) => {
         const bookmarkfolderId = await data._id
         
         if (editors) {
-            for (let i=0; i<editors.length; i++) {
+            for (let i=0; i < editors.length; i++) {
                 await dispatch(SendEditorRequest(editors[i],bookmarkfolderId));
             }
         }
@@ -43,8 +44,11 @@ export const SendEditorRequest = (friend, bookmarkFolderId) => async (dispatch) 
         const { data } = await api.sendEditorRequest(friend,bookmarkFolderId);
 
         console.log(data);
+
+        dispatch(GetFolders())
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data.message);
+        dispatch(ADD_EDITOR_ERROR(error.response.data.message));
     }
 }
 
@@ -53,6 +57,8 @@ export const SendViewerRequest = (friend, bookmarkFolderId) => async (dispatch) 
         const { data } = await api.sendViewerRequest(friend,bookmarkFolderId);
 
         console.log(data);
+
+        dispatch(GetFolders())
     } catch (error) {
         console.log(error);
     }
@@ -63,6 +69,19 @@ export  const AcceptBookmarkRequest = (requestId, bookmarkFolderId, rights) => a
 
     try {
         const { data } = await api.acceptBookmarkRequest(requestId, bookmarkFolderId, rights);
+
+
+        console.log(data);
+    } catch (error) {
+        console.log(error);
+    }
+} 
+
+export  const DenyBookmarkRequest = (requestId, rights) => async (dispatch) => {
+
+
+    try {
+        const { data } = await api.denyBookmarkRequest(requestId, rights);
 
 
         console.log(data);

@@ -3,7 +3,7 @@ import { useDispatch, } from 'react-redux';
 import { Box, Typography, ListItem, ButtonBase, Collapse, Button } from '@mui/material';
 import { Folder } from '@mui/icons-material';
 import { SearchById } from '../../actions/main';
-import { SearchFolderById, AcceptBookmarkRequest, GetFolders } from '../../actions/folders';
+import { SearchFolderById, AcceptBookmarkRequest, GetFolders, DenyBookmarkRequest } from '../../actions/folders';
 
 
 const Requests = ({selected, setSelected, inviteToFolder}) => {
@@ -60,7 +60,11 @@ const Requests = ({selected, setSelected, inviteToFolder}) => {
   }
 
   const deny = () => {
-    console.log(inviteToFolder._id)
+    dispatch(DenyBookmarkRequest(inviteToFolder._id, inviteToFolder.rights))
+    setFolderId('');
+    setSelected('');
+    setCollapseInvite(false);
+    dispatch(GetFolders());
   }
 
 

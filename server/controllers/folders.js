@@ -29,10 +29,6 @@ export const createNewFolder = async (req,res) => {
         }
 
         
-
-        
-
-        
     } catch(error) {
         res.status(404).json({message:error.message})
     }
@@ -42,11 +38,11 @@ export const sendEditorRequest = async (req,res) => {
     const {friend, bookmarkFolderId} = req.body;
  
     try {
-        const existingRequest = await BookmarkFolderRequest.findOne({requester:req.userId, recipient:friend._id, rights:'editor', bookmarkFolderId:bookmarkFolderId});
+        const existingRequest = await BookmarkFolderRequest.findOne({recipient:friend._id, rights:'editor', bookmarkFolderId:bookmarkFolderId});
 
-        if (existingRequest) return res.status(400).json({message:'Already sent'});
+        if (existingRequest) return res.status(400).json({message:`A request has already been sent to ${friend.username}`});
 
-        const existingRequest2 = await BookmarkFolderRequest.findOne({requester:req.userId, recipient:friend._id, rights:'viewer', bookmarkFolderId:bookmarkFolderId});
+        const existingRequest2 = await BookmarkFolderRequest.findOne({recipient:friend._id, rights:'viewer', bookmarkFolderId:bookmarkFolderId});
 
         if (existingRequest2) {
             existingRequest2.rights = 'editor';
@@ -139,6 +135,26 @@ export const acceptBookmarkRequest = async (req,res) => {
        
 
         res.status(200).json(data);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
+
+export const denyBookmarkRequest = async (req,res) => {
+    const {requestId,  rights} = req.body;
+
+    console.log(requestId)
+
+    try {
+        // find request and delete
+        const existingRequest = await BookmarkFolderRequest.findById(requestId)
+
+        if (!existingRequest) return res.status(400).json({message:'Request already denied'});
+
+        await BookmarkFolderRequest.deleteOne({_id:requestId});
+
+        res.status(201).json({message:'deleted'});
+        
     } catch (error) {
         res.status(404).json({message:error.message});
     }

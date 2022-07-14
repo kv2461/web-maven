@@ -73,14 +73,14 @@ const BookmarkFolder = ({folder, parent, selected, setSelected, level, }) => {
         <ButtonBase onClick={selectFolder}>
             <Typography sx={selected === folderId ?{color:'primary.main'}:textColor}variant='body1'><strong>{folderInfo.title}</strong></Typography>
         </ButtonBase>
-        {folderInfo?.editors?.length > 0 && (<IconButton onClick={()=>{setCollapsePeople(!collapsePeople)}}>
+        <IconButton onClick={()=>{setCollapsePeople(!collapsePeople)}}>
             <Group sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
-        </IconButton>)}
+        </IconButton>
 
         
     </ListItem>
 
-    {collapsePeople && <People friends={friends} folderInfo={folderInfo}/>}
+    {collapsePeople && <People friends={friends} folderInfo={folderInfo} selected={selected} collapsePeople={collapsePeople}/>}
     <Collapse sx={{m:0,p:0}} in={collapseFolder} timeout="auto" unmountOnExit>
           
                 <List sx={{m:0,p:0}}>
