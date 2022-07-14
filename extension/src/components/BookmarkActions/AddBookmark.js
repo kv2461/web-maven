@@ -1,6 +1,6 @@
 import React, { useState, useEffect, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Typography, InputAdornment} from '@mui/material';
+import { TextField, Button, Typography, InputAdornment } from '@mui/material';
 import { StyledList } from './styles';
 
 import BookmarkFolder from '../BookmarkFolder/BookmarkFolder';

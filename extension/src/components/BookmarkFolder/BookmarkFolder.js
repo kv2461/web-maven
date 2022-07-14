@@ -11,9 +11,9 @@ import { SearchById } from '../../actions/main';
 import People from './People/People';
 
 const BookmarkFolder = ({ folder, parent, selected, setSelected, level, }) => {
-    const user = JSON.parse(localStorage.getItem('web-maven-profile'))
+    const user = JSON.parse(localStorage.getItem('web-maven-profile'));
     const dispatch = useDispatch();
-    const { friends } = useSelector((state)=>state.mainSlice)
+    const { friends } = useSelector((state)=>state.mainSlice);
     const [collapseFolder, setCollapseFolder] = useState(false);
     const [folderInfo, setFolderInfo] = useState({});
     const [folderId, setFolderId] = useState(1)
@@ -98,7 +98,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level, }) => {
     {collapsePeople && <People friends={friends} level={level} folderInfo={folderInfo} selected={selected} collapsePeople={collapsePeople}/>}
     <Collapse sx={{m:0,p:0}} in={collapseFolder} timeout="auto" unmountOnExit>
                 <List sx={{m:0,p:0}}>
-                    {folderInfo?.bookmarks?.length > 0 && folderInfo?.bookmarks?.map((bookmark,index)=>(<BookmarkItem bookmark={bookmark} textColor={textColor} key={index} level={level+1}/>))}
+                    {folderInfo?.bookmarks?.length > 0 && folderInfo?.bookmarks?.map((bookmark,index)=>(<BookmarkItem folder={folderInfo} isFolderCreator={isCreator} isEditor={isEditor} isMainCreator={isMainCreator} bookmark={bookmark} textColor={textColor} key={index} level={level+1}/>))}
                 </List>
 
                 <List sx={{m:0,p:0}}>

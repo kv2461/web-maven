@@ -23,6 +23,14 @@ const userSchema = new mongoose.Schema({
     bookmarkfolders: {
         type:[Object],
         default:[]
+    },
+    favoriteFolders: {
+        type:[Object],
+        default:[]
+    },
+    favoriteBookmarks: {
+        type:[Object],
+        default:[]
     }
 
 })
