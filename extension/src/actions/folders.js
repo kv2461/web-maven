@@ -1,6 +1,6 @@
 import { GET_FOLDERS } from '../reducers/folders'; 
 import { LOADING_OFF, LOADING_ON, CLEAR, } from '../reducers/main';
-import { ADD_EDITOR_ERROR } from '../reducers/folders'
+import { ADD_EDITOR_ERROR, ADD_VIEWER_ERROR } from '../reducers/folders'
 
 import * as api from '../api';
 
@@ -36,6 +36,19 @@ export const CreateNewFolder = (folder,editors,viewers) => async (dispatch) => {
     }
 }
 
+export const RemoveFromBookmarkFolder = (userId, bookmarkFolderId, rights) => async (dispatch) => {
+    try {
+        const { data } = await api.removeFromBookmarkFolder(userId, bookmarkFolderId, rights);
+
+        console.log(data);
+
+        dispatch(GetFolders())
+    } catch (error) {
+        console.log(error.response.data.message);
+
+    }
+}
+
 
 //FOLDER SHARE REQUESTS 
 
@@ -61,6 +74,7 @@ export const SendViewerRequest = (friend, bookmarkFolderId) => async (dispatch) 
         dispatch(GetFolders())
     } catch (error) {
         console.log(error);
+        dispatch(ADD_VIEWER_ERROR(error.response.data.message));
     }
 }
 
@@ -72,6 +86,7 @@ export  const AcceptBookmarkRequest = (requestId, bookmarkFolderId, rights) => a
 
 
         console.log(data);
+        dispatch(GetFolders());
     } catch (error) {
         console.log(error);
     }

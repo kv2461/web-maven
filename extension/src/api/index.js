@@ -53,6 +53,8 @@ export const acceptBookmarkRequest = (requestId, bookmarkFolderId, rights) => AP
 
 export const denyBookmarkRequest = (requestId, rights) => API.patch('/folders/deny', {requestId, rights});
 
+export const removeFromBookmarkFolder = (userId, folderId, rights) => API.patch('/folders/remove', {userId, folderId, rights});
+
 
 //bookmarks
 export const addBookmark = (folderId, bookmark) => API.patch('/folders/addBookmark', {folderId, bookmark});
