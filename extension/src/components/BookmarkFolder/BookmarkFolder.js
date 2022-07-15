@@ -12,7 +12,7 @@ import { CLEAR_BOOKMARK_ERROR } from '../../reducers/folders'
 
 import People from './People/People';
 
-const BookmarkFolder = ({ folder, parent, selected, setSelected, level, }) => {
+const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
     const dispatch = useDispatch();
     const { friends } = useSelector((state)=>state.mainSlice);
@@ -78,6 +78,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level, }) => {
 
 
   return (
+    (parent !== 'bookmark') || (folderInfo.mainFolder && (isEditor || isCreator || isMainCreator)) || (!folderInfo.mainFolder) ? 
     <>
     <ListItem sx={level === 1 ? {m:0,p:0, paddingLeft:0, display:'flex', flexDirection:'row', justifyContent:'space-between'} : {m:0, p:0, paddingLeft: `${level*5}px`, display:'flex', flexDirection:'row', justifyContent:'space-between'}} key={folder}>
         <div>
@@ -120,7 +121,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level, }) => {
 
         </Collapse>
 
-    </>
+    </> : null
   )
 }
 

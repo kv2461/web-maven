@@ -83,14 +83,14 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
             
     </ListItem>
       {showInfo && <div style={{paddingLeft: `${(level*6)}px`, border:'1px dotted black'}}>
-      <Typography sx={{p:'5px 0'}}>Created by {bookmarkCreatorInfo?.username}</Typography>
+      <Typography sx={{p:'5px 0'}}>Added by {bookmarkCreatorInfo?.username}</Typography>
       <Typography sx={{p:'5px 0'}}>URL: {bookmark?.url}</Typography>
       </div>}
 
       {showFlagInfo && <div style={{paddingLeft: `${(level*6)}px`, border:'1px dotted red'}}>
       <Typography sx={{p:'5px 0'}}>Flagged by {bookmark.flag?.flagger}</Typography>
       <Typography sx={{p:'5px 0'}}>Reason: {bookmark?.flag?.reason}</Typography>
-      {isFolderCreator || isMainCreator || isFlagger && <Button onClick={()=>unflagBookmark()}>Unflag</Button>}
+      {(isFolderCreator || isMainCreator || isFlagger) && <Button onClick={()=>unflagBookmark()}>Unflag</Button>}
       </div>}
 
       {flagBookmarkTextField && <div style={{paddingLeft: `${(level*6)}px`}}>

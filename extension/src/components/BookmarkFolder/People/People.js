@@ -112,7 +112,7 @@ const People = ({ folderInfo, friends, selected, collapsePeople, level }) => {
                     value={viewers}
                     onChange={(event,value)=>setViewers(value)}
                     getOptionLabel={option => option.username}
-                    fullWidt
+                    fullWidth
                     noOptionsText={'No Friends'}
                     renderInput={(params) => <TextField {...params} label="Invite Viewers" placeholder="Invite Viewers"/>}
                 />

@@ -17,6 +17,9 @@ const Bookmark = ({showBookmark, url, tab, setSelected, selected}) => {
     const [addError, setAddError] = useState('');
     const [showAddSubFolder, setShowAddSubFolder] = useState(false);
     const [folderInfo, setFolderInfo] = useState(false);
+    //folders need to be filtered so that only ones where user is creator/editor can add bookmarks
+    //since folders through useSelector is a line of items, addbookmark should be disabled until a folder is selected AND the user is a creator/editor
+      //problem is not easy to sort through which folders are editable, so may need to filter so that adding bookmarks section only shows creator/editor folders
 
     const addBookmark = () => {
         if (selected && newBookmark) {
