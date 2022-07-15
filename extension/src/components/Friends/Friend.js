@@ -25,12 +25,12 @@ const Friend = ({ friend }) => {
 
 
   return (
-    <>
+    <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
     <Typography>{friendInfo.username}</Typography>
     <IconButton onClick={()=>removeFriend(friendInfo)} edge='end'>
             <PersonRemove />
     </IconButton>
-    </>
+    </div>
   )
 }
 
