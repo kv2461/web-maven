@@ -62,3 +62,7 @@ export const removeFromBookmarkFolder = (userId, folderId, rights) => API.patch(
 export const addBookmark = (folderId, bookmark) => API.patch('/folders/addBookmark', {folderId, bookmark});
 
 export const deleteBookmark = (folderId, bookmark) => API.patch('/folders/deleteBookmark', {folderId, bookmark});
+
+export const flagBookmark = (folderId, bookmark, flag) => API.patch('/folders/flagBookmark', {folderId, bookmark, flag});
+
+export const unflagBookmark = (folderId, bookmark) => API.patch('/folders/unflagBookmark', {folderId, bookmark});

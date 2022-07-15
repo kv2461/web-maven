@@ -181,3 +181,27 @@ export const DeleteBookmark = (folderId, bookmark) => async (dispatch) => {
         dispatch(DELETE_BOOKMARK_ERROR(error.response.data.message));
     }
 }
+
+export const FlagBookmark = (folderId, bookmark, flag) => async (dispatch) => {
+    try {
+        const data = await api.flagBookmark(folderId, bookmark, flag);
+
+        console.log(data);
+
+        dispatch(GetFolders());
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const UnflagBookmark = (folderId, bookmark) => async (dispatch) => {
+    try {
+        const data = await api.unflagBookmark(folderId, bookmark);
+
+        console.log(data);
+
+        dispatch(GetFolders());
+    } catch (error) {
+        console.log(error);
+    }
+}

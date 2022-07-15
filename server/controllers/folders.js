@@ -315,3 +315,49 @@ export const deleteBookmark = async (req,res) => {
         res.status(404).json({message:error.message});
     }
 }
+
+export const flagBookmark = async (req,res) => {
+    const {folderId, bookmark, flag} = req.body;
+    try {
+        const existingFolder = await BookmarkFolder.findById(folderId);
+
+        let indexBookmark = existingFolder.bookmarks.findIndex((bm) => (bm.createdAt === bookmark.createdAt && bm.creator === bookmark.creator && bookmark.url === bookmark.url));
+        if ( indexBookmark === -1) {
+            return res.status(400).json({message:`Not found`});
+        } else if (existingFolder.bookmarks[indexBookmark].flagged === true) {
+            return res.status(400).json({message:'Already flagged'});
+        } else {
+            existingFolder.bookmarks[indexBookmark].flagged = true;
+            existingFolder.bookmarks[indexBookmark].flag = flag;
+        }
+
+        const updatedFolder = await BookmarkFolder.updateOne({ _id: folderId }, existingFolder , {new:true});
+        
+        res.status(201).json(updatedFolder);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
+
+export const unflagBookmark = async (req,res) => {
+    const {folderId, bookmark } = req.body;
+    try {
+        const existingFolder = await BookmarkFolder.findById(folderId);
+
+        let indexBookmark = existingFolder.bookmarks.findIndex((bm) => (bm.createdAt === bookmark.createdAt && bm.creator === bookmark.creator && bookmark.url === bookmark.url));
+        if ( indexBookmark === -1) {
+            return res.status(400).json({message:`Not found`});
+        } else if (existingFolder.bookmarks[indexBookmark].flagged === false) {
+            return res.status(400).json({message:'Already unflagged'});
+        } else {
+            existingFolder.bookmarks[indexBookmark].flagged = false;
+            delete existingFolder.bookmarks[indexBookmark].flag;
+        }
+
+        const updatedFolder = await BookmarkFolder.updateOne({ _id: folderId }, existingFolder , {new:true});
+        
+        res.status(201).json(updatedFolder);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}

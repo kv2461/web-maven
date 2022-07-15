@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createNewFolder, sendViewerRequest, sendEditorRequest, getFolders, searchFolderById, addBookmark, acceptBookmarkRequest, denyBookmarkRequest, removeFromBookmarkFolder, deleteBookmarkFolder, deleteBookmark } from '../controllers/folders.js';
+import { createNewFolder, sendViewerRequest, sendEditorRequest, getFolders, searchFolderById, addBookmark, acceptBookmarkRequest, denyBookmarkRequest, removeFromBookmarkFolder, deleteBookmarkFolder, deleteBookmark, flagBookmark, unflagBookmark } from '../controllers/folders.js';
 
 import auth from '../middleware/auth.js';
 
@@ -27,6 +27,10 @@ router.get('/searchById/:id', auth, searchFolderById);
 router.patch('/addBookmark', auth, addBookmark);
 
 router.patch('/deleteBookmark', auth, deleteBookmark);
+
+router.patch('/flagBookmark', auth, flagBookmark);
+
+router.patch('/unflagBookmark', auth, unflagBookmark);
 
 
 

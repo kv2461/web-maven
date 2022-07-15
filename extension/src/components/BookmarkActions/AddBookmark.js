@@ -12,7 +12,7 @@ const Bookmark = ({showBookmark, url, tab, setSelected, selected}) => {
     const dispatch = useDispatch();
     const {folders} = useSelector((state)=>state.folderSlice)
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
-    const initialBookmarkState = { title:tab.title, creator:user.result._id, creatorUsername:user.result.username, likes:[], flags:[], url:url, favIconUrl: tab.favIconUrl, createdAt:new Date().toISOString()};
+    const initialBookmarkState = { title:tab.title, creator:user.result._id, creatorUsername:user.result.username, likes:[], flagged:false, url:url, favIconUrl: tab.favIconUrl, createdAt:new Date().toISOString()};
     const [newBookmark, setNewBookmark] = useState(initialBookmarkState);
     const [addError, setAddError] = useState('');
     const [showAddSubFolder, setShowAddSubFolder] = useState(false);

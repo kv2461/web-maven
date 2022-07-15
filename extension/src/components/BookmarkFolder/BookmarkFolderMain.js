@@ -45,7 +45,7 @@ const BookmarkFolderMain = () => {
 
     <Container sx={{display:'flex',flexDirection:'column'}}>
       <Button onClick={toggleShowRequests}>Requests ({recievedFoldersPending.length})</Button>
-      <Button onClick={toggleShowFavorites}>Favorites</Button>
+      {/* <Button onClick={toggleShowFavorites}>Favorites</Button> */}
       <Button onClick={toggleShowFolders}>Folders</Button>
       <StyledList subheader={<li />}>
         {showFolders && folders && folders.length === 0 && (<Typography sx={{color:'secondary.main'}}>You currently have no bookmark folders created or joined</Typography>)}
