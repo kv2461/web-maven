@@ -6,9 +6,11 @@ import User from '../models/user.js';
 
 export const signin = async (req,res) => {
     const {username, password} = req.body
+    console.log(username)
 
     try {
-        const existingUser = await User.findOne({username});
+        const existingUser = await User.findOne({'username' : {
+            $regex : new RegExp(username, "i") } });
 
         if (!existingUser) return res.status(404).json({message: "User doesn't exist"});
         
@@ -29,11 +31,13 @@ export const signup = async (req,res) => {
     const {email, password, confirmPassword, username} = req.body;
 
     try {
-        const existingUser = await User.findOne({ email });
-        console.log(email);
-        console.log(existingUser);
+        const existingEmail = await User.findOne({ 'email' : {
+            $regex : new RegExp(email, "i") } });
+        if (existingEmail) return res.status(400).json({message: 'Email already in use'});
 
-        if (existingUser) return res.status(400).json({message: 'User already exists'});
+        const existingUser = await User.findOne({'username' : {
+            $regex : new RegExp(username, "i") } });
+        if (existingUser) return res.status(404).json({message: "Username already in use"});
 
         if (password !== confirmPassword) return res.status(400).json({message:'Passwords do not match'});
 

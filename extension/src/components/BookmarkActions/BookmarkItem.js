@@ -55,6 +55,13 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
     bookmark.flagged = false;
   }
 
+  useEffect(() => {
+    if (!showInfo) {
+      setFlagBookmarkTextField(false);
+      setShowFlagInfo(false);
+    }
+  },[showInfo])
+
   return (
     <>
     <ListItem sx={{ m:0, p:0, paddingLeft: `${(level)}px`}} key={bookmark.createdAt}>
@@ -67,26 +74,30 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
                             <Link sx={textColor} href={bookmark.url} target='_blank' >{bookmark?.title?.length > (50-(7*level)) ? `${bookmark?.title?.slice(0,50-(7*level))}...`: bookmark?.title}</Link>
                             </div>
                             <div>
-                              <IconButton onClick={()=>{setShowInfo(!showInfo);setFlagBookmarkTextField(false);setShowFlagInfo(false)}}>
-                                <Info sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
+                              <IconButton onClick={()=>{setShowInfo(!showInfo)}}>
+                                <Info sx={bookmark?.flagged?{color:'red', fontSize:'1.2rem'}:{color:'#35A7FF', fontSize:'1.2rem'}}/>
                               </IconButton>
-                              {(!bookmark?.flagged || (tempUnflag && !tempFlag)) && <IconButton onClick={()=>{setFlagBookmarkTextField(!flagBookmarkTextField);setShowInfo(false);}}>
-                                <Flag sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
-                              </IconButton>}
-                              {(bookmark?.flagged || (tempFlag && !tempUnflag)) && <IconButton onClick={()=>{setShowFlagInfo(!showFlagInfo);setShowInfo(false)}}>
-                                <Flag sx={{color:'red', fontSize:'1.2rem'}}/>
-                              </IconButton>}
                             </div>
                           </div>}
                   />
             
     </ListItem>
-      {showInfo && <div style={{ border:'1px dotted black'}}>
+      {showInfo && 
+      <div style={{ border:'1px dotted black'}}>
         <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
-      <Typography sx={{p:1}}>Added by {bookmarkCreatorInfo?.username}</Typography>
-      {(isFolderCreator || isMainCreator || isBookmarkCreator) && <IconButton onClick={()=>{deleteBookmark()}}>
-                                <DeleteForever sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
-                              </IconButton>}
+          <Typography sx={{p:1}}>Added by {bookmarkCreatorInfo?.username}</Typography>
+          <div>
+            {(isFolderCreator || isMainCreator || isBookmarkCreator) && 
+            <IconButton onClick={()=>{deleteBookmark()}}>
+              <DeleteForever sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
+            </IconButton>}
+            {(!bookmark?.flagged || (tempUnflag && !tempFlag)) && <IconButton onClick={()=>{setFlagBookmarkTextField(!flagBookmarkTextField);}}>
+              <Flag sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
+            </IconButton>}
+            {(bookmark?.flagged || (tempFlag && !tempUnflag)) && <IconButton onClick={()=>{setShowFlagInfo(!showFlagInfo);}}>
+              <Flag sx={{color:'red', fontSize:'1.2rem'}}/>
+            </IconButton>}     
+          </div>                   
         </div>
       <Typography sx={{p:1}}>Title: {bookmark?.title}</Typography>
       <Typography sx={{p:1}}>URL: {bookmark?.url}</Typography>
@@ -99,7 +110,7 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
       </div>}
 
       {flagBookmarkTextField && <div>
-      <Typography sx={{p:'5px 0'}}>Suspicious? Malicious? Just plain wrong?</Typography>
+      <Typography sx={{color:'red', p:'5px 0'}}>Suspicious? Malicious? Just plain wrong?</Typography>
       <TextField 
                   sx={{p:'5px 0'}}
                   required

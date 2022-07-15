@@ -110,7 +110,7 @@ const Friends = () => {
         
         
       
-      {friends?.length > 0 && (<Button onClick={()=>{setCollapseFriends(!collapseFriends);setCollapseFriendRequests(false);setCollapseSent(false)}}> {collapseFriends ? 'Hide Friends' : 'Friends'}</Button>)} 
+      {friends?.length > 0 && (<Button onClick={()=>{setCollapseFriends(!collapseFriends);setCollapseFriendRequests(false);setCollapseSent(false)}}> {collapseFriends ? 'Hide Friends' : `Friends (${friends?.length})`}</Button>)} 
       </div>
       
       <div>

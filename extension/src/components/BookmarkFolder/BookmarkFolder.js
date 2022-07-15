@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Typography, ButtonBase, Collapse, IconButton, ListItem, List, Container, Paper } from '@mui/material';
-import { Folder, Group } from '@mui/icons-material';
+import { Typography, ButtonBase, Collapse, IconButton, ListItem, List, Paper } from '@mui/material';
+import { Folder, Group, Favorite, FavoriteBorder } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import BookmarkItem from '../BookmarkActions/BookmarkItem';
 
-import { SearchFolderById, RemoveFromBookmarkFolder, DeleteBookmarkFolder } from '../../actions/folders';
+import { SearchFolderById, RemoveFromBookmarkFolder, DeleteBookmarkFolder, FavoriteFolder } from '../../actions/folders';
 import { SearchById } from '../../actions/main';
 
 import { CLEAR_BOOKMARK_ERROR } from '../../reducers/folders'
@@ -16,7 +16,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
     const dispatch = useDispatch();
     const { friends } = useSelector((state)=>state.mainSlice);
-    const { bookmarkError } = useSelector((state)=>state.folderSlice);
+    const { bookmarkError, favoriteFolders } = useSelector((state)=>state.folderSlice);
     const [collapseFolder, setCollapseFolder] = useState(false);
     const [folderInfo, setFolderInfo] = useState({});
     const [folderId, setFolderId] = useState(1)
@@ -25,6 +25,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
     const isCreator = Boolean(folderInfo?.creator === user.result._id);
     const isEditor = Boolean(folderInfo?.editors?.indexOf(user.result._id) !== -1);
     const isMainCreator = Boolean(folderInfo?.mainCreator === user.result._id);
+    const inFavoriteFolders = Boolean(favoriteFolders?.indexOf(folder) !== -1); //will need to get this from selector instead of profile since selector gets updated
 
 
     const textColor = 
@@ -76,6 +77,9 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
           
       },[friends])
 
+    const favoriteFolder = async () => {
+            dispatch(FavoriteFolder(folder));
+    }
 
   return (
     ((parent !== 'bookmark') || (folderInfo.mainFolder && (isEditor || isCreator || isMainCreator)) || (!folderInfo.mainFolder)) ? 
@@ -90,6 +94,9 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
             </ButtonBase>
         </div>
         <div>
+            {level=== 1 && <IconButton onClick={()=>{favoriteFolder()}}>
+                {!inFavoriteFolders ? <FavoriteBorder sx={{color:'#35A7FF', fontSize:'1.2rem'}}/> : <Favorite sx={{color:'#35A7FF', fontSize:'1.2rem'}}/> }
+            </IconButton>}
             <IconButton onClick={()=>{setCollapsePeople(!collapsePeople)}}>
                 <Group sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
             </IconButton>
