@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Typography, Container, Collapse, Button, Autocomplete, TextField } from '@mui/material';
+import { Typography, Container, Collapse, Button, Autocomplete, TextField, IconButton } from '@mui/material';
+import { DeleteForever, Logout } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { SendEditorRequest, SendViewerRequest } from '../../../actions/folders';
 import { SearchById } from '../../../actions/main';
@@ -7,7 +8,7 @@ import { CLEAR_EDITOR_ERROR, CLEAR_VIEWER_ERROR } from '../../../reducers/folder
 import Editor from './Editor';
 import Viewer from './Viewer';
 
-const People = ({ folderInfo, friends, selected, collapsePeople, level }) => {
+const People = ({ folderInfo, friends, selected, collapsePeople, level, isMainCreator, deleteBookmarkFolder }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'))
     const dispatch = useDispatch();
     const { friendArray } = useSelector((state)=>state.mainSlice);
@@ -72,26 +73,38 @@ const People = ({ folderInfo, friends, selected, collapsePeople, level }) => {
  
   return (
     <Container>
+      <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
         <Typography>Created by {creatorInfo.username}</Typography>
+        <div>
+          {(isCreator || isMainCreator) && 
+          <IconButton onClick={()=>{deleteBookmarkFolder(folderInfo)}}>
+            <DeleteForever sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
+          </IconButton>}
+          {level === 1 && !isCreator && <IconButton onClick={()=>{removeFromBookmarkFolder(user.result._id)}}>
+                  <Logout sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
+          </IconButton>}
+        </div>
+      </div>
         {level === 1 && (<><Button onClick={()=>{setCollapseEditors(!collapseEditors);setCollapseViewers(false);}}> {collapseEditors ? 'Hide Editors' : `Editors (${folderInfo.editors.length})`}</Button>
         <Button onClick={()=>{setCollapseViewers(!collapseViewers);setCollapseEditors(false);}}> {collapseViewers ? 'Hide Viewers' : `Viewers (${folderInfo.viewers.length})`}</Button>
         <Collapse in={collapseEditors} timeout='auto' unmountOnExit>
-            {folderInfo.editors.map((editor)=> (<Editor key={editor} editor={editor} creator={creatorInfo}/>))}
-            {(isCreator || isEditor) && <Button onClick={()=>{setAddEditors(!addEditors)}}>{addEditors ? 'Cancel' : 'Add Editors '}</Button>}
-            {addEditorError && addEditorError.map((err,i) => (<Typography sx={{color:'secondary.main'}} key={i}>{err}</Typography>))}
-            {addEditors && (
+          {folderInfo.editors.map((editor)=> (<Editor key={editor} editor={editor} creator={creatorInfo}/>))}
+          {(isCreator || isEditor) && <Button onClick={()=>{setAddEditors(!addEditors)}}>{addEditors ? 'Cancel' : 'Add Editors '}</Button>}
+          {addEditorError && addEditorError.map((err,i) => (<Typography sx={{color:'secondary.main'}} key={i}>{err}</Typography>))}
+          {addEditors && (
             <>
-                <Autocomplete style={{margin:'0 5px 5px 5px'}}
-                    multiple
-                    disablePortal
-                    id="invite-editors"
-                    options={availableEditors}
-                    value={editors}
-                    onChange={(event,value)=>setEditors(value)}
-                    getOptionLabel={option => option.username}
-                    fullWidth
-                    noOptionsText={'No Friends'}
-                    renderInput={(params) => <TextField {...params} label="Invite Editors" placeholder="Invite Editors"/>}
+              <Autocomplete style={{margin:'0 5px 5px 5px'}}
+                multiple
+                disablePortal
+                id="invite-editors"
+                options={availableEditors}
+                value={editors}
+                onChange={(event,value)=>setEditors(value)}
+                getOptionLabel={option => option.username}
+                fullWidth
+                noOptionsText={'No Friends'}
+                renderInput={(params) => 
+                <TextField {...params} label="Invite Editors" placeholder="Invite Editors"/>}
                 />
                 <Button onClick={()=>{sendEditorRequest()}}>Add Editors</Button>
             </>)}
