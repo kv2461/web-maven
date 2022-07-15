@@ -8,14 +8,14 @@ import BookmarkItem from '../BookmarkActions/BookmarkItem';
 import { SearchFolderById, RemoveFromBookmarkFolder, DeleteBookmarkFolder, FavoriteFolder } from '../../actions/folders';
 import { SearchById } from '../../actions/main';
 
-import { CLEAR_BOOKMARK_ERROR, RENDER } from '../../reducers/folders'
+import { CLEAR_BOOKMARK_ERROR } from '../../reducers/folders'
 
 import People from './People/People';
 
 const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
     const dispatch = useDispatch();
-    const { friends } = useSelector((state)=>state.mainSlice);
+    const { friends, render } = useSelector((state)=>state.mainSlice);
     const { bookmarkError, favoriteFolders } = useSelector((state)=>state.folderSlice);
     const [collapseFolder, setCollapseFolder] = useState(false);
     const [folderInfo, setFolderInfo] = useState({});
@@ -48,7 +48,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
         }
 
 
-      },[folder, selected, collapseFolder])
+      },[folder, selected, collapseFolder, render])
 
     const selectFolder = () => {
             setFolderId(folder);
