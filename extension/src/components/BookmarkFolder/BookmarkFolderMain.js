@@ -43,7 +43,7 @@ const BookmarkFolderMain = () => {
 
   return (
 
-    <Container sx={{display:'flex',flexDirection:'column'}}>
+    <Container sx={{display:'flex',flexDirection:'column', margin:0, padding:0}}>
       <Button onClick={toggleShowRequests}>Requests ({recievedFoldersPending.length})</Button>
       <Button onClick={toggleShowFavorites}>Favorites</Button>
       <Button onClick={toggleShowFolders}>Folders</Button>
