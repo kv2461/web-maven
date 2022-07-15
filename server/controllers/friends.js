@@ -7,7 +7,8 @@ export const searchByUsername = async (req,res) => {
     const { username } = req.params
 
     try {
-        const dataRaw = await User.findOne({username:username});
+        const dataRaw = await User.findOne({'username':{
+            $regex : new RegExp(username, "i") }});
 
         if (!dataRaw) return res.status(404).json({message: `User ${username} doesn't exist`});
         

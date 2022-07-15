@@ -6,7 +6,8 @@ import { StyledList } from './styles';
 import BookmarkFolder from '../BookmarkFolder/BookmarkFolder';
 import CreateFolder from '../Interface/CreateFolder/CreateFolder';
 
-import { AddBookmark, SearchFolderById, GetFolders } from '../../actions/folders';
+import { AddBookmark, SearchFolderById, GetFolders, } from '../../actions/folders';
+import { RENDER } from '../../reducers/folders'
 
 const Bookmark = ({showBookmark, url, tab, setSelected, selected}) => {
     const dispatch = useDispatch();
@@ -17,20 +18,19 @@ const Bookmark = ({showBookmark, url, tab, setSelected, selected}) => {
     const [addError, setAddError] = useState('');
     const [showAddSubFolder, setShowAddSubFolder] = useState(false);
     const [folderInfo, setFolderInfo] = useState(false);
-    const [render, setRender] = useState(false);
     //folders need to be filtered so that only ones where user is creator/editor can add bookmarks
     //since folders through useSelector is a line of items, addbookmark should be disabled until a folder is selected AND the user is a creator/editor
       //problem is not easy to sort through which folders are editable, so may need to filter so that adding bookmarks section only shows creator/editor folders
 
-    const addBookmark = () => {
+    const addBookmark = async () => {
         if (selected && newBookmark) {
-        dispatch(AddBookmark(selected, newBookmark)) 
+        await dispatch(AddBookmark(selected, newBookmark)) 
         setSelected('');
         setNewBookmark(initialBookmarkState); 
         } else {
           setAddError('Need to select a folder to add to');
         }
-        setRender(!render);
+        await dispatch(RENDER());
     }
 
     useEffect(()=> {
@@ -42,7 +42,7 @@ const Bookmark = ({showBookmark, url, tab, setSelected, selected}) => {
 
       getInfo()
         
-    },[selected, render])
+    },[selected])
 
     useEffect(() => {
         setAddError('');

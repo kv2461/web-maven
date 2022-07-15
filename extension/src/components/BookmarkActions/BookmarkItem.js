@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ListItem, ListItemText, Box, Link, IconButton, Typography, TextField, Button } from '@mui/material';
 import { DeleteForever, Info, Flag } from '@mui/icons-material';
 import { SearchById } from '../../actions/main';
-import { DeleteBookmark, FlagBookmark, UnflagBookmark } from '../../actions/folders';
+import { DeleteBookmark, FlagBookmark, UnflagBookmark, GetFolders } from '../../actions/folders';
 import { CLEAR_BOOKMARK_ERROR } from '../../reducers/folders'
 
 const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isMainCreator, }) => {
@@ -19,6 +19,7 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
   const [flag, setFlag] = useState(initialFlagState);
   const [tempFlag, setTempFlag] = useState(false);
   const [tempUnflag, setTempUnflag] = useState(false);
+  const [showBookmark, setShowBookmark] = useState(true);
 
   useEffect(()=> {
     const getInfo = async () => {
@@ -34,6 +35,8 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
   const deleteBookmark = async() => {
     dispatch(CLEAR_BOOKMARK_ERROR());
     dispatch(DeleteBookmark(folder._id, bookmark));
+    setShowInfo(false);
+    setShowBookmark(false);
   }
 
   const finalizeFlag = async () => {
@@ -63,6 +66,7 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
   },[showInfo])
 
   return (
+    showBookmark ?
     <>
     <ListItem sx={{ m:0, p:0, paddingLeft: `${(level)}px`}} key={bookmark.createdAt}>
                 <ListItemText 
@@ -70,7 +74,7 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
                   primary={
                           <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
                             <div style={{display:'flex',flexDirection:'row'}}>
-                            {bookmark.favIconUrl && (<Box component='img' sx={{maxHeight:'1.1rem', paddingRight:'1px'}} src={bookmark.favIconUrl}/>)}
+                            {bookmark.favIconUrl && (<Box component='img' sx={{maxHeight:'1.1rem', paddingRight:1}} src={bookmark.favIconUrl}/>)}
                             <Link sx={textColor} href={bookmark.url} target='_blank' >{bookmark?.title?.length > (50-(7*level)) ? `${bookmark?.title?.slice(0,50-(7*level))}...`: bookmark?.title}</Link>
                             </div>
                             <div>
@@ -123,7 +127,7 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
       <Button onClick={()=>{setFlagBookmarkTextField(false)}}>Cancel</Button>
       <Button onClick={()=>finalizeFlag()} sx={{color:'red'}} disabled={Boolean(flag.reason.trim() === '')}>Flag</Button>
       </div>}
-  </>
+  </> : null
   )
 }
 

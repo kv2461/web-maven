@@ -86,7 +86,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
     <Paper sx={level===1?{elevation:9, m:0, p:0, paddingLeft:1, marginTop:1 } : {elevation:9, p:1, m:0, marginLeft:level, paddingRight:0, marginBottom:1}}>
     <ListItem sx={{m:0,p:0, display:'flex', flexDirection:'row', justifyContent:'space-between'}} key={folder}>
         <div style={{margin:0, padding:0}}>
-            <IconButton onClick={()=>setCollapseFolder(!collapseFolder)} edge='end'>
+            <IconButton sx={{paddingRight:2}} onClick={()=>setCollapseFolder(!collapseFolder)} edge='end'>
                 <Folder sx={{fontSize:'1.2rem', color:'#F8ECD1'}} />
             </IconButton>
             <ButtonBase onClick={selectFolder}>

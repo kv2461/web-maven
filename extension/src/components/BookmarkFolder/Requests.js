@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, } from 'react-redux';
 import { Box, Typography, ListItem, ButtonBase, Collapse, Button } from '@mui/material';
-import { Folder } from '@mui/icons-material';
+import { MailOutline } from '@mui/icons-material';
 import { SearchById } from '../../actions/main';
 import { SearchFolderById, AcceptBookmarkRequest, GetFolders, DenyBookmarkRequest } from '../../actions/folders';
 
@@ -75,16 +75,16 @@ const Requests = ({selected, setSelected, inviteToFolder}) => {
         
     <ListItem sx={{m:0,p:0, marginLeft:0, display:'flex', flexDirection:'column', alignItems:'flex-start'}} >
       <ButtonBase  sx={{m:0,p:0, marginLeft:0, display:'flex', flexDirection:'column', alignItems:'flex-start'}} onClick={selectFolder}>
-        <div>
-          <Folder sx={{fontSize:'1.2rem', color:'#F8ECD1'}}/>    
+        <div style={{display:'flex', alignItems:'center'}}>
+          <MailOutline sx={{fontSize:'1.2rem', color:'primary.main'}}/>    
           <Typography sx={selected === folderId ?{color:'primary.main'}:null}variant='h8'><strong>{folderInfo?.title}</strong></Typography>
         </div>
-         <Typography variant='h10'>from {friendInfo?.username}</Typography>
+         <Typography variant='h10'>From {friendInfo?.username}</Typography>
       </ButtonBase>
          
       
     <Collapse sx={{m:0,p:0}} in={collapseInvite} timeout="auto" unmountOnExit>
-      <Typography>-an invitation to <strong>{inviteToFolder?.rights.slice(0,4).toUpperCase()}</strong></Typography>
+      <Typography>-An invitation to <strong>{inviteToFolder?.rights.slice(0,4).toUpperCase()}</strong></Typography>
     </Collapse>
     </ListItem>
 
