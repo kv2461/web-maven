@@ -16,8 +16,6 @@ const Viewer = ({ viewer, creator, isEditor }) => {
   
           setViewerInfo(data);
         }
-
-        console.log(isEditor)
         
         getInfo()
           
