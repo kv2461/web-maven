@@ -64,7 +64,7 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
                           <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
                             <div style={{display:'flex',flexDirection:'row'}}>
                             {bookmark.favIconUrl && (<Box component='img' sx={{maxHeight:'1.1rem', paddingRight:'1px'}} src={bookmark.favIconUrl}/>)}
-                            <Link sx={textColor} href={bookmark.url} target='_blank' >{bookmark.title}</Link>
+                            <Link sx={textColor} href={bookmark.url} target='_blank' >{bookmark?.title?.length > (50-(7*level)) ? `${bookmark?.title?.slice(0,50-(7*level))}...`: bookmark?.title}</Link>
                             </div>
                             <div>
                               <IconButton onClick={()=>{setShowInfo(!showInfo);setFlagBookmarkTextField(false);setShowFlagInfo(false)}}>
@@ -76,16 +76,19 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
                               {(bookmark?.flagged || (tempFlag && !tempUnflag)) && <IconButton onClick={()=>{setShowFlagInfo(!showFlagInfo);setShowInfo(false)}}>
                                 <Flag sx={{color:'red', fontSize:'1.2rem'}}/>
                               </IconButton>}
-                              {(isFolderCreator || isMainCreator || isBookmarkCreator) && <IconButton onClick={()=>{deleteBookmark()}}>
-                                <DeleteForever sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
-                              </IconButton>}
                             </div>
                           </div>}
                   />
             
     </ListItem>
       {showInfo && <div style={{ border:'1px dotted black'}}>
+        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
       <Typography sx={{p:1}}>Added by {bookmarkCreatorInfo?.username}</Typography>
+      {(isFolderCreator || isMainCreator || isBookmarkCreator) && <IconButton onClick={()=>{deleteBookmark()}}>
+                                <DeleteForever sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
+                              </IconButton>}
+        </div>
+      <Typography sx={{p:1}}>Title: {bookmark?.title}</Typography>
       <Typography sx={{p:1}}>URL: {bookmark?.url}</Typography>
       </div>}
 

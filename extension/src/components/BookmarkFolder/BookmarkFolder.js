@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Typography, ButtonBase, Collapse, IconButton, ListItem, List, Container, Paper } from '@mui/material';
-import { Folder, Group, Logout, DeleteForever } from '@mui/icons-material';
+import { Folder, Group } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import BookmarkItem from '../BookmarkActions/BookmarkItem';
@@ -79,7 +79,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
 
   return (
     ((parent !== 'bookmark') || (folderInfo.mainFolder && (isEditor || isCreator || isMainCreator)) || (!folderInfo.mainFolder)) ? 
-    <Paper sx={level===1?{elevation:9, m:0, p:0, paddingLeft:1, marginTop:1 } : {elevation:9, p:1, m:0, marginRight:level-1, marginLeft:level-1, marginBottom:1}}>
+    <Paper sx={level===1?{elevation:9, m:0, p:0, paddingLeft:1, marginTop:1 } : {elevation:9, p:1, m:0, marginLeft:level, paddingRight:0, marginBottom:1}}>
     <ListItem sx={{m:0,p:0, display:'flex', flexDirection:'row', justifyContent:'space-between'}} key={folder}>
         <div style={{margin:0, padding:0}}>
             <IconButton onClick={()=>setCollapseFolder(!collapseFolder)} edge='end'>
@@ -93,18 +93,12 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
             <IconButton onClick={()=>{setCollapsePeople(!collapsePeople)}}>
                 <Group sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
             </IconButton>
-            {level === 1 && !isCreator && <IconButton onClick={()=>{removeFromBookmarkFolder(user.result._id)}}>
-                <Logout sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
-            </IconButton>} 
-            {(isCreator || isMainCreator) && <IconButton onClick={()=>{deleteBookmarkFolder(folderInfo)}}>
-                <DeleteForever sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
-            </IconButton>}
         </div>
 
         
     </ListItem>
 
-    {collapsePeople && <People friends={friends} level={level} folderInfo={folderInfo} selected={selected} collapsePeople={collapsePeople}/>}
+    {collapsePeople && <People friends={friends} level={level} folderInfo={folderInfo} selected={selected} collapsePeople={collapsePeople} deleteBookmarkFolder={deleteBookmarkFolder} isMainCreator={isMainCreator} removeFromBookmarkFolder={removeFromBookmarkFolder}/>}
     <Collapse sx={{m:0,p:0}} in={collapseFolder} timeout="auto" unmountOnExit>
             
                 <List sx={{m:0,p:0}}>
