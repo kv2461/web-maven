@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Typography, ButtonBase, Collapse, IconButton, ListItem, List, } from '@mui/material';
+import { Typography, ButtonBase, Collapse, IconButton, ListItem, List, Container, Paper } from '@mui/material';
 import { Folder, Group, Logout, DeleteForever } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -78,17 +78,17 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
 
 
   return (
-    (parent !== 'bookmark') || (folderInfo.mainFolder && (isEditor || isCreator || isMainCreator)) || (!folderInfo.mainFolder) ? 
-    <>
-    <ListItem sx={level === 1 ? {m:0,p:0, paddingLeft:0, display:'flex', flexDirection:'row', justifyContent:'space-between'} : {m:0, p:0, paddingLeft: `${level*5}px`, display:'flex', flexDirection:'row', justifyContent:'space-between'}} key={folder}>
-        <div>
+    ((parent !== 'bookmark') || (folderInfo.mainFolder && (isEditor || isCreator || isMainCreator)) || (!folderInfo.mainFolder)) ? 
+    <Paper sx={level===1?{elevation:9, m:0, p:0, paddingLeft:1, marginTop:1 } : {elevation:9, p:1, m:0, marginRight:level-1, marginLeft:level-1, marginBottom:1}}>
+    <ListItem sx={{m:0,p:0, display:'flex', flexDirection:'row', justifyContent:'space-between'}} key={folder}>
+        <div style={{margin:0, padding:0}}>
             <IconButton onClick={()=>setCollapseFolder(!collapseFolder)} edge='end'>
                 <Folder sx={{fontSize:'1.2rem', color:'#F8ECD1'}} />
             </IconButton>
             <ButtonBase onClick={selectFolder}>
                 <Typography sx={selected === folderId ?{color:'primary.main'}:textColor}variant='body1'><strong>{folderInfo?.title}</strong></Typography>
             </ButtonBase>
-            </div>
+        </div>
         <div>
             <IconButton onClick={()=>{setCollapsePeople(!collapsePeople)}}>
                 <Group sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
@@ -106,22 +106,21 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
 
     {collapsePeople && <People friends={friends} level={level} folderInfo={folderInfo} selected={selected} collapsePeople={collapsePeople}/>}
     <Collapse sx={{m:0,p:0}} in={collapseFolder} timeout="auto" unmountOnExit>
-                <List sx={{m:0,p:0}}>
-                    {folderInfo?.bookmarks?.length > 0 && folderInfo?.bookmarks?.map((bookmark,index)=>(<BookmarkItem folder={folderInfo} isFolderCreator={isCreator} isEditor={isEditor} setCollapseFolder={setCollapseFolder} collapseFolder={collapseFolder} isMainCreator={isMainCreator} bookmark={bookmark} textColor={textColor} key={index} level={level+1}/>))}
-                    {bookmarkError && <Typography sx={{color:'secondary.main'}}>{bookmarkError}</Typography>}
-                </List>
-
+            
                 <List sx={{m:0,p:0}}>
                 {folderInfo?.subFolders?.length > 0 && folderInfo?.subFolders?.map((subfolder,index) => (
                     <BookmarkFolder key={index} folder={subfolder} parent={parent} setSelected={setSelected} selected={selected} level={level+1}/>
                 ))}
                 </List>
                 
-                
+                <List sx={{m:0,p:0}}>
+                    {folderInfo?.bookmarks?.length > 0 && folderInfo?.bookmarks?.map((bookmark,index)=>(<BookmarkItem folder={folderInfo} isFolderCreator={isCreator} isEditor={isEditor} setCollapseFolder={setCollapseFolder} collapseFolder={collapseFolder} isMainCreator={isMainCreator} bookmark={bookmark} textColor={textColor} key={index} level={level+1}/>))}
+                    {bookmarkError && <Typography sx={{color:'secondary.main'}}>{bookmarkError}</Typography>}
+                </List>
 
         </Collapse>
 
-    </> : null
+    </Paper> : null
   )
 }
 
