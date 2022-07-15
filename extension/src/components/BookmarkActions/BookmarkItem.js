@@ -57,13 +57,15 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
 
   return (
     <>
-    <ListItem sx={{ m:0, p:0, paddingLeft: `${(level*6)}px`}} key={bookmark.createdAt}>
-              {bookmark.favIconUrl && (<Box component='img' sx={{maxHeight:'1.1rem'}} src={bookmark.favIconUrl}/>)}
+    <ListItem sx={{ m:0, p:0, paddingLeft: `${(level)}px`}} key={bookmark.createdAt}>
                 <ListItemText 
                   disableTypography 
                   primary={
-                          <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+                          <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+                            <div style={{display:'flex',flexDirection:'row'}}>
+                            {bookmark.favIconUrl && (<Box component='img' sx={{maxHeight:'1.1rem', paddingRight:'1px'}} src={bookmark.favIconUrl}/>)}
                             <Link sx={textColor} href={bookmark.url} target='_blank' >{bookmark.title}</Link>
+                            </div>
                             <div>
                               <IconButton onClick={()=>{setShowInfo(!showInfo);setFlagBookmarkTextField(false);setShowFlagInfo(false)}}>
                                 <Info sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
@@ -82,18 +84,18 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
                   />
             
     </ListItem>
-      {showInfo && <div style={{paddingLeft: `${(level*6)}px`, border:'1px dotted black'}}>
-      <Typography sx={{p:'5px 0'}}>Added by {bookmarkCreatorInfo?.username}</Typography>
-      <Typography sx={{p:'5px 0'}}>URL: {bookmark?.url}</Typography>
+      {showInfo && <div style={{ border:'1px dotted black'}}>
+      <Typography sx={{p:1}}>Added by {bookmarkCreatorInfo?.username}</Typography>
+      <Typography sx={{p:1}}>URL: {bookmark?.url}</Typography>
       </div>}
 
-      {showFlagInfo && <div style={{paddingLeft: `${(level*6)}px`, border:'1px dotted red'}}>
-      <Typography sx={{p:'5px 0'}}>Flagged by {bookmark.flag?.flagger}</Typography>
-      <Typography sx={{p:'5px 0'}}>Reason: {bookmark?.flag?.reason}</Typography>
+      {showFlagInfo && <div style={{ border:'1px dotted red'}}>
+      <Typography sx={{p:1}}>Flagged by {bookmark.flag?.flagger}</Typography>
+      <Typography sx={{p:1}}>Reason: {bookmark?.flag?.reason}</Typography>
       {(isFolderCreator || isMainCreator || isFlagger) && <Button onClick={()=>unflagBookmark()}>Unflag</Button>}
       </div>}
 
-      {flagBookmarkTextField && <div style={{paddingLeft: `${(level*6)}px`}}>
+      {flagBookmarkTextField && <div>
       <Typography sx={{p:'5px 0'}}>Suspicious? Malicious? Just plain wrong?</Typography>
       <TextField 
                   sx={{p:'5px 0'}}
