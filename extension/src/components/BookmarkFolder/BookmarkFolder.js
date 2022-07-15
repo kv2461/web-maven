@@ -48,7 +48,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
         }
 
 
-      },[folder, selected, collapseFolder, render])
+      },[folder, selected, collapseFolder])
 
     const selectFolder = () => {
             setFolderId(folder);

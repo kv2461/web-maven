@@ -93,7 +93,7 @@ const People = ({ folderInfo, friends, selected, collapsePeople, level, isMainCr
           <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
             <Typography sx={{color:'red'}}>Confirm Delete?</Typography>
             <div>
-              <Button onClick={()=>deleteBookmarkFolder(folderInfo._id)}>Yes</Button>
+              <Button onClick={()=>deleteBookmarkFolder(folderInfo)}>Yes</Button>
               <Button onClick={()=>{setConfirmDelete(false)}}>No</Button>
             </div>
           </div>}
