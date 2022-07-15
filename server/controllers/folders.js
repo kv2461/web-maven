@@ -4,6 +4,8 @@ import User from '../models/user.js';
 import BookmarkFolder from '../models/bookmarkfolder.js';
 import BookmarkFolderRequest from '../models/bookmarkfolderrequest.js';
 
+
+//FOLDERS
 export const createNewFolder = async (req,res) => {
     try {
         const newBookmarkFolder = new BookmarkFolder(req.body)
@@ -11,7 +13,6 @@ export const createNewFolder = async (req,res) => {
         const existingUser = await User.findById(req.userId);
         
         const {_id} = await newBookmarkFolder.save();
-        console.log(_id);
 
         if (newBookmarkFolder.mainFolder) {
             existingUser.bookmarkfolders.push(String(_id));
@@ -57,7 +58,7 @@ export const deleteBookmarkFolder = async (req, res) => {
             res.status(201).json(updatedFolder);
         } else { //if main folder,  need to clean up each editor/viewer user object folder array, as well as creator's , use updateMany?
                 //also need to delete all the bookmark requests
-            const updatedUsers = await User.updateMany({ bookmarkfolders: {$in:folder._id} }, {$pull: { bookmarkfolders: folder._id}}, {new:true}); //updateMany (query, update, options)
+            const updatedUsers = await User.updateMany({ bookmarkfolders: {$in:folder._id} }, {$pull: {bookmarkfolders: folder._id, favoriteFolders: folder._id}}, {new:true}); //updateMany (query, update, options)
 
             await BookmarkFolderRequest.deleteMany({bookmarkFolderId: folder._id}); //switch to deleteMany
 
@@ -71,6 +72,7 @@ export const deleteBookmarkFolder = async (req, res) => {
     }
 }
 
+//FOLDERS (SOCIAL)
 export const removeFromBookmarkFolder = async (req,res) => {
     const {userId, folderId, rights} = req.body;
     console.log(userId, folderId, rights);
@@ -189,6 +191,12 @@ export const acceptBookmarkRequest = async (req,res) => {
     const {requestId, bookmarkFolderId, rights} = req.body;
 
     try {
+
+        const existingFolder = await BookmarkFolder.findById(bookmarkFolderId);
+
+        if (!existingFolder) return res.status(400).json({message:'Folder does not exist'});
+
+
         //update request to complete
         const existingRequest = await BookmarkFolderRequest.findOne({recipient:req.userId, rights:rights, bookmarkFolderId : bookmarkFolderId})
 
@@ -256,14 +264,16 @@ export const denyBookmarkRequest = async (req,res) => {
     }
 }
 
+
+//FOLDERS (INFO)
 export const getFolders = async (req,res) => {
 
     try {
-        const {bookmarkfolders} = await User.findById(req.userId);
+        const {bookmarkfolders, favoriteFolders} = await User.findById(req.userId);
         const sentFolders = await BookmarkFolderRequest.find({requester:req.userId, status:'unseen'});
         const recievedFolders = await BookmarkFolderRequest.find({recipient:req.userId, status:'unseen'});
 
-        const data = {bookmarkfolders, sentFolders, recievedFolders};
+        const data = {bookmarkfolders, sentFolders, recievedFolders, favoriteFolders};
 
         res.status(201).json(data);
     } catch (error) {
@@ -282,6 +292,8 @@ export const searchFolderById = async (req,res) => {
     }
 }
 
+
+//BOOKMARKS
 export const addBookmark = async (req,res) => {
     const {folderId, bookmark} = req.body;
     try {
@@ -357,6 +369,37 @@ export const unflagBookmark = async (req,res) => {
         const updatedFolder = await BookmarkFolder.updateOne({ _id: folderId }, existingFolder , {new:true});
         
         res.status(201).json(updatedFolder);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
+
+
+//FAVORITE
+export const favoriteFolder = async (req,res) => {
+    const {folderId} = req.body;
+
+    try {
+        const existingFolder = await BookmarkFolder.findById(folderId);
+
+        if (existingFolder) {
+            const user = await User.findById(req.userId);
+
+            let indexFolder = user.favoriteFolders?.findIndex((id)=>id === folderId);
+
+            if (indexFolder === -1) {
+            user.favoriteFolders.push(folderId);
+            } else {
+                user.favoriteFolders = user.favoriteFolders.filter((folder) => folder !== folderId)
+            }
+
+            const updatedUser = await User.updateOne({ _id: req.userId }, user , {new:true});
+
+            res.status(201).json(updatedUser);
+            
+        } else {
+            return res.status(400).json({message:`Not found`});
+        }
     } catch (error) {
         res.status(404).json({message:error.message});
     }

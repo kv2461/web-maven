@@ -23,7 +23,7 @@ export const SignUp = (formData, setError) => async (dispatch) => {
         dispatch(AUTH({data}));
         dispatch(ADDED_FRIENDS(data.result.friends));
     } catch(error) {
-        setError(error);
+        setError(error.response.data.message);
         console.log(error);
     }
 }

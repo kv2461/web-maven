@@ -25,7 +25,7 @@ const Auth = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isSignup) {
-            dispatch(SignUp(formData,setErrorSignUp));
+            dispatch(SignUp(formData,setErrorSignIn));
         } else {
             dispatch(SignIn(formData,setErrorSignIn));
         }
@@ -49,7 +49,7 @@ const Auth = () => {
             
             <Typography sx={{p:1}} component='h3' variant='h6'>{isSignup? 'Sign Up' : 'Sign In'}</Typography>
             {errorSignIn && (<Typography sx={{color:'secondary.main'}}>{errorSignIn}</Typography>)}
-            {errorSignUp && (<Typography sx={{color:'secondary.main'}}>Username or email already taken</Typography>)}
+            {errorSignUp && (<Typography sx={{color:'secondary.main'}}>{errorSignIn}</Typography>)}
             <form onSubmit={handleSubmit}>
                 <Grid sx={{p:1}} container spacing={2}>
                     {isSignup && (

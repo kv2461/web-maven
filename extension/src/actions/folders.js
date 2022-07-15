@@ -205,3 +205,15 @@ export const UnflagBookmark = (folderId, bookmark) => async (dispatch) => {
         console.log(error);
     }
 }
+
+//FAVORITE
+
+export const FavoriteFolder = (folderId) => async (dispatch) => {
+    try {
+        const data = await api.favoriteFolder(folderId);   
+
+        dispatch(GetFolders());
+    } catch (error) {
+        console.log(error);
+    }
+}
