@@ -8,7 +8,7 @@ import BookmarkItem from '../BookmarkActions/BookmarkItem';
 import { SearchFolderById, RemoveFromBookmarkFolder, DeleteBookmarkFolder, FavoriteFolder } from '../../actions/folders';
 import { SearchById } from '../../actions/main';
 
-import { CLEAR_BOOKMARK_ERROR } from '../../reducers/folders'
+import { CLEAR_BOOKMARK_ERROR, RENDER } from '../../reducers/folders'
 
 import People from './People/People';
 
@@ -26,6 +26,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
     const isEditor = Boolean(folderInfo?.editors?.indexOf(user.result._id) !== -1);
     const isMainCreator = Boolean(folderInfo?.mainCreator === user.result._id);
     const inFavoriteFolders = Boolean(favoriteFolders?.indexOf(folder) !== -1); //will need to get this from selector instead of profile since selector gets updated
+    const [deleted, setDeleted] = useState(false);
 
 
     const textColor = 
@@ -47,7 +48,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
         }
 
 
-      },[folder,selected,collapseFolder])
+      },[folder, selected, collapseFolder])
 
     const selectFolder = () => {
             setFolderId(folder);
@@ -65,6 +66,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
     const deleteBookmarkFolder = async (folder) => {
         setCollapseFolder(false);
         await dispatch(DeleteBookmarkFolder(folder));
+        setDeleted(true);
     }
 
     useEffect(()=> {
@@ -82,7 +84,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
     }
 
   return (
-    ((parent !== 'bookmark') || (folderInfo.mainFolder && (isEditor || isCreator || isMainCreator)) || (!folderInfo.mainFolder)) ? 
+    ((folderInfo) || (parent !== 'bookmark') || (folderInfo?.mainFolder && (isEditor || isCreator || isMainCreator)) || (!folderInfo?.mainFolder)) && (!deleted)? 
     <Paper sx={level===1?{elevation:9, m:0, p:0, paddingLeft:1, marginTop:1 } : {elevation:9, p:1, m:0, marginLeft:level, paddingRight:0, marginBottom:1}}>
     <ListItem sx={{m:0,p:0, display:'flex', flexDirection:'row', justifyContent:'space-between'}} key={folder}>
         <div style={{margin:0, padding:0}}>
