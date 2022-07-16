@@ -75,7 +75,6 @@ export const deleteBookmarkFolder = async (req, res) => {
 //FOLDERS (SOCIAL)
 export const removeFromBookmarkFolder = async (req,res) => {
     const {userId, folderId, rights} = req.body;
-    console.log(userId, folderId, rights);
 
     try {
         //delete Request
@@ -87,8 +86,8 @@ export const removeFromBookmarkFolder = async (req,res) => {
         let indexUser = userAccount.bookmarkfolders.findIndex((id)=>id===folderId);
 
         if (indexUser !==-1) {
-            userAccount.bookmarkfolders = userAccount.bookmarkfolders.filter((folder) => folder !== folderId)
-            console.log(folderId)
+            userAccount.bookmarkfolders = userAccount.bookmarkfolders.filter((folder) => folder !== folderId);
+            userAccount.favoriteFolders = userAccount.favoriteFolders.filter((folder) => folder !== folderId);
         };
 
 
