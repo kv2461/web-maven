@@ -86,7 +86,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
                 <Folder sx={{fontSize:'1.2rem', color:'#F8ECD1'}} />
             </IconButton>
             <ButtonBase onClick={selectFolder}>
-                <Typography variant='h8'><strong>{folderInfo?.title}</strong></Typography>
+                <Typography sx={folderId===selected?{color:'primary.main'}:{color:'text.primary'}}variant='h8'><strong>{folderInfo?.title}</strong></Typography>
             </ButtonBase>
         </div>
         <div>
