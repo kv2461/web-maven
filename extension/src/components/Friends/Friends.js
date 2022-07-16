@@ -124,6 +124,8 @@ const Friends = () => {
                   {friends.map((friend) => (<Friend key={friend} friend={friend}/>))}
         </Collapse>
       </div>
+
+      {(friends?.length === 0 && uncompleted?.length === 0 && sent?.length === 0) && (<Typography sx={{color:'secondary.main', textAlign:'center'}}>You currently have no friends, search their username!</Typography>)}
     </>
   )
 }

@@ -74,7 +74,7 @@ const Bookmark = ({showBookmark, url, tab, setSelected, selected}) => {
                 />
                 <StyledList subheader={<li />}>
                 {folders && folders.map((folder,index) => (<BookmarkFolder key={index} folder={folder} parent='bookmark' setSelected={setSelected} selected={selected} level={1}/>))}
-                {folders && folders?.length === 0 && (<Typography sx={{color:'secondary.main'}}>You currently have no folders to add to, create a folder, maybe?</Typography>)}
+                {folders && folders?.length === 0 && (<Typography sx={{textAlign:'center', color:'secondary.main', fontSize:'0.9rem',}}>You currently have no folders to add bookmarks to</Typography>)}
                 </StyledList>
 
                 <div style={{display:'flex', flexDirection:'column'}}>
