@@ -28,7 +28,7 @@ const Bookmark = ({showBookmark, url, tab, setSelected, selected}) => {
         setSelected('');
         setNewBookmark(initialBookmarkState); 
         } else {
-          setAddError('Need to select a folder to add to');
+          setAddError('Need To Select a Folder First');
         }
         await dispatch(RENDER());
     }

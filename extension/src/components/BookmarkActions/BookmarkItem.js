@@ -6,7 +6,7 @@ import { SearchById } from '../../actions/main';
 import { DeleteBookmark, FlagBookmark, UnflagBookmark, GetFolders } from '../../actions/folders';
 import { CLEAR_BOOKMARK_ERROR } from '../../reducers/folders'
 
-const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isMainCreator, }) => {
+const BookmarkItem = ({ bookmark, level, folder, isFolderCreator, isMainCreator, }) => {
   const user = JSON.parse(localStorage.getItem('web-maven-profile'))
   const dispatch = useDispatch();
   const isBookmarkCreator = Boolean(bookmark?.creator === user.result._id);
@@ -77,7 +77,7 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
                           <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
                             <div style={{display:'flex',flexDirection:'row'}}>
                             {bookmark.favIconUrl && (<Box component='img' sx={{maxHeight:'1.1rem', paddingRight:1}} src={bookmark.favIconUrl}/>)}
-                            <Link sx={textColor} href={bookmark.url} target='_blank' >{bookmark?.title?.length > (50-(7*level)) ? `${bookmark?.title?.slice(0,50-(7*level))}...`: bookmark?.title}</Link>
+                            <Link sx={{color:'text.primary', fontWeight:600, fontSize:13}} href={bookmark.url} target='_blank' >{bookmark?.title?.length > (50-(7*level)) ? `${bookmark?.title?.slice(0,50-(7*level))}...`: bookmark?.title}</Link>
                             </div>
                             <div>
                               <IconButton onClick={()=>{setShowInfo(!showInfo)}}>
@@ -89,8 +89,8 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
             
     </ListItem>
       {showInfo && 
-      <div style={{ border:'1px dotted black'}}>
-        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+      <div style={{ border:'1px dotted black', overflow:'auto'}}>
+        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between',}}>
           <Typography sx={{p:1}}>Added by {bookmarkCreatorInfo?.username}</Typography>
           <div>
             {(isFolderCreator || isMainCreator || isBookmarkCreator) && 
@@ -119,7 +119,7 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
       <Typography sx={{p:1}}>URL: {bookmark?.url}</Typography>
       </div>}
 
-      {showFlagInfo && <div style={{ border:'1px dotted red'}}>
+      {showFlagInfo && <div style={{ border:'1px dotted red', overflow:'auto'}}>
       <Typography sx={{p:1}}>Flagged by {bookmark.flag?.flagger}</Typography>
       <Typography sx={{p:1}}>Reason: {bookmark?.flag?.reason}</Typography>
       {(isFolderCreator || isMainCreator || isFlagger) && <Button onClick={()=>unflagBookmark()}>Unflag</Button>}
