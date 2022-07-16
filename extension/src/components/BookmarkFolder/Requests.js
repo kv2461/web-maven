@@ -14,6 +14,7 @@ const Requests = ({selected, setSelected, inviteToFolder}) => {
   const [folderId, setFolderId] = useState(1);
   const [collapseInvite, setCollapseInvite] = useState(false);
   const [completed,setCompleted] = useState(false);
+  const [confirmDeny, setConfirmDeny] = useState(false);
 
   useEffect(()=> {
     const getInfo = async () => {
@@ -65,11 +66,13 @@ const Requests = ({selected, setSelected, inviteToFolder}) => {
     setSelected('');
     setCollapseInvite(false);
     dispatch(GetFolders());
+    setConfirmDeny(false);
   }
 
 
 
   return (
+    <>
     <div style={{margin:0,padding:0, display:'flex', flexDirection:'row'}}>
       {!completed && (<>
         
@@ -91,11 +94,21 @@ const Requests = ({selected, setSelected, inviteToFolder}) => {
     {collapseInvite && (
     <Box sx={{margin:0,padding:0, display:'flex', flexDirection:'row'}}>
       <Button onClick={accept}>Accept</Button>
-      <Button onClick={deny}>Deny</Button>
+      <Button onClick={()=>setConfirmDeny(!confirmDeny)}>Deny</Button>
     </Box>)}
 
     </>)}
   </div>
+
+    {confirmDeny&& 
+          <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+            <Typography sx={{color:'red'}}>Are you sure?</Typography>
+            <div>
+              <Button onClick={deny}>Yes</Button>
+              <Button onClick={()=>{setConfirmDeny(false)}}>No</Button>
+            </div>
+          </div>}
+  </>
   )
 
 }
