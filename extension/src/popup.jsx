@@ -88,13 +88,12 @@ const Popup = () => {
             {user && 
             <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start'}}>
 
-            <RatingMain url={url} tab={chromeTab}/>
+                <RatingMain url={url} tab={chromeTab}/>
 
-            <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-            <Typography>{user.result.username}</Typography>
-            {/* <Typography> logged in</Typography> */}
-            <Button sx={{color:'secondary.main'}}onClick={logout}>Log Out</Button>
-            </div>
+                <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+                    <Typography>{user.result.username}</Typography>
+                    <Button sx={{color:'secondary.main'}}onClick={logout}>Logout</Button>
+                </div>
             </div>
             }
 
