@@ -16,9 +16,10 @@ const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, u
         width: 200,
         display: 'flex',
         flexDirection:'column',
-        alignItems: 'center',
+        alignItems: 'flex-start',
       }}
     >
+    <div style={{display:'flex', flexDirection:'row', }}>
       <Rating
         name="hover-feedback"
         value={value}
@@ -32,9 +33,12 @@ const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, u
         }}
         emptyIcon={<Star style={{ opacity: 0.55 }} fontSize="inherit" />}
       />
+    
       {value !== null && (
         <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
       )}
+      
+      </div>
       {infoHover && <WideRatings url={url} tab={tab} />}
     </Box>
   )
