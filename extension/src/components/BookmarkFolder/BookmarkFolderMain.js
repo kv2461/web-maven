@@ -48,13 +48,13 @@ const BookmarkFolderMain = () => {
       <Button onClick={toggleShowFavorites}>Favorites ({favoriteFolders.length})</Button>
       <Button onClick={toggleShowFolders}>Folders ({folders.length})</Button>
       <StyledList subheader={<li />}>
-        {showFolders && folders && folders.length === 0 && (<Typography sx={{color:'secondary.main'}}>You currently have no bookmark folders created or joined</Typography>)}
+        {showFolders && folders && folders.length === 0 && (<Typography sx={{color:'secondary.main', textAlign:'center'}}>You currently have no bookmark folders created or joined</Typography>)}
         {showFolders && folders && folders.map((folder,index) => (<BookmarkFolder key={index} folder={folder} level={1} selected={selected} setSelected={setSelected}/>))}
 
         {showRequests && recievedFoldersPending && recievedFoldersPending.map((inviteToFolder,index) => (<Requests key={index} inviteToFolder={inviteToFolder} selected={selected} setSelected={setSelected}/>))}
-        {showRequests && recievedFoldersPending && recievedFoldersPending.length === 0 && (<Typography sx={{color:'secondary.main'}}>You currently have no requests to join a bookmark folder</Typography>)}
+        {showRequests && recievedFoldersPending && recievedFoldersPending.length === 0 && (<Typography sx={{color:'secondary.main', textAlign:'center'}}>You currently have no requests to join a bookmark folder</Typography>)}
 
-        {showFavorites && favoriteFolders.length === 0 && (<Typography sx={{color:'secondary.main'}}>You currently have no favorite bookmark folders</Typography>)}
+        {showFavorites && favoriteFolders.length === 0 && (<Typography sx={{color:'secondary.main', textAlign:'center'}}>You currently have no favorite bookmark folders</Typography>)}
         {showFavorites && favoriteFolders && favoriteFolders.map((folder,index) => (<BookmarkFolder key={index} folder={folder} level={1} selected={selected} setSelected={setSelected}/>))}
 
 
