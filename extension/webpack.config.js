@@ -15,7 +15,7 @@ module.exports = {
         alias: {
             components: path.resolve(__dirname, 'src/components'),
         },
-        extensions: ['.js'],
+        extensions: ['.js', '.jsx', '.css'],
     },
     module: {
         rules: [{ 
@@ -25,9 +25,15 @@ module.exports = {
                 loader: 'babel-loader', //tool that we use to understand react code and transpile it into plain js that our webpack builder can understand
                 options: {
                     presets: ['@babel/preset-env', '@babel/preset-react']
-                }
-            }
-        }],
+                    }
+                }, 
+            },
+            {
+                test: /\.css$/i,      //for index.css, in order to understand googlefont@ syntax and such                                                                                                    
+                use: ["style-loader", "css-loader"],                                                                                                                          
+            },  
+    
+    ],
     },
     plugins: [new HtmlWebpackPlugin({ //update copied code and send an object to the function which will contain the template
             template:'./src/popup.html',    //with the path to our popup.html file and then we will define the file name field to keep the same popup.html name

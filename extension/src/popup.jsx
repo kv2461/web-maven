@@ -87,7 +87,7 @@ const Popup = () => {
             
             {user && <>
             <Typography>{user.result.username} logged in</Typography>
-            <Button sx={{color:'secondary.main'}}onClick={logout}>Logout</Button>
+            <Button sx={{color:'secondary.main'}}onClick={logout}>Log Out</Button>
             </>}
             </Grid>
             

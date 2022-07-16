@@ -28,12 +28,6 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
     const inFavoriteFolders = Boolean(favoriteFolders?.indexOf(folder) !== -1); //will need to get this from selector instead of profile since selector gets updated
     const [deleted, setDeleted] = useState(false);
 
-
-    const textColor = 
-        {color: level % 2 === 0 ? 'text.secondary' : 'text.primary',
-        // backgroundColor: level % 2 === 0 ? '#F8ECD1' : '#E0D8B0'
-        }
-
     useEffect(()=> {
         const getInfo = async () => {
           const data = await dispatch(SearchFolderById(folder));
@@ -92,7 +86,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
                 <Folder sx={{fontSize:'1.2rem', color:'#F8ECD1'}} />
             </IconButton>
             <ButtonBase onClick={selectFolder}>
-                <Typography sx={selected === folderId ?{color:'primary.main'}:textColor}variant='body1'><strong>{folderInfo?.title}</strong></Typography>
+                <Typography variant='h8'><strong>{folderInfo?.title}</strong></Typography>
             </ButtonBase>
         </div>
         <div>
@@ -117,7 +111,7 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
                 </List>
                 
                 <List sx={{m:0,p:0}}>
-                    {folderInfo?.bookmarks?.length > 0 && folderInfo?.bookmarks?.map((bookmark,index)=>(<BookmarkItem folder={folderInfo} isFolderCreator={isCreator} isEditor={isEditor} setCollapseFolder={setCollapseFolder} collapseFolder={collapseFolder} isMainCreator={isMainCreator} bookmark={bookmark} textColor={textColor} key={index} level={level+1}/>))}
+                    {folderInfo?.bookmarks?.length > 0 && folderInfo?.bookmarks?.map((bookmark,index)=>(<BookmarkItem folder={folderInfo} isFolderCreator={isCreator} isEditor={isEditor} setCollapseFolder={setCollapseFolder} collapseFolder={collapseFolder} isMainCreator={isMainCreator} bookmark={bookmark} key={index} level={level+1}/>))}
                     {bookmarkError && <Typography sx={{color:'secondary.main'}}>{bookmarkError}</Typography>}
                 </List>
 

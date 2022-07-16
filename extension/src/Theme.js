@@ -1,8 +1,22 @@
 import { createTheme } from "@mui/material/styles";
+import './index.css';
+
+const robotoFont = "'Roboto', sans-serif";
+// const acmeFont = "'Acme', sans-serif";
+// const playFont = "'Play', sans-serif";
+// const bebasNeueFont = "'Bebas Neue', cursive";
 
 export const theme = createTheme({
     typography: {
-        fontSize: 11,
+        fontFamily: robotoFont,
+        button: {
+            fontSize: 13,
+            letterSpacing:0.8,
+            fontWeight:700,
+            textTransform:'none'
+        },
+        fontSize: 12,
+        fontWeight:700
     },
     palette: {
         type: 'light',

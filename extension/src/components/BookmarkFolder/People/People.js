@@ -76,7 +76,7 @@ const People = ({ folderInfo, friends, selected, collapsePeople, level, isMainCr
   return (
     <Container>
       <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-        <Typography>Created by {creatorInfo.username}</Typography>
+        <Typography variant='body1'>Created by {creatorInfo.username}</Typography>
         <div>
           {(isCreator || isMainCreator) && 
           <IconButton onClick={()=>{setConfirmDelete(!confirmDelete)}}>
