@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Rating, Box } from '@mui/material';
 import { Star } from '@mui/icons-material';
 
+// import { RateUrl } from './'
 import WideRatings from './WideRatings';
 
+
 const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, url, tab }) => {
+    const dispatch = useDispatch();
     const [infoHover, setInfoHover] = useState(false);
 
+    const rateUrl = async () => {
+      await dispatch(RateUrl(url));
+    }
+
     useEffect(() => {
-      console.log(value);
+      rateUrl();
     },[value])
     
   return (
