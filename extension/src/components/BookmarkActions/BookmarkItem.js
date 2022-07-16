@@ -20,6 +20,7 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
   const [tempFlag, setTempFlag] = useState(false);
   const [tempUnflag, setTempUnflag] = useState(false);
   const [showBookmark, setShowBookmark] = useState(true);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(()=> {
     const getInfo = async () => {
@@ -37,6 +38,7 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
     dispatch(DeleteBookmark(folder._id, bookmark));
     setShowInfo(false);
     setShowBookmark(false);
+    setConfirmDelete(false);
   }
 
   const finalizeFlag = async () => {
@@ -92,7 +94,7 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
           <Typography sx={{p:1}}>Added by {bookmarkCreatorInfo?.username}</Typography>
           <div>
             {(isFolderCreator || isMainCreator || isBookmarkCreator) && 
-            <IconButton onClick={()=>{deleteBookmark()}}>
+            <IconButton onClick={()=>{setConfirmDelete(true)}}>
               <DeleteForever sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
             </IconButton>}
             {(!bookmark?.flagged || (tempUnflag && !tempFlag)) && <IconButton onClick={()=>{setFlagBookmarkTextField(!flagBookmarkTextField);}}>
@@ -101,8 +103,18 @@ const BookmarkItem = ({ bookmark, level, textColor, folder, isFolderCreator, isM
             {(bookmark?.flagged || (tempFlag && !tempUnflag)) && <IconButton onClick={()=>{setShowFlagInfo(!showFlagInfo);}}>
               <Flag sx={{color:'red', fontSize:'1.2rem'}}/>
             </IconButton>}     
-          </div>                   
+          </div>
         </div>
+
+        {confirmDelete && 
+          <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+            <Typography sx={{color:'red', paddingLeft:1}}>Delete?</Typography>
+            <div>
+              <Button onClick={()=>deleteBookmark()}>Yes</Button>
+              <Button onClick={()=>{setConfirmDelete(false)}}>No</Button>
+            </div>
+          </div>}
+
       <Typography sx={{p:1}}>Title: {bookmark?.title}</Typography>
       <Typography sx={{p:1}}>URL: {bookmark?.url}</Typography>
       </div>}
