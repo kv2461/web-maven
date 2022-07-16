@@ -21,6 +21,7 @@ import Auth from './components/Auth/Auth';
 import Interface from './components/Interface/Interface';
 import BookmarkFolderMain from './components/BookmarkFolder/BookmarkFolderMain';
 import Friends from './components/Friends/Friends';
+import RatingMain from './components/Rating/RatingMain';
 
 import { theme } from './Theme';
 
@@ -83,14 +84,19 @@ const Popup = () => {
             
             {!user && <Auth />}
             
-            <Grid container display='flex' flexDirection='column' alignItems= 'flex-end'>
             
-            {user && <>
+            {user && 
+            <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start'}}>
+
+            <RatingMain url={url} tab={chromeTab}/>
+
+            <div style={{display:'flex', flexDirection:'column'}}>
             <Typography>{user.result.username} logged in</Typography>
             <Button sx={{color:'secondary.main'}}onClick={logout}>Log Out</Button>
-            </>}
-            </Grid>
-            
+            </div>
+            </div>
+            }
+
           
 
 
