@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Rating, Box } from '@mui/material';
 import { Star } from '@mui/icons-material';
 
@@ -6,6 +6,10 @@ import WideRatings from './WideRatings';
 
 const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, url, tab }) => {
     const [infoHover, setInfoHover] = useState(false);
+
+    useEffect(() => {
+      console.log(value);
+    },[value])
     
   return (
     <Box
