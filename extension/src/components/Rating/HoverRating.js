@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Rating, Box } from '@mui/material';
 import { Star } from '@mui/icons-material';
 
-const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText }) => {
+import WideRatings from './WideRatings';
+
+const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, url, tab }) => {
+    const [infoHover, setInfoHover] = useState(false);
+    
   return (
     <Box
+        onMouseEnter = {()=>setInfoHover(true)}
+        onMouseLeave = {()=>setInfoHover(false)}
+
       sx={{
         width: 200,
         display: 'flex',
+        flexDirection:'column',
         alignItems: 'center',
       }}
     >
@@ -27,6 +35,7 @@ const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText })
       {value !== null && (
         <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
       )}
+      {infoHover && <WideRatings url={url} tab={tab} />}
     </Box>
   )
 }

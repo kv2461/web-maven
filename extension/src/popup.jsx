@@ -88,7 +88,7 @@ const Popup = () => {
             {user && 
             <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start'}}>
 
-            <RatingMain />
+            <RatingMain url={url} tab={chromeTab}/>
 
             <div style={{display:'flex', flexDirection:'column'}}>
             <Typography>{user.result.username} logged in</Typography>

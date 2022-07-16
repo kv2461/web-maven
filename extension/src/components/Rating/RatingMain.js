@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { Container } from '@mui/material';
 import HoverRating from './HoverRating';
 
-const RatingMain = () => {
+const RatingMain = ({ url, tab }) => {
   const [value, setValue] = useState(0);
   const [hover, setHover] = useState(-1);
+
   const labels = {
     0.5: 'Useless',
     1: 'Useless+',
@@ -23,9 +25,9 @@ const RatingMain = () => {
   
   
   return (
-    <>
-      <HoverRating value={value} setValue={setValue} hover={hover} setHover={setHover} labels={labels} getLabelText={getLabelText}/>
-    </>
+    <Container sx={{display:'flex', flexDirection:'column', alignItems:'flex-start'}}>
+      <HoverRating value={value} setValue={setValue} hover={hover} setHover={setHover} labels={labels} getLabelText={getLabelText} url={url} tab={tab}/>
+    </Container>
   )
 }
 
