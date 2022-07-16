@@ -9,7 +9,7 @@ import CreateFolder from '../Interface/CreateFolder/CreateFolder';
 import { AddBookmark, SearchFolderById, GetFolders, } from '../../actions/folders';
 import { RENDER } from '../../reducers/folders'
 
-const Bookmark = ({showBookmark, url, tab, setSelected, selected}) => {
+const Bookmark = ({ showBookmark, url, tab, setSelected, selected }) => {
     const dispatch = useDispatch();
     const {folders} = useSelector((state)=>state.folderSlice)
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
