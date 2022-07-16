@@ -3,17 +3,18 @@ import './index.css';
 
 const robotoFont = "'Roboto', sans-serif";
 // const acmeFont = "'Acme', sans-serif";
-// const playFont = "'Play', sans-serif";
+const playFont = "'Play', sans-serif";
 // const bebasNeueFont = "'Bebas Neue', cursive";
 
 export const theme = createTheme({
     typography: {
         fontFamily: robotoFont,
         button: {
+            fontFamily:playFont,
             fontSize: 13,
             letterSpacing:0.8,
-            fontWeight:700,
-            textTransform:'none'
+            fontWeight:600,
+            textTransform:'uppercase',
         },
         fontSize: 12,
         fontWeight:700
