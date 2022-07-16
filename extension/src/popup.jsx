@@ -90,8 +90,9 @@ const Popup = () => {
 
             <RatingMain url={url} tab={chromeTab}/>
 
-            <div style={{display:'flex', flexDirection:'column'}}>
-            <Typography>{user.result.username} logged in</Typography>
+            <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+            <Typography>{user.result.username}</Typography>
+            {/* <Typography> logged in</Typography> */}
             <Button sx={{color:'secondary.main'}}onClick={logout}>Log Out</Button>
             </div>
             </div>
