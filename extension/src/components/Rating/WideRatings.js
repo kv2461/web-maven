@@ -14,8 +14,8 @@ const WideRatings = ({ url, tab }) => {
         </Paper>
         <div style={{display:'flex', flexDirection:'row'}}>
         <Typography>Rated</Typography>
-        <Star /> 
-        <Typography>4.20 by 69 users.</Typography>
+        <Star sx={{color:'rgba(239,178,61,1)'}}/> 
+        <Typography>&#40;4.20&#41; by 69 users</Typography>
         </div>
     </>
   )
