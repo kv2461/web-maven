@@ -9,7 +9,7 @@ import Requests from './Requests';
 
 const BookmarkFolderMain = () => {
   const dispatch = useDispatch();
-  const { folders, sentFolders, recievedFolders, favoriteFolders } = useSelector((state)=>state.folderSlice)
+  const { folders, sentFolders, recievedFolders, favoriteFolders, render } = useSelector((state)=>state.folderSlice)
   const [showRequests, setShowRequests] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showFolders, setShowFolders] = useState(false);
@@ -20,7 +20,7 @@ const BookmarkFolderMain = () => {
 
   useEffect(()=> {
     dispatch(GetFolders())
-  },[])
+  },[selected, render])
 
   const toggleShowRequests = () => {
     setShowRequests(!showRequests);

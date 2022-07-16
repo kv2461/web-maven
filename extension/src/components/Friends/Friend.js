@@ -1,12 +1,13 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux';
-import {Typography, IconButton} from '@mui/material'
+import { Typography, IconButton, Button } from '@mui/material'
 import { PersonRemove } from '@mui/icons-material';
 import { SearchById, RemoveFriend } from '../../actions/main';
 
 const Friend = ({ friend }) => {
     const dispatch = useDispatch();
     const [friendInfo, setFriendInfo] = useState('');
+    const [confirmRemove, setConfirmRemove] = useState(false);
 
     useEffect(()=> {
         const getInfo = async () => {
@@ -25,12 +26,24 @@ const Friend = ({ friend }) => {
 
 
   return (
+    <>
     <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
     <Typography>{friendInfo.username}</Typography>
-    <IconButton onClick={()=>removeFriend(friendInfo)} edge='end'>
+    <IconButton onClick={()=>setConfirmRemove(!confirmRemove)} edge='end'>
             <PersonRemove />
     </IconButton>
     </div>
+
+    {confirmRemove && 
+          <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+            <Typography sx={{color:'red'}}>Are you sure you want to unfriend?</Typography>
+            <div>
+              <Button onClick={()=>removeFriend(friendInfo)}>Yes</Button>
+              <Button onClick={()=>{setConfirmRemove(false)}}>No</Button>
+            </div>
+          </div>}
+    </>
+    
   )
 }
 

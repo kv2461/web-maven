@@ -1,5 +1,5 @@
 import React,{ useState, useEffect } from 'react';
-import { IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import { DoNotDisturbAlt, PersonAdd } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { SearchById } from '../../actions/main';
@@ -23,15 +23,17 @@ const Recieved = ({ friendReq }) => {
     },[])
 
   return (
-    <>
-      <div>{friend.username}</div>
-      <IconButton onClick={()=>dispatch(DenyFriendRequest(friend))}>
-        <DoNotDisturbAlt />
-      </IconButton>
-      <IconButton onClick={()=>dispatch(AcceptFriendRequest(friend))}>
-        <PersonAdd />
-      </IconButton>
-    </>
+    <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+      <Typography>{friend.username}</Typography>
+      <div>
+        <IconButton onClick={()=>dispatch(DenyFriendRequest(friend))}>
+          <DoNotDisturbAlt />
+        </IconButton>
+        <IconButton onClick={()=>dispatch(AcceptFriendRequest(friend))}>
+          <PersonAdd />
+        </IconButton>
+      </div>
+    </div>
   )
 }
 

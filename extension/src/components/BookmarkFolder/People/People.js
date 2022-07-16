@@ -8,7 +8,7 @@ import { CLEAR_EDITOR_ERROR, CLEAR_VIEWER_ERROR } from '../../../reducers/folder
 import Editor from './Editor';
 import Viewer from './Viewer';
 
-const People = ({ folderInfo, friends, selected, collapsePeople, level, isMainCreator, deleteBookmarkFolder }) => {
+const People = ({ folderInfo, friends, selected, collapsePeople, level, isMainCreator, deleteBookmarkFolder, removeFromBookmarkFolder }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'))
     const dispatch = useDispatch();
     const { friendArray } = useSelector((state)=>state.mainSlice);
@@ -20,6 +20,8 @@ const People = ({ folderInfo, friends, selected, collapsePeople, level, isMainCr
     const [addViewers, setAddViewers] = useState(false);
     const [editors, setEditors] = useState([]);
     const [viewers, setViewers] = useState([]);
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [confirmRemove, setConfirmRemove] = useState(false);
     const availableEditors = friendArray.filter((friend) => folderInfo.editors.indexOf(friend._id) === -1 && creatorInfo._id !== friend._id);
     const availableViewers = availableEditors.filter((friend) => folderInfo.viewers.indexOf(friend._id) === -1 );
     const isCreator = Boolean(folderInfo.creator === user.result._id);
@@ -77,18 +79,38 @@ const People = ({ folderInfo, friends, selected, collapsePeople, level, isMainCr
         <Typography>Created by {creatorInfo.username}</Typography>
         <div>
           {(isCreator || isMainCreator) && 
-          <IconButton onClick={()=>{deleteBookmarkFolder(folderInfo)}}>
+          <IconButton onClick={()=>{setConfirmDelete(!confirmDelete)}}>
             <DeleteForever sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
           </IconButton>}
-          {level === 1 && !isCreator && <IconButton onClick={()=>{removeFromBookmarkFolder(user.result._id)}}>
+        
+          {level === 1 && !isCreator && <IconButton onClick={()=>{setConfirmRemove(true)}}>
                   <Logout sx={{color:'#35A7FF', fontSize:'1.2rem'}}/>
           </IconButton>}
         </div>
       </div>
+
+      {confirmDelete && 
+          <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+            <Typography sx={{color:'red'}}>Confirm Delete?</Typography>
+            <div>
+              <Button onClick={()=>deleteBookmarkFolder(folderInfo)}>Yes</Button>
+              <Button onClick={()=>{setConfirmDelete(false)}}>No</Button>
+            </div>
+          </div>}
+
+          {confirmRemove && 
+          <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+            <Typography sx={{color:'red'}}>Leave Folder?</Typography>
+            <div>
+              <Button onClick={()=>removeFromBookmarkFolder(user.result._id)}>Yes</Button>
+              <Button onClick={()=>{setConfirmRemove(false)}}>No</Button>
+            </div>
+          </div>}
+
         {level === 1 && (<><Button onClick={()=>{setCollapseEditors(!collapseEditors);setCollapseViewers(false);}}> {collapseEditors ? 'Hide Editors' : `Editors (${folderInfo.editors.length})`}</Button>
         <Button onClick={()=>{setCollapseViewers(!collapseViewers);setCollapseEditors(false);}}> {collapseViewers ? 'Hide Viewers' : `Viewers (${folderInfo.viewers.length})`}</Button>
         <Collapse in={collapseEditors} timeout='auto' unmountOnExit>
-          {folderInfo.editors.map((editor)=> (<Editor key={editor} editor={editor} creator={creatorInfo}/>))}
+          {folderInfo.editors.map((editor)=> (<Editor folder={folderInfo._id} key={editor} editor={editor} creator={creatorInfo}/>))}
           {(isCreator || isEditor) && <Button onClick={()=>{setAddEditors(!addEditors)}}>{addEditors ? 'Cancel' : 'Add Editors '}</Button>}
           {addEditorError && addEditorError.map((err,i) => (<Typography sx={{color:'secondary.main'}} key={i}>{err}</Typography>))}
           {addEditors && (
@@ -112,7 +134,7 @@ const People = ({ folderInfo, friends, selected, collapsePeople, level, isMainCr
         </Collapse>
 
         <Collapse in={collapseViewers} timeout='auto' unmountOnExit>
-            {folderInfo.viewers.map((viewer)=> (<Viewer key={viewer} viewer={viewer} creator={creatorInfo} isEditor={isEditor}/>))}
+            {folderInfo.viewers.map((viewer)=> (<Viewer folder={folderInfo._id} key={viewer} viewer={viewer} creator={creatorInfo} isEditor={isEditor}/>))}
             {(isCreator || isEditor) && <Button onClick={()=>{setAddViewers(!addViewers)}}>{addViewers ? 'Cancel' : 'Add Viewers'}</Button>}
             {addViewerError && addViewerError.map((err,i) => (<Typography sx={{color:'secondary.main'}} key={i}>{err}</Typography>))}
             {addViewers && (

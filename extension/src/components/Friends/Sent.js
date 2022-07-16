@@ -1,5 +1,5 @@
 import React,{ useState, useEffect } from 'react';
-import { IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import { DoNotDisturbAlt } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { SearchById } from '../../actions/main';
@@ -24,12 +24,12 @@ const Sent = ({friendReq}) => {
     },[])
 
   return (
-    <>
-      <div>{friend.username}</div>
+    <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+      <Typography>{friend.username}</Typography>
       <IconButton onClick={()=>dispatch(CancelFriendRequest(friend))}>
         <DoNotDisturbAlt />
       </IconButton>
-    </>
+    </div>
   )
 }
 
