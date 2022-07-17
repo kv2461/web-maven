@@ -1,12 +1,7 @@
 import mongoose from 'mongoose';
 
-// import User from '../models/user.js';
-// import BookmarkFolder from '../models/bookmarkfolder.js';
-// import BookmarkFolderRequest from '../models/bookmarkfolderrequest.js';
-
-//need to make a model, UrlRatings = { url: , ratings: [ {userId:req.userId, rating: value} ] }
-//ratings is an object that has the userId, and ratings associated... maybe make a model for this to and just have ratings? probably not
-
+import UserUrlRatings from '../models/userurlratings.js';
+import UrlRatings from '../models/urlratings.js';
 
 //FOLDERS
 export const rateUrl = async (req,res) => {
