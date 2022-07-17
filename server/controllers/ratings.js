@@ -22,7 +22,7 @@ export const rateUrl = async (req,res) => {
             const updatedUserRatings = await UserUrlRatings.updateOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId} , existingUserRatings, {new:true});
             res.status(201).json(updatedUserRatings);
         } else {
-            const newUserUrlRatings = new UserUrlRatings({url: url, userId:req.userId, rating:value});
+            const newUserUrlRatings = new UserUrlRatings({url: url, userId:req.userId, rating:value,});
             console.log('hi')
 
             const {_id} = await newUserUrlRatings.save();
@@ -31,13 +31,14 @@ export const rateUrl = async (req,res) => {
             const existingRatings = await UrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }});
 
             if (!existingRatings) {
-                const newUrlRatings = new UrlRatings({url: url, ratings: [String(_id)]});
+                const newUrlRatings = new UrlRatings({url: url, ratings: [String(_id)], raters: [req.userId]});
 
                 const savedUrlRatings = await newUrlRatings.save();
 
                 res.status(201).json(savedUrlRatings);
             } else {
                 existingRatings.ratings.push(String(_id));
+                existingRatings.raters.push(req.userId);
 
                 const updatedUrlRatings = await UrlRatings.updateOne({'url': {$regex : new RegExp(url, "i") }}, existingRatings, {new:true});
 
