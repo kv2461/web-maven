@@ -72,3 +72,5 @@ export const favoriteFolder = (folderId) => API.patch('/folders/favoriteFolder',
 
 //ratings
 export const rateUrl = (url, value) => API.patch('/ratings/url', {url, value});
+
+export const getUrlRatings = (url) => API.patch('/ratings/info', {url});

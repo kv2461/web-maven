@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Container } from '@mui/material';
+import { useSelector } from 'react-redux';
 import HoverRating from './HoverRating';
 
 const RatingMain = ({ url, tab }) => {
+  const { urlRatings, userUrlRatings } = useSelector((state) => state.ratingsSlice)
   const [value, setValue] = useState(0);
   const [hover, setHover] = useState(-1);
 
@@ -26,7 +28,7 @@ const RatingMain = ({ url, tab }) => {
   
   return (
     <Container sx={{display:'flex', flexDirection:'column', alignItems:'flex-start'}}>
-      <HoverRating value={value} setValue={setValue} hover={hover} setHover={setHover} labels={labels} getLabelText={getLabelText} url={url} tab={tab}/>
+      <HoverRating value={value} setValue={setValue} hover={hover} setHover={setHover} labels={labels} getLabelText={getLabelText} url={url} tab={tab} urlRatings={urlRatings} userUrlRatings={userUrlRatings}/>
     </Container>
   )
 }

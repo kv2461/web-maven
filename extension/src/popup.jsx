@@ -7,11 +7,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Button, Collapse, Typography, Container, Grid, } from '@mui/material';
 
 import { GetFriends } from './actions/main';
-import { GetFolders } from './actions/folders'
+import { GetFolders } from './actions/folders';
+import { GetUrlRatings } from './actions/ratings';
 
 import mainSlice  from './reducers/main';
 import authSlice from './reducers/auth';
 import folderSlice from './reducers/folders';
+import ratingsSlice from './reducers/ratings';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGOUT } from '../src/reducers/auth'
@@ -30,7 +32,8 @@ const store = configureStore({
     reducer: {
         mainSlice:mainSlice,
         authSlice:authSlice,
-        folderSlice:folderSlice
+        folderSlice:folderSlice,
+        ratingsSlice:ratingsSlice
     },
     middleware: (getDefaultMiddleware) => 
     getDefaultMiddleware({
@@ -62,6 +65,7 @@ const Popup = () => {
             .then((response) => {
                 const {url} = response;
                 setUrl(url);
+                dispatch(GetUrlRatings(url));
                 setChromeTab(response);
             })
     }
@@ -92,7 +96,7 @@ const Popup = () => {
 
                 <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
                     <Typography>{user.result.username}</Typography>
-                    <Button sx={{color:'secondary.main'}}onClick={logout}>Logout</Button>
+                    <Button sx={{color:'secondary.main'}} onClick={logout}>Logout</Button>
                 </div>
             </div>
             }

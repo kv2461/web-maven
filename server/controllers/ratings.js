@@ -54,15 +54,20 @@ export const rateUrl = async (req,res) => {
 
 export const getUrlRatings = async (req,res) => {
     const {url} = req.body;
-    console.log(url);
     try {
         const existingRatings = await UrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }});
-        const existingUserRatings = await UserUrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId});
-        //get every review during this call and average out using a mongocall 
+        
+        if(existingRatings) {
+            const aggData = await UserUrlRatings.aggregate([{$match:{url:{$regex : new RegExp(url, "i") }}}, {$group:{_id:existingRatings._id, average:{$avg: '$rating'}}}]);
+            const {average} = aggData[0]
 
-        const data = {existingRatings, existingUserRatings};
+            const existingUserRatings = await UserUrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId});
 
-        res.status(201).json(data);
+            const data = {existingRatings, existingUserRatings, average};
+
+            res.status(201).json(data);
+        } 
+
     } catch (error) {
         res.status(404).json({message:error.message});
     }

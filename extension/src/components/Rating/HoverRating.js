@@ -7,7 +7,7 @@ import { RateUrl } from '../../actions/ratings';
 import WideRatings from './WideRatings';
 
 
-const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, url, tab }) => {
+const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, url, tab, urlRatings, userUrlRatings }) => {
     const dispatch = useDispatch();
     const [infoHover, setInfoHover] = useState(false);
 
@@ -54,7 +54,7 @@ const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, u
       )}
       
       </div>
-      {infoHover && <WideRatings url={url} tab={tab} />}
+      {infoHover && <WideRatings url={url} tab={tab} urlRatings={urlRatings}/>}
     </Box>
   )
 }

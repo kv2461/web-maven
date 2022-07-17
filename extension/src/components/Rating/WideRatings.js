@@ -2,8 +2,8 @@ import React from 'react';
 import { Typography, Paper } from '@mui/material';
 import { Star } from '@mui/icons-material';
 
-const WideRatings = ({ url, tab }) => {
-    console.log(tab)
+const WideRatings = ({ url, tab, urlRatings}) => {
+    console.log(urlRatings)
   return (
     <>
         <Paper sx={{display:'flex', flexDirection:'row', alignItems:'center', p:1, m:1, marginLeft:0}}>
