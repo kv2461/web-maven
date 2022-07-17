@@ -69,3 +69,6 @@ export const unflagBookmark = (folderId, bookmark) => API.patch('/folders/unflag
 
 //favorite
 export const favoriteFolder = (folderId) => API.patch('/folders/favoriteFolder', {folderId});
+
+//ratings
+export const rateUrl = (url, value) => API.patch('/ratings/url', {url, value});

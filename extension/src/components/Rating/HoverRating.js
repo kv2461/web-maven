@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Rating, Box } from '@mui/material';
 import { Star } from '@mui/icons-material';
 
-// import { RateUrl } from './'
+import { RateUrl } from '../../actions/ratings';
 import WideRatings from './WideRatings';
 
 
@@ -12,11 +12,14 @@ const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, u
     const [infoHover, setInfoHover] = useState(false);
 
     const rateUrl = async () => {
-      await dispatch(RateUrl(url));
+      await dispatch(RateUrl(url, value));
     }
 
     useEffect(() => {
-      rateUrl();
+      if (value !== 0) {
+        rateUrl();
+      }
+      
     },[value])
     
   return (
