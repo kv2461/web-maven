@@ -14,10 +14,6 @@ const userUrlRatingsSchema = new mongoose.Schema({
         type:String,
         required: true,
     },
-    userUsername: {
-        type:String,
-        required: true,
-    },
     createdAt: {
         type:Date,
         default:new Date(),
