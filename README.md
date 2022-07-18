@@ -2,7 +2,7 @@
 
  
  
-[Web Maven](https://github.com/kv2461/web-maven) is a social web browsing companion that allows users to share bookmarks with other users, who can be given editor or viewer rights, as well as a rating system for URL's that uses a user-based voting system.
+[Web Maven](https://github.com/kv2461/web-maven) is a chrome extension, more specifically, a social web browsing companion that allows users to share bookmarks with other users, who can be given editor or viewer rights, as well as a rating system for URL's that uses a user-based voting system.
 Need to teach a class? Web Maven provides tools to share websites that users can edit together or just view, depending on their assigned folder rights by the creator. 
 Just for fun? Web Maven allows users to share bookmarks with their friends and rate websites based on their user experience.
 You’ll instantly and consistently have links to share between your friends ready in a browser-friendly platform. Version 2 coming soon with shareable user-created annotations in any website you visit!
