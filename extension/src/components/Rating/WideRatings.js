@@ -7,7 +7,7 @@ const WideRatings = ({ url, tab, urlRatings, average, userUrlRatings}) => {
   return (
     <>
         <Paper sx={{display:'flex', flexDirection:'row', alignItems:'center', p:1, m:1, marginLeft:0}}>
-            <img style={{maxHeight:'1.1rem', paddingRight:1}} src={tab.favIconUrl} />
+            <img style={{maxHeight:'1.1rem', paddingRight:'5px'}} src={tab.favIconUrl} />
             <Typography variant='body3'>
                 {tab?.title?.length > 60 ? `${tab?.title?.slice(0,60)}...` : `${tab?.title}`}
             </Typography>
