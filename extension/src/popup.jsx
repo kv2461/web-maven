@@ -95,7 +95,7 @@ const Popup = () => {
                 <RatingMain url={url} tab={chromeTab}/>
 
                 <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-                    <Typography>{user.result.username}</Typography>
+                    <Typography sx={{fontFamily:'Play', fontWeight:800, color:'primary.main'}}>{user.result.username}</Typography>
                     <Button sx={{color:'secondary.main'}} onClick={logout}>Logout</Button>
                 </div>
             </div>
