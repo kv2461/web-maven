@@ -7,7 +7,7 @@ import { RateUrl } from '../../actions/ratings';
 import WideRatings from './WideRatings';
 
 
-const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, url, tab, urlRatings, userUrlRatings }) => {
+const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, url, tab, urlRatings, userUrlRatings, average }) => {
     const dispatch = useDispatch();
     const [infoHover, setInfoHover] = useState(false);
 
@@ -37,7 +37,7 @@ const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, u
     <div style={{display:'flex', flexDirection:'row', }}>
       <Rating
         name="hover-feedback"
-        value={value}
+        value={value ? value : average}
         precision={0.5}
         getLabelText={getLabelText}
         onChange={(event, newValue) => {
@@ -54,7 +54,7 @@ const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, u
       )}
       
       </div>
-      {infoHover && <WideRatings url={url} tab={tab} urlRatings={urlRatings}/>}
+      {infoHover && <WideRatings url={url} tab={tab} urlRatings={urlRatings} userUrlRatings={userUrlRatings} average={average}/>}
     </Box>
   )
 }

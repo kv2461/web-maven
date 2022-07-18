@@ -7,8 +7,6 @@ import UrlRatings from '../models/urlratings.js';
 export const rateUrl = async (req,res) => {
     const {url, value} = req.body;
 
-    console.log(url);
-    console.log(value);
     try { 
         
         //need to first see if the ratings exist, if they don't make a new rating object and add ratings into ratings array
@@ -23,10 +21,10 @@ export const rateUrl = async (req,res) => {
             res.status(201).json(updatedUserRatings);
         } else {
             const newUserUrlRatings = new UserUrlRatings({url: url, userId:req.userId, rating:value,});
-            console.log('hi')
+
 
             const {_id} = await newUserUrlRatings.save();
-            console.log(_id);
+
 
             const existingRatings = await UrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }});
 

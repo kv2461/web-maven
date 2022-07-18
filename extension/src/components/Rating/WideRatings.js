@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography, Paper } from '@mui/material';
 import { Star } from '@mui/icons-material';
 
-const WideRatings = ({ url, tab, urlRatings}) => {
+const WideRatings = ({ url, tab, urlRatings, average, userUrlRatings}) => {
     console.log(urlRatings)
   return (
     <>
@@ -13,10 +13,15 @@ const WideRatings = ({ url, tab, urlRatings}) => {
             </Typography>
         </Paper>
         <div style={{display:'flex', flexDirection:'row'}}>
-        <Typography>Rated</Typography>
+        <Typography>Rated &#40;{average}&#41; </Typography>
         <Star sx={{color:'rgba(239,178,61,1)'}}/> 
-        <Typography>&#40;4.20&#41; by 69 users</Typography>
+        <Typography> by {urlRatings.raters.length} users</Typography>
         </div>
+        {userUrlRatings && <div style={{display:'flex', flexDirection:'row'}}>
+        <Typography>You rated it as a &#40;{userUrlRatings.rating}&#41;</Typography>
+        <Star sx={{color:'rgba(239,178,61,1)'}}/> 
+        </div>}
+        
     </>
   )
 }
