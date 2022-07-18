@@ -33,7 +33,7 @@ You’ll instantly and consistently have links to share between your friends rea
  
 ## Code Highlights
   * Object models architecture designed so that objects are linked by IDs, instead of being children of a giant object, in order to fetch and render components in front-end with speed and efficiency
-    * ![Component Polymorphism](https://user.png)
+    * ![Data Architecture](https://user.png)
 
  
  ## Upcoming Features
