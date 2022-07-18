@@ -1,6 +1,6 @@
 {
     "name": "Web Maven",
-    "description" : "In the works",
+    "description" : "Share bookmarks with your friends and rate websites!",
     "version": "1.0",
     "manifest_version": 3,
     "permissions": [

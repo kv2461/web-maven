@@ -4,7 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { Button, Collapse, Typography, Container, Grid, } from '@mui/material';
+import { Button, Typography, Container } from '@mui/material';
 
 import { GetFriends } from './actions/main';
 import { GetFolders } from './actions/folders';
@@ -21,8 +21,6 @@ import { CLEAR } from '../src/reducers/main'
 
 import Auth from './components/Auth/Auth';
 import Interface from './components/Interface/Interface';
-import BookmarkFolderMain from './components/BookmarkFolder/BookmarkFolderMain';
-import Friends from './components/Friends/Friends';
 import RatingMain from './components/Rating/RatingMain';
 
 import { theme } from './Theme';
