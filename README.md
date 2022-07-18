@@ -34,7 +34,7 @@ You’ll instantly and consistently have links to share between your friends rea
 ## Code Highlights
   * Object models architecture designed so that objects are linked by IDs, instead of being children of a giant object, in order to fetch and render components in front-end with speed and efficiency
     * ![Data Architecture](https://user.png)
-  * Front end is designed with to promote one click ease-of-use interface, rendering components instantly with each new information fetched.
+  * Front end is designed with to promote one click ease-of-use interface, rendering components instantly with each new information fetched. Webpack enables React to be able to build static javascript files.
     * ![Smooth Rerendering of Components](https://user.png)
 
  
