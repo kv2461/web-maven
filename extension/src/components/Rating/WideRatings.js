@@ -13,7 +13,7 @@ const WideRatings = ({ url, tab, urlRatings, average, userUrlRatings}) => {
             </Typography>
         </Paper>
         <div style={{display:'flex', flexDirection:'row'}}>
-        <Typography>Rated &#40;{average || '0'}&#41; </Typography>
+        <Typography>Rated &#40;{average.toFixed(2) || '0'}&#41; </Typography>
         <Star sx={{color:'rgba(239,178,61,1)'}}/> 
         <Typography> by {urlRatings?.raters?.length || '0'} users</Typography>
         </div>
