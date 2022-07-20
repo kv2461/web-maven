@@ -3,12 +3,13 @@ import { useDispatch } from 'react-redux';
 import { IconButton, Grid } from '@mui/material';
 import { ThumbUp, ThumbDown, ArrowLeft, ArrowRight} from '@mui/icons-material';
 
-import { ApproveReview } from '../../actions/ratings';
+import { ApproveReview, DownVoteReview } from '../../actions/ratings';
 
 const ReviewInterface = ({ getReviewInfo, mostRecentReviews, viewReview }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
     const dispatch = useDispatch();
-    const userApproved = viewReview?.voters?.indexOf(user?.result?._id) !== -1
+    const userApproved = viewReview?.voters?.indexOf(user?.result?._id) !== -1;
+    const userDownVoted = viewReview?.downVoters?.indexOf(user?.result?._id) !== -1;
 
     const navigateRight = () => {
         getReviewInfo(mostRecentReviews[viewReview.reviewIndex+1], viewReview.reviewIndex+1);
@@ -23,6 +24,13 @@ const ReviewInterface = ({ getReviewInfo, mostRecentReviews, viewReview }) => {
 
         await getReviewInfo(mostRecentReviews[viewReview.reviewIndex], viewReview.reviewIndex);
     }
+
+    const downVote = async () => {
+        await dispatch(DownVoteReview(mostRecentReviews[viewReview.reviewIndex]));
+
+        await getReviewInfo(mostRecentReviews[viewReview.reviewIndex], viewReview.reviewIndex);
+    }
+
   return (
     <Grid container sx={{m:1, paddingBottom:2, }}>
         <Grid item xs={3}>
@@ -36,8 +44,8 @@ const ReviewInterface = ({ getReviewInfo, mostRecentReviews, viewReview }) => {
             </IconButton>
         </Grid>
         <Grid item xs={3}>
-            <IconButton>
-                <ThumbDown/>
+            <IconButton onClick={()=>{downVote()}}>
+                <ThumbDown sx={userDownVoted?{color:'secondary.main'}:{color:'secondary.text'}}/>
             </IconButton>
         </Grid>
         <Grid item xs={3}>

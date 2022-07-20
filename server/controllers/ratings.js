@@ -158,3 +158,30 @@ export const approveReview = async (req,res) => {
         res.status(404).json({message:error.message});
     }
 }
+
+export const downVoteReview = async (req,res) => {
+    const reviewItem = req.body;
+    try {
+        const existingReview = await Review.findById(reviewItem._id);
+       
+        if (existingReview.downVoters.indexOf(req.userId) === -1) { //not a downvoter 
+            if (existingReview.voters.indexOf(req.userId) === -1) { //not a voter 
+                existingReview.downVoters.push(req.userId);
+                existingReview.approval--;
+            } else { //is a voter 
+                existingReview.voters = existingReview.voters.filter((id) => id !== req.userId);
+                existingReview.approval--;
+            }
+        } else {//is already a downvoter
+            existingReview.downVoters = existingReview.downVoters.filter((id) => id !== String(req.userId));
+            existingReview.approval++;
+        }
+        
+        const updatedReview = await Review.updateOne({_id: reviewItem._id}, existingReview, {new:true});
+
+
+        res.status(201).json(updatedReview);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
