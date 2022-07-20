@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Typography, ButtonBase, Collapse, IconButton, ListItem, List, Paper } from '@mui/material';
-import { Folder, Group, Favorite, FavoriteBorder } from '@mui/icons-material';
+import { Folder, Group, Favorite, FavoriteBorder, PermMedia } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import BookmarkItem from '../BookmarkActions/BookmarkItem';
@@ -83,7 +83,8 @@ const BookmarkFolder = ({ folder, parent, selected, setSelected, level }) => {
     <ListItem sx={{m:0,p:0, display:'flex', flexDirection:'row', justifyContent:'space-between'}} key={folder}>
         <div style={{margin:0, padding:0}}>
             <IconButton sx={{paddingRight:2}} onClick={()=>setCollapseFolder(!collapseFolder)} edge='end'>
-                <Folder sx={{fontSize:'1.2rem', color:'#F8ECD1'}} />
+                {!collapseFolder && <Folder sx={folderId===selected?{fontSize:'1.2rem', color:'primary.main'}:{fontSize:'1.2rem',color:'#F8ECD1'}} />}
+                {collapseFolder && <PermMedia sx={folderId===selected?{fontSize:'1.2rem', color:'primary.main'}:{fontSize:'1.2rem',color:'#F8ECD1'}} />}
             </IconButton>
             <ButtonBase onClick={selectFolder}>
                 <Typography sx={folderId===selected?{color:'primary.main'}:{color:'text.primary'}}variant='h8'><strong>{folderInfo?.title}</strong></Typography>
