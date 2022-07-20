@@ -8,7 +8,7 @@ import WideRatings from './WideRatings';
 import Reviews from './Reviews';
 
 
-const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, url, tab, urlRatings, userUrlRatings, average, userReview }) => {
+const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, url, tab, urlRatings, userUrlRatings, average, userReview, mostRecentReviews }) => {
     const dispatch = useDispatch();
     const [infoHover, setInfoHover] = useState(false);
 
@@ -60,7 +60,7 @@ const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, u
       
       </div>
       {infoHover && <WideRatings url={url} tab={tab} urlRatings={urlRatings} userUrlRatings={userUrlRatings} average={average}/>}
-      {infoHover && <Reviews url={url} tab={tab} urlRatings={urlRatings} average={average} userUrlRatings={userUrlRatings} userReview={userReview}/>}
+      {infoHover && <Reviews url={url} tab={tab} urlRatings={urlRatings} average={average} userUrlRatings={userUrlRatings} userReview={userReview} mostRecentReviews={mostRecentReviews}/>}
     </Box>
   )
 }

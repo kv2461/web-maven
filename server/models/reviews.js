@@ -24,7 +24,7 @@ const reviewSchema = new mongoose.Schema({
     approval: {
         type: Number,
         default:0
-    }
+    },
 
     
 })

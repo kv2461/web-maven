@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+import User from '../models/user.js';
 import UserUrlRatings from '../models/userurlratings.js';
 import UrlRatings from '../models/urlratings.js';
 import Review from '../models/reviews.js';
@@ -61,19 +62,21 @@ export const getUrlRatings = async (req,res) => {
             const aggData = await UserUrlRatings.aggregate([{$match:{url:{$regex : new RegExp(url, "i") }}}, {$group:{_id:existingRatings._id, average:{$avg: '$rating'}}}]);
             const {average} = aggData[0]
 
-            const existingUserRatings = await UserUrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId});
+            //sort by recency
+            const mostRecentReviews = await Review.find({url:{$regex : new RegExp(url, "i") }}).sort({createdAt:1});
 
+            const existingUserRatings = await UserUrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId});
                
             if (existingUserRatings?.review) {
             
                 const existingReview = await Review.findById(existingUserRatings.review);
 
-                data = {existingRatings, existingUserRatings, average, existingReview};
+                data = {existingRatings, existingUserRatings, average, existingReview, mostRecentReviews};
                 res.status(201).json(data);
             } else {
             
 
-            data = {existingRatings, existingUserRatings, average};
+            data = {existingRatings, existingUserRatings, average, mostRecentReviews};
 
             res.status(201).json(data);
             }
@@ -109,6 +112,22 @@ export const submitReview = async (req,res) => {
             
             res.status(201).json(updatedUserReview);
         }
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
+
+export const getReviewItem = async (req,res) => {
+    const reviewItem = req.body;
+    try {
+        const { username } = await User.findById(reviewItem.userId);
+ 
+        const { rating } = await UserUrlRatings.findById(reviewItem.rating);
+
+
+        const data = {username, rating};
+
+        res.status(201).json(data);
     } catch (error) {
         res.status(404).json({message:error.message});
     }

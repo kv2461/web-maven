@@ -5,9 +5,9 @@ import { Star, ThumbUp, ThumbDown } from '@mui/icons-material';
 import Review from './Review';
 import ReviewInterface from './ReviewInterface';
 
-import { SubmitReview } from '../../actions/ratings';
+import { SubmitReview, GetReviewItem } from '../../actions/ratings';
 
-const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview }) => {
+const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview, mostRecentReviews }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
     const dispatch =  useDispatch();
     const [collapseReviews, setCollapseReviews] = useState(false);
@@ -16,10 +16,23 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview }) 
     const [review, setReview] = useState('');
     const [edit, setEdit] = useState(false);
     const [update, setUpdate] = useState(false);
+    const [viewReview, setViewReview] = useState({});
+
+    const getReviewInfo = async (reviewItem, num) => {
+        const data = await dispatch(GetReviewItem(reviewItem));
+        setViewReview({username:data.username, userId:reviewItem.userId, review:reviewItem.review, approval:reviewItem.approval, rating:data.rating, _id:reviewItem._id, reviewIndex:num})
+        // setViewReview(reviewItem);
+    }
     
     useEffect( ()=> {
         setReview(userReview.review);
     },[userReview])
+
+    useEffect( ()=> {
+        if (mostRecentReviews) {
+           getReviewInfo(mostRecentReviews[0],0);
+        }
+    },[])
     
 
     const submitReview = async () => {
@@ -52,12 +65,17 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview }) 
                     <MenuItem value={'leastHelpful'}>Controversial</MenuItem>
                   </Select>
                 </FormControl>
+
+
             <Container sx={{display:'flex',flexDirection:'column'}}>
-                <Review />
-                <ReviewInterface />
+                <Review review={viewReview}/>
+                <ReviewInterface getReviewInfo={getReviewInfo} mostRecentReviews={mostRecentReviews} viewReview={viewReview}/>
             </Container>
             </Paper>
         }
+
+
+        
         {collapseAddReview && 
             <Paper sx={{width:'85vw', position:'relative', left:'calc(-28vw + 50%)', p:0, paddingLeft:1, paddingRight:1}}>
                 {userReview?.review?.length > 0 &&   //for users who already reviewed
