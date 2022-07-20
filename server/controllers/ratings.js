@@ -62,8 +62,10 @@ export const getUrlRatings = async (req,res) => {
             const {average} = aggData[0]
 
             const existingUserRatings = await UserUrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId});
+
                
-            if (existingUserRatings.review) {
+            if (existingUserRatings?.review) {
+            
                 const existingReview = await Review.findById(existingUserRatings.review);
 
                 data = {existingRatings, existingUserRatings, average, existingReview};
@@ -100,6 +102,9 @@ export const submitReview = async (req,res) => {
             res.status(201).json(data);
         } else { //updating a review
             existingUserReview.review = review;
+            existingUserReview.createdAt = new Date();
+            existingUserReview.approval = 0;
+            console.log(existingUserReview)
             const updatedUserReview = await Review.updateOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId}, existingUserReview, {new:true});
             
             res.status(201).json(updatedUserReview);

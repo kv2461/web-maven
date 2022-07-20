@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Collapse, Button, Paper, Typography, FormControl, InputLabel, Select, MenuItem, Container, TextField } from '@mui/material';
+import { Star, ThumbUp, ThumbDown } from '@mui/icons-material';
 import Review from './Review';
 import ReviewInterface from './ReviewInterface';
 
 import { SubmitReview } from '../../actions/ratings';
 
 const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview }) => {
+    const user = JSON.parse(localStorage.getItem('web-maven-profile'));
     const dispatch =  useDispatch();
     const [collapseReviews, setCollapseReviews] = useState(false);
     const [collapseAddReview, setCollapseAddReview] = useState(false);
     const [sortBy, setSortBy] = useState('mostRecent');
     const [review, setReview] = useState('');
+    const [edit, setEdit] = useState(false);
+    const [update, setUpdate] = useState(false);
     
     useEffect( ()=> {
         setReview(userReview.review);
@@ -56,6 +60,28 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview }) 
         }
         {collapseAddReview && 
             <Paper sx={{width:'85vw', position:'relative', left:'calc(-28vw + 50%)', p:0, paddingLeft:1, paddingRight:1}}>
+                {userReview?.review?.length > 0 &&   //for users who already reviewed
+                    <Container sx={{marginTop:1}}>
+                        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+                            <Typography sx={{fontWeight:1000}}>{user?.result?.username}</Typography>
+                        <div style={{display:'flex', flexDirection:'row'}}>
+                            <div style={{display:'flex', flexDirection:'row'}}>
+                                <Typography>&#40;{userUrlRatings?.rating}&#41;</Typography>
+                                <Star sx={{color:'rgba(239,178,61,1)'}}/>
+                            </div>
+                            <div style={{display:'flex', flexDirection:'row',}}>
+                                <Typography sx={{paddingLeft:2}}>&#40;{userReview?.approval}&#41;</Typography>
+                                {userReview?.approval >= 0 && <ThumbUp sx={{paddingLeft:1, color:'primary.main', }}/>} 
+                                {userReview?.approval < 0 && <ThumbDown sx={{paddingLeft:1, color:'secondary.main', }}/>}
+                            </div>
+                        </div>
+                        </div>
+
+                        <Typography>{userReview?.review}</Typography>
+                    </Container>}
+
+
+                {(!userReview?.review?.length  || edit) && // for who want to edit or add new
                 <FormControl fullWidth>
                   <TextField
                     multiline
@@ -67,10 +93,21 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview }) 
                     onChange={(e)=>{setReview(e.target.value)}}
                   >
                   </TextField>
-                </FormControl>
-                <Button sx={{float:'right'}} onClick={submitReview}>
-                    {userReview?.review?.length > 0 ? 'Update' : 'Submit'}
-                </Button>
+                </FormControl>}
+                {userReview?.review?.length > 0 && <Button sx={{float:'left'}} onClick={()=>setEdit(!edit)}>Edit</Button>}
+
+                {!userReview?.review && <Button sx={{float:'right'}} onClick={submitReview}>
+                    Submit
+                </Button>}
+
+                {userReview?.review && edit && !update && <Button sx={{float:'right'}} onClick={()=>setUpdate(true)}>
+                    Update
+                </Button>}
+
+                {userReview?.review && update && <> <Typography sx={{color:'red'}}>Are you sure? Approval votes will be reset</Typography>
+                <Button onClick={submitReview}>Update</Button>
+                <Button onClick={()=>setUpdate(false)}>Cancel</Button>
+                </>}
             </Paper>
         }
     </>

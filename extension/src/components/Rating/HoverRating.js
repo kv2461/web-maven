@@ -13,11 +13,15 @@ const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, u
     const [infoHover, setInfoHover] = useState(false);
 
     const rateUrl = async () => {
-      await dispatch(RateUrl(url, value));
+      if (value !== 0 && value !== null ) {
+        await dispatch(RateUrl(url, value));
+      }
+      
     }
 
     useEffect(() => {
-      if (value !== 0) {
+      if (value !== 0 && value !== null) {
+        console.log(value)
         rateUrl();
       }
       

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Typography } from '@mui/material';
-import { Star } from '@mui/icons-material';
+import { Star, ThumbUp, ThumbDown } from '@mui/icons-material';
 
 const Review = () => {
   return (
@@ -10,6 +10,12 @@ const Review = () => {
         <div style={{display:'flex', flexDirection:'row'}}>
             <Typography>&#40;4.2&#41;</Typography>
             <Star sx={{color:'rgba(239,178,61,1)'}}/>
+            <div style={{display:'flex', flexDirection:'row',}}>
+                <Typography sx={{paddingLeft:2}}>&#40;543&#41;</Typography>
+                <ThumbUp sx={{paddingLeft:1, color:'primary.main'}}/>
+                {/* {userReview?.approval >= 0 && <ThumbUp sx={{paddingLeft:1, color:'primary.main', }}/>} 
+                {userReview?.approval < 0 && <ThumbDown sx={{paddingLeft:1, color:'secondary.main', }}/>} */}
+            </div>
         </div>
         </div>
         
