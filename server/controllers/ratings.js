@@ -7,7 +7,6 @@ import Review from '../models/reviews.js';
 //RATINGS
 export const rateUrl = async (req,res) => {
     const {url, value} = req.body;
-
     try { 
         
         //need to first see if the ratings exist, if they don't make a new rating object and add ratings into ratings array
@@ -53,8 +52,10 @@ export const rateUrl = async (req,res) => {
 
 export const getUrlRatings = async (req,res) => {
     const {url} = req.body;
+    let data = {};
     try {
         const existingRatings = await UrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }});
+        //need to sort by recency/approval 
         
         if(existingRatings) {
             const aggData = await UserUrlRatings.aggregate([{$match:{url:{$regex : new RegExp(url, "i") }}}, {$group:{_id:existingRatings._id, average:{$avg: '$rating'}}}]);
@@ -62,19 +63,18 @@ export const getUrlRatings = async (req,res) => {
 
             const existingUserRatings = await UserUrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId});
                
-            if (existingUserRatings.review.length > 0) {
+            if (existingUserRatings.review) {
                 const existingReview = await Review.findById(existingUserRatings.review);
-                
-                const data = {existingRatings, existingUserRatings, average, existingReview};
 
+                data = {existingRatings, existingUserRatings, average, existingReview};
                 res.status(201).json(data);
-            }
+            } else {
             
-    
 
-            const data = {existingRatings, existingUserRatings, average};
+            data = {existingRatings, existingUserRatings, average};
 
             res.status(201).json(data);
+            }
         } 
 
     } catch (error) {
@@ -98,7 +98,7 @@ export const submitReview = async (req,res) => {
 
             const data = {updatedUrlRatings, updatedUserUrlRatings, newUserReview}
             res.status(201).json(data);
-        } else {
+        } else { //updating a review
             existingUserReview.review = review;
             const updatedUserReview = await Review.updateOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId}, existingUserReview, {new:true});
             

@@ -6,12 +6,17 @@ import ReviewInterface from './ReviewInterface';
 
 import { SubmitReview } from '../../actions/ratings';
 
-const Reviews = ({ url, tab, urlRatings, average, userUrlRatings }) => {
+const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview }) => {
     const dispatch =  useDispatch();
     const [collapseReviews, setCollapseReviews] = useState(false);
     const [collapseAddReview, setCollapseAddReview] = useState(false);
     const [sortBy, setSortBy] = useState('mostRecent');
     const [review, setReview] = useState('');
+    
+    useEffect( ()=> {
+        setReview(userReview.review);
+    },[userReview])
+    
 
     const submitReview = async () => {
         console.log(review); //to be saved in review model
@@ -64,7 +69,7 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings }) => {
                   </TextField>
                 </FormControl>
                 <Button sx={{float:'right'}} onClick={submitReview}>
-                    Submit
+                    {userReview?.review?.length > 0 ? 'Update' : 'Submit'}
                 </Button>
             </Paper>
         }

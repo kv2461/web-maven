@@ -1,5 +1,5 @@
 // import { GET_FOLDERS } from '../reducers/folders'; 
-import { LOAD_EXISTING_URL_RATINGS, LOAD_EXISTING_USER_URL_RATINGS, LOAD_EXISTING_AVERAGE } from '../reducers/ratings';
+import { LOAD_EXISTING_URL_RATINGS, LOAD_EXISTING_USER_URL_RATINGS, LOAD_EXISTING_AVERAGE, LOAD_EXISTING_REVIEW} from '../reducers/ratings';
 // import { ADD_EDITOR_ERROR, ADD_VIEWER_ERROR, DELETE_BOOKMARK_ERROR } from '../reducers/folders'
 
 import * as api from '../api';
@@ -21,7 +21,7 @@ export const RateUrl = (url, value) => async (dispatch) => {
 export const GetUrlRatings = (url) => async (dispatch) => {
     try {
         const { data } = await api.getUrlRatings(url);
-
+        console.log(data);
         if (data.existingRatings) {
             dispatch(LOAD_EXISTING_URL_RATINGS(data.existingRatings));
         }
@@ -35,6 +35,7 @@ export const GetUrlRatings = (url) => async (dispatch) => {
         }
 
         if (data.existingReview) {
+            console.log(data.existingReview);
             dispatch(LOAD_EXISTING_REVIEW(data.existingReview));
         }
     } catch (error) {
