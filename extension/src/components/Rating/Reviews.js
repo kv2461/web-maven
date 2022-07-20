@@ -4,7 +4,10 @@ import { Collapse, Button, Paper, Typography, FormControl, InputLabel, Select, M
 import Review from './Review';
 import ReviewInterface from './ReviewInterface';
 
+import { SubmitReview } from '../../actions/ratings';
+
 const Reviews = ({ url, tab, urlRatings, average, userUrlRatings }) => {
+    const dispatch =  useDispatch();
     const [collapseReviews, setCollapseReviews] = useState(false);
     const [collapseAddReview, setCollapseAddReview] = useState(false);
     const [sortBy, setSortBy] = useState('mostRecent');
@@ -13,7 +16,7 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings }) => {
     const submitReview = async () => {
         console.log(review); //to be saved in review model
         console.log(url); //to find urlRatings Id and add to reviews
-        dispatch(SubmitReview(url,preview));
+        dispatch(SubmitReview(url,review));
     }
     
   return (

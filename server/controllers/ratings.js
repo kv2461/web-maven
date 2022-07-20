@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 import UserUrlRatings from '../models/userurlratings.js';
 import UrlRatings from '../models/urlratings.js';
+import Review from '../models/reviews.js';
 
 //RATINGS
 export const rateUrl = async (req,res) => {
@@ -74,9 +75,25 @@ export const getUrlRatings = async (req,res) => {
 export const submitReview = async (req,res) => {
     const {url, review} = req.body;
     try {
-        console.log(url,review);
+        const existingRatings = await UrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }});
+        const existingUserRatings = await UserUrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId});
+        const existingUserReview = await Review.findOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId});
+        if (!existingUserReview) {
+            const newUserReview = new Review({url: url, review: review, userId: req.userId, rating: String(existingUserRatings._id)});
+            const {_id} = await newUserReview.save();
+            existingUserRatings.review = String(_id);
+            existingRatings.reviews.push(String(_id));
+            const updatedUrlRatings = await UrlRatings.updateOne({'url': {$regex : new RegExp(url, "i") }}, existingRatings, {new:true});
+            const updatedUserUrlRatings = await UserUrlRatings.updateOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId}, existingUserRatings, {new:true});
 
-        res.status(201).json(req.body);
+            const data = {updatedUrlRatings, updatedUserUrlRatings, newUserReview}
+            res.status(201).json(data);
+        } else {
+            existingUserReview.review = review;
+            const updatedUserReview = await Review.updateOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId}, existingUserReview, {new:true});
+            
+            res.status(201).json(updatedUserReview);
+        }
     } catch (error) {
         res.status(404).json({message:error.message});
     }
