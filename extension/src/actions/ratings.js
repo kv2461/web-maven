@@ -33,6 +33,10 @@ export const GetUrlRatings = (url) => async (dispatch) => {
         if (data.average) {
             dispatch(LOAD_EXISTING_AVERAGE(data.average));
         }
+
+        if (data.existingReview) {
+            dispatch(LOAD_EXISTING_REVIEW(data.existingReview));
+        }
     } catch (error) {
         console.log(error);
     }
@@ -43,6 +47,8 @@ export const SubmitReview = (url,review) => async (dispatch) => {
         const { data } = await api.submitReview(url,review);
 
         console.log(data);
+
+        dispatch(GetUrlRatings(url));
 
     } catch (error) {
         console.log(error);

@@ -61,6 +61,16 @@ export const getUrlRatings = async (req,res) => {
             const {average} = aggData[0]
 
             const existingUserRatings = await UserUrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId});
+               
+            if (existingUserRatings.review.length > 0) {
+                const existingReview = await Review.findById(existingUserRatings.review);
+                
+                const data = {existingRatings, existingUserRatings, average, existingReview};
+
+                res.status(201).json(data);
+            }
+            
+    
 
             const data = {existingRatings, existingUserRatings, average};
 
