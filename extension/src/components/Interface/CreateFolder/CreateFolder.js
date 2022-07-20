@@ -71,7 +71,7 @@ const CreateFolder = ({ showCreateFolder , mainFolder, folderInfo, setShowCreate
               type='text'
             />
 
-            <Button sx={{color:'secondary.main'}} onClick={createNewFolder} disabled={Boolean(newFolder.title.trim() === '')}>Create</Button>
+            <Button sx={{color:'secondary.main',}} onClick={createNewFolder} disabled={Boolean(newFolder.title.trim() === '')}>Create</Button>
           </div>)}
 
 

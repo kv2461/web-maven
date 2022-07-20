@@ -17,7 +17,7 @@ const WideRatings = ({ url, tab, urlRatings, average, userUrlRatings }) => {
         <Star sx={{color:'rgba(239,178,61,1)'}}/> 
         <Typography> by {urlRatings?.raters?.length || '0'} users</Typography>
         </div>
-        {userUrlRatings && <div style={{display:'flex', flexDirection:'row'}}>
+        {userUrlRatings.rating > 0 && <div style={{display:'flex', flexDirection:'row'}}>
         <Typography>You rated it as a &#40;{userUrlRatings?.rating || '0'}&#41;</Typography>
         <Star sx={{color:'rgba(239,178,61,1)'}}/> 
         </div>}

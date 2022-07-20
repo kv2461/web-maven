@@ -13,6 +13,10 @@ const urlRatingsSchema = new mongoose.Schema({
     raters: {
         type:[String],
         required: true,
+    },
+    reviews: {
+        type:[String],
+        default:[]
     }
     
 })

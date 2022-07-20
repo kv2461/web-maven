@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import UserUrlRatings from '../models/userurlratings.js';
 import UrlRatings from '../models/urlratings.js';
 
-//FOLDERS
+//RATINGS
 export const rateUrl = async (req,res) => {
     const {url, value} = req.body;
 
@@ -66,6 +66,17 @@ export const getUrlRatings = async (req,res) => {
             res.status(201).json(data);
         } 
 
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
+
+export const submitReview = async (req,res) => {
+    const {url, review} = req.body;
+    try {
+        console.log(url,review);
+
+        res.status(201).json(req.body);
     } catch (error) {
         res.status(404).json({message:error.message});
     }

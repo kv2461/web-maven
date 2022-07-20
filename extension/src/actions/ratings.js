@@ -22,7 +22,6 @@ export const GetUrlRatings = (url) => async (dispatch) => {
     try {
         const { data } = await api.getUrlRatings(url);
 
-        console.log(data);
         if (data.existingRatings) {
             dispatch(LOAD_EXISTING_URL_RATINGS(data.existingRatings));
         }
@@ -34,6 +33,17 @@ export const GetUrlRatings = (url) => async (dispatch) => {
         if (data.average) {
             dispatch(LOAD_EXISTING_AVERAGE(data.average));
         }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const SubmitReview = (url,review) => async (dispatch) => {
+    try {
+        const { data } = await api.submitReview(url,review);
+
+        console.log(data);
+
     } catch (error) {
         console.log(error);
     }
