@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography, Paper } from '@mui/material';
 import { Star } from '@mui/icons-material';
 
-const WideRatings = ({ url, tab, urlRatings, average, userUrlRatings}) => {
+const WideRatings = ({ url, tab, urlRatings, average, userUrlRatings }) => {
     console.log(urlRatings)
   return (
     <>

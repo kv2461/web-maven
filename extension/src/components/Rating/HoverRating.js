@@ -5,6 +5,7 @@ import { Star } from '@mui/icons-material';
 
 import { RateUrl } from '../../actions/ratings';
 import WideRatings from './WideRatings';
+import Reviews from './Reviews';
 
 
 const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, url, tab, urlRatings, userUrlRatings, average }) => {
@@ -55,6 +56,7 @@ const HoverRating = ({ value, setValue, hover, setHover, labels, getLabelText, u
       
       </div>
       {infoHover && <WideRatings url={url} tab={tab} urlRatings={urlRatings} userUrlRatings={userUrlRatings} average={average}/>}
+      {infoHover && <Reviews url={url} tab={tab} urlRatings={urlRatings} average={average} userUrlRatings={userUrlRatings}/>}
     </Box>
   )
 }
