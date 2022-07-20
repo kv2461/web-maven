@@ -52,8 +52,9 @@ export const rateUrl = async (req,res) => {
 
 
 export const getUrlRatings = async (req,res) => {
-    const {url} = req.body;
+    const {url, sortBy} = req.body;
     let data = {};
+    let mostRecentReviews;
     try {
         const existingRatings = await UrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }});
         //need to sort by recency/approval 
@@ -63,8 +64,13 @@ export const getUrlRatings = async (req,res) => {
             const {average} = aggData[0]
 
             //sort by recency
-            const mostRecentReviews = await Review.find({url:{$regex : new RegExp(url, "i") }}).sort({createdAt:-1});
-
+            if (sortBy === 'mostRecent') {
+                mostRecentReviews = await Review.find({url:{$regex : new RegExp(url, "i") }}).sort({createdAt:-1});
+            } else if (sortBy === 'mostHelpful') { //most helpful
+                mostRecentReviews = await Review.find({url:{$regex : new RegExp(url, "i") }}).sort({approval:-1});
+            } else { //controversial
+                mostRecentReviews = await Review.find({url:{$regex : new RegExp(url, "i") }}).sort({approval:1});
+            }
             const existingUserRatings = await UserUrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId});
                
             if (existingUserRatings?.review) {
@@ -107,6 +113,8 @@ export const submitReview = async (req,res) => {
             existingUserReview.review = review;
             existingUserReview.createdAt = new Date();
             existingUserReview.approval = 0;
+            existingUserReview.voters = [];
+            existingUserReview.downvoters = [];
             console.log(existingUserReview)
             const updatedUserReview = await Review.updateOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId}, existingUserReview, {new:true});
             

@@ -18,9 +18,9 @@ export const RateUrl = (url, value) => async (dispatch) => {
     }
 }
 
-export const GetUrlRatings = (url) => async (dispatch) => {
+export const GetUrlRatings = (url, sortBy) => async (dispatch) => {
     try {
-        const { data } = await api.getUrlRatings(url);
+        const { data } = await api.getUrlRatings(url, sortBy);
         console.log(data);
         if (data.existingRatings) {
             dispatch(LOAD_EXISTING_URL_RATINGS(data.existingRatings));
@@ -64,9 +64,11 @@ export const SubmitReview = (url,review) => async (dispatch) => {
 
 export const GetReviewItem = (reviewItem) => async (dispatch) => {
     try {
-        const { data } = await api.getReviewItem(reviewItem);
+        if (reviewItem) {
+            const { data } = await api.getReviewItem(reviewItem);
 
-        return data;
+            return data
+        }
 
     } catch (error) {
         console.log(error);

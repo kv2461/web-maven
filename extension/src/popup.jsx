@@ -63,7 +63,7 @@ const Popup = () => {
             .then((response) => {
                 const {url} = response;
                 setUrl(url);
-                dispatch(GetUrlRatings(url));
+                dispatch(GetUrlRatings(url, 'mostRecent'));
                 setChromeTab(response);
             })
     }

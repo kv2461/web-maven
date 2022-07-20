@@ -5,10 +5,11 @@ import { Star, ThumbUp, ThumbDown } from '@mui/icons-material';
 import Review from './Review';
 import ReviewInterface from './ReviewInterface';
 
-import { SubmitReview, GetReviewItem } from '../../actions/ratings';
+import { SubmitReview, GetReviewItem, GetUrlRatings } from '../../actions/ratings';
 
-const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview, mostRecentReviews }) => {
+const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, }) => {
     const user = JSON.parse(localStorage.getItem('web-maven-profile'));
+    const { mostRecentReviews, userReview } = useSelector((state)=>state.ratingsSlice)
     const dispatch =  useDispatch();
     const [collapseReviews, setCollapseReviews] = useState(false);
     const [collapseAddReview, setCollapseAddReview] = useState(false);
@@ -30,14 +31,15 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview, mo
 
     useEffect( ()=> {
         if (mostRecentReviews.length > 0) {
-            console.log('hi')
            getReviewInfo(mostRecentReviews[0],0);
         }
-    },[])
+    },[mostRecentReviews])
 
     useEffect( ()=> {
-        console.log(sortBy)
-    },[sortBy])
+        dispatch(GetUrlRatings(url, sortBy));
+
+        getReviewInfo(mostRecentReviews[0],0)
+    },[sortBy, collapseReviews])
     
 
     const submitReview = async () => {
