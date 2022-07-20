@@ -20,7 +20,7 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview, mo
 
     const getReviewInfo = async (reviewItem, num) => {
         const data = await dispatch(GetReviewItem(reviewItem));
-        setViewReview({username:data.username, userId:reviewItem.userId, review:reviewItem.review, approval:reviewItem.approval, rating:data.rating, _id:reviewItem._id, reviewIndex:num})
+        setViewReview({username:data.username, userId:reviewItem.userId, review:reviewItem.review, approval:data.approval, rating:data.rating, _id:reviewItem._id, reviewIndex:num, voters:data.voters, downVoters:data.downVoters})
         // setViewReview(reviewItem);
     }
     

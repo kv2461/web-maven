@@ -79,3 +79,5 @@ export const getUrlRatings = (url) => API.patch('/ratings/info', {url});
 export const submitReview = (url, review) => API.patch('/ratings/submitreview', {url, review});
 
 export const getReviewItem = (reviewItem) => API.patch('/ratings/item', reviewItem);
+
+export const approveReview = (reviewItem) => API.patch('/ratings/approve', reviewItem);

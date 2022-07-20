@@ -72,3 +72,14 @@ export const GetReviewItem = (reviewItem) => async (dispatch) => {
         console.log(error);
     }
 }
+
+export const ApproveReview = (reviewItem) => async (dispatch) => {
+    try {
+        const { data } = await api.approveReview(reviewItem);
+        
+        
+        console.log(data);
+    } catch (error) {
+        console.log(error);
+    }
+}

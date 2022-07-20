@@ -25,6 +25,14 @@ const reviewSchema = new mongoose.Schema({
         type: Number,
         default:0
     },
+    voters: {
+        type: [String],
+        default:[]
+    },
+    downVoters: {
+        type: [String],
+        default:[]
+    }
 
     
 })
