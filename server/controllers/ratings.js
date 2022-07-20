@@ -63,7 +63,7 @@ export const getUrlRatings = async (req,res) => {
             const {average} = aggData[0]
 
             //sort by recency
-            const mostRecentReviews = await Review.find({url:{$regex : new RegExp(url, "i") }}).sort({createdAt:1});
+            const mostRecentReviews = await Review.find({url:{$regex : new RegExp(url, "i") }}).sort({createdAt:-1});
 
             const existingUserRatings = await UserUrlRatings.findOne({'url': {$regex : new RegExp(url, "i") }, userId:req.userId});
                

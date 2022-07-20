@@ -20,7 +20,7 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview, mo
 
     const getReviewInfo = async (reviewItem, num) => {
         const data = await dispatch(GetReviewItem(reviewItem));
-        setViewReview({username:data.username, userId:reviewItem.userId, review:reviewItem.review, approval:data.approval, rating:data.rating, _id:reviewItem._id, reviewIndex:num, voters:data.voters, downVoters:data.downVoters})
+        setViewReview({username:data?.username, userId:reviewItem?.userId, review:reviewItem?.review, approval:data?.approval, rating:data?.rating, _id:reviewItem?._id, reviewIndex:num, voters:data?.voters, downVoters:data?.downVoters})
         // setViewReview(reviewItem);
     }
     
@@ -29,10 +29,15 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview, mo
     },[userReview])
 
     useEffect( ()=> {
-        if (mostRecentReviews) {
+        if (mostRecentReviews.length > 0) {
+            console.log('hi')
            getReviewInfo(mostRecentReviews[0],0);
         }
     },[])
+
+    useEffect( ()=> {
+        console.log(sortBy)
+    },[sortBy])
     
 
     const submitReview = async () => {
@@ -68,8 +73,9 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview, mo
 
 
             <Container sx={{display:'flex',flexDirection:'column'}}>
-                <Review review={viewReview}/>
-                <ReviewInterface getReviewInfo={getReviewInfo} mostRecentReviews={mostRecentReviews} viewReview={viewReview}/>
+                {mostRecentReviews.length > 0 && <Review review={viewReview}/>}
+                {mostRecentReviews.length > 0 && <ReviewInterface getReviewInfo={getReviewInfo} mostRecentReviews={mostRecentReviews} viewReview={viewReview}/>}
+                {mostRecentReviews.length === 0 && <Typography sx={{paddingBottom:2, color:'secondary.main'}}>No reviews yet</Typography>}
             </Container>
             </Paper>
         }
@@ -77,7 +83,7 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, userReview, mo
 
         
         {collapseAddReview && 
-            <Paper sx={{width:'85vw', position:'relative', left:'calc(-28vw + 50%)', p:0, paddingLeft:1, paddingRight:1}}>
+            <Paper sx={{width:'85vw', position:'relative', left:'calc(-28vw + 50%)', p:0, paddingLeft:1, paddingRight:1, paddingBottom:2}}>
                 {userReview?.review?.length > 0 &&   //for users who already reviewed
                     <Container sx={{marginTop:1}}>
                         <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
