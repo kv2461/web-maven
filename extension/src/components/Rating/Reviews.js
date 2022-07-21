@@ -103,7 +103,7 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, }) => {
                         </div>
                         </div>
 
-                        <Typography sx={{marginTop:1}}>{userReview?.review}</Typography>
+                        <Typography sx={{marginTop:1}}>	&ldquo;{userReview?.review}&rdquo;</Typography>
                     </Container>}
 
 

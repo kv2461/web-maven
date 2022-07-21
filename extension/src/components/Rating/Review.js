@@ -3,6 +3,7 @@ import { Container, Typography } from '@mui/material';
 import { Star, ThumbUp, ThumbDown } from '@mui/icons-material';
 
 const Review = ({ review }) => {
+  
   return (
     <Container sx={{marginTop:1}}>
         <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
@@ -19,8 +20,7 @@ const Review = ({ review }) => {
             </div>
         </div>
         </div>
-        
-        <Typography>{review.review}</Typography>
+        <Typography>&ldquo;{review.review}&rdquo;</Typography>
     </Container>
   )
 }
