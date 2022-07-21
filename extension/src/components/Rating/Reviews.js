@@ -50,7 +50,7 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, }) => {
     
   return (
     <>
-        <div sx={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+        <div sx={{display:'flex', flexDirection:'row', justifyContent:'space-between', paddingBottom:6}}>
         <Button onClick={()=>{setCollapseReviews(!collapseReviews);setCollapseAddReview(false)}}>Reviews</Button>
         {userUrlRatings.rating > 0 && <Button onClick={()=>{setCollapseAddReview(!collapseAddReview);setCollapseReviews(false)}}>Add Review</Button>}
         </div>
@@ -103,7 +103,7 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, }) => {
                         </div>
                         </div>
 
-                        <Typography>{userReview?.review}</Typography>
+                        <Typography sx={{marginTop:1}}>{userReview?.review}</Typography>
                     </Container>}
 
 
