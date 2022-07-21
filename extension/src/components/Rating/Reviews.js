@@ -46,12 +46,13 @@ const Reviews = ({ url, tab, urlRatings, average, userUrlRatings, }) => {
         console.log(review); //to be saved in review model
         console.log(url); //to find urlRatings Id and add to reviews
         dispatch(SubmitReview(url,review));
+        setEdit(false);
     }
     
   return (
     <>
         <div sx={{display:'flex', flexDirection:'row', justifyContent:'space-between', paddingBottom:6}}>
-        <Button onClick={()=>{setCollapseReviews(!collapseReviews);setCollapseAddReview(false)}}>Reviews</Button>
+        <Button onClick={()=>{setCollapseReviews(!collapseReviews);setCollapseAddReview(false)}}>Reviews&#40;{mostRecentReviews?.length}&#41;</Button>
         {userUrlRatings.rating > 0 && <Button onClick={()=>{setCollapseAddReview(!collapseAddReview);setCollapseReviews(false)}}>Add Review</Button>}
         </div>
 

@@ -15,8 +15,6 @@ const Review = ({ review }) => {
                 <Typography sx={{paddingLeft:2}}>&#40;{review?.approval}&#41;</Typography>
                 {review?.approval >= 0 && <ThumbUp sx={{paddingLeft:1, color:'primary.main', }}/>} 
                 {review?.approval < 0 && <ThumbDown sx={{paddingLeft:1, color:'secondary.main', }}/>}
-                {/* {userReview?.approval >= 0 && <ThumbUp sx={{paddingLeft:1, color:'primary.main', }}/>} 
-                {userReview?.approval < 0 && <ThumbDown sx={{paddingLeft:1, color:'secondary.main', }}/>} */}
             </div>
         </div>
         </div>
