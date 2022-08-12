@@ -9,13 +9,10 @@ You’ll instantly and consistently have links to share between your friends rea
  
  ## Technologies Used
    * Frontend:
-     * React
-     * HTML/CSS
+     * React/Redux
      * Webpack
      * Axios
    * Backend:
-     * Javascript
-     * Redux
      * MongoDB
      * Express
      * Axios
